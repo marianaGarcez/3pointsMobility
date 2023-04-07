@@ -627,7 +627,7 @@ tnumberseqset_angular_difference(const TSequenceSet *ss)
 {
   /* Singleton sequence set */
   if (ss->count == 1)
-    return tnumberseqset_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, 0));
+    return tnumberseqset_angular_difference(TSEQUENCESET_SEQ_N(ss, 0));
 
   /* General case */
   TInstant **instants = palloc(sizeof(TSequence *) * ss->totalcount);
@@ -688,7 +688,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss)
 {
   /* Singleton sequence set */
   if (ss->count == 1)
-    return tnumberseq_angular_difference(TSEQUENCESET_SEQ_N(ss, 0));
+    return tnumberseq_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, 0));
 
   /* General case */
   TInstant **instants = palloc(sizeof(TSequence *) * ss->totalcount);
@@ -696,7 +696,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss)
   for (int i = 0; i < ss->count; i++)
   {
     const TSequence *seq = TSEQUENCESET_SEQ_N(ss, i);
-    k += tnumberseq_angular_difference1(seq, &instants[k]);
+    k += tnumberseq_angular_difference3(seq, &instants[k]);
   }
   if (k == 0)
     return NULL;
