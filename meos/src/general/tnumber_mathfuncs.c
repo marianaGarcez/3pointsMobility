@@ -553,6 +553,52 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
   return k;
 }
 
+
+/**
+ * @brief Return the temporal number if the angulat difference between three poitns is 
+ * @brief This functions
+ */
+static int
+tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
+{
+  /* Instantaneous sequence */
+  if (seq->count == 1)
+    return 0;
+
+  /* General case */
+  const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
+  Datum value1 = tinstant_value(inst1);
+  Datum angdiff = Float8GetDatum(0);
+  Datum angdiff2 = Float8GetDatum(0);
+  int k = 0;
+  if (seq->period.lower_inc)
+    result[k++] = tinstant_make(angdiff, seq->temptype, inst1->t);
+
+
+  const TInstant *inst2 = TSEQUENCE_INST_N(seq, 1);
+  Datum value2 = tinstant_value(inst2);
+  //check angular difference between first and second point, then second and third point
+  //if the difference is greater than 120 in both cases, then the point is a turning point
+  for (int i = 2; i < seq->count; i++)
+  {
+    const TInstant *inst3 = TSEQUENCE_INST_N(seq, i);
+    Datum value3 = tinstant_value(inst3);
+    angdiff = angular_difference(value1, value2);
+    angdiff2 = angular_difference(value2, value3);
+    
+    if ((angdiff > 120 && angdiff2 > 120)&&(i != seq->count - 1 || seq->period.upper_inc))
+      result[k++] = tinstant_make(angdiff, seq->temptype, inst2->t);
+
+    inst1 = inst2;
+    value1 = value2;
+    inst2 = inst3;
+    value2 = value3;
+  }
+  return k;
+}
+
+
+
 static TSequence *
 tnumberseq_angular_difference(const TSequence *seq)
 {
