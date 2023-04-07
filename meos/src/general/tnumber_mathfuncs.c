@@ -565,6 +565,9 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
   if (seq->count == 1)
     return 0;
 
+  if (seq->count < 3)
+    return seq->count;
+  
   /* General case */
   const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
   Datum value1 = tinstant_value(inst1);
@@ -585,7 +588,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
     Datum value3 = tinstant_value(inst3);
     angdiff = angular_difference(value1, value2);
     angdiff2 = angular_difference(value2, value3);
-    
+
     if ((angdiff > 120 && angdiff2 > 120)&&(i != seq->count - 1 || seq->period.upper_inc))
       result[k++] = tinstant_make(angdiff, seq->temptype, inst2->t);
 
@@ -669,9 +672,11 @@ tnumberseq_angular_difference_3points(const TSequence *seq)
   /* General case */
   /* We are sure that there are at least 2 instants */
   TInstant **instants = palloc(sizeof(TInstant *) * seq->count);
-  int k = tnumberseq_angular_difference1(seq, instants);
+  int k = tnumberseq_angular_difference3(seq, instants);
   if (k == 0)
     return NULL;
+  if (k < 3)
+    return tsequence_copy(seq);
   /* Resulting sequence has discrete interpolation */
   return tsequence_make_free(instants, k, true, true, DISCRETE, NORMALIZE);
 }
@@ -683,7 +688,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss)
 {
   /* Singleton sequence set */
   if (ss->count == 1)
-    return tnumberseq_angular_difference(TSEQUENCESET_SEQ_N(ss, 0));
+    return tnumberseq_angular_difference3(TSEQUENCESET_SEQ_N(ss, 0));
 
   /* General case */
   TInstant **instants = palloc(sizeof(TSequence *) * ss->totalcount);
@@ -691,7 +696,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss)
   for (int i = 0; i < ss->count; i++)
   {
     const TSequence *seq = TSEQUENCESET_SEQ_N(ss, i);
-    k += tnumberseq_angular_difference1(seq, &instants[k]);
+    k += tnumberseq_angular_difference3(seq, &instants[k]);
   }
   if (k == 0)
     return NULL;
