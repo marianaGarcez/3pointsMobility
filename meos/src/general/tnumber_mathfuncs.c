@@ -570,29 +570,29 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
   
   /* General case */
   
-  const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
+  TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
   Datum value1 = tinstant_value(inst1);
   Datum angdiff = Float8GetDatum(0);
   Datum angdiff2 = Float8GetDatum(0);
-  int k = 0;
+  int k = 1;
   if (seq->period.lower_inc)
     result[k++] = tinstant_make(angdiff, seq->temptype, inst1->t);
 
 
-  const TInstant *inst2 = TSEQUENCE_INST_N(seq, 1);
+  TInstant *inst2 = TSEQUENCE_INST_N(seq, 1);
   Datum value2 = tinstant_value(inst2);
+  result[0] = inst1;
   //check angular difference between first and second point, then second and third point
   //if the difference is greater than 120 in both cases, then the point is a turning point
   for (int i = 2; i < seq->count; i++)
   {
-    const TInstant *inst3 = TSEQUENCE_INST_N(seq, i);
+    TInstant *inst3 = TSEQUENCE_INST_N(seq, i);
     Datum value3 = tinstant_value(inst3);
     angdiff = angular_difference(value1, value2);
     angdiff2 = angular_difference(value2, value3);
 
     if ((angdiff > 120 && angdiff2 > 120)&&(i != seq->count - 1 || seq->period.upper_inc))
     {
-      result[k++] = inst1;
       result[k++] = inst2;
       result[k++] = inst3;
     }
