@@ -604,7 +604,8 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
   }
   if ( k > 0)
   {
-    result = tsequence_make_free(instants, seq->count, seq->period.lower_inc, seq->period.upper_inc, LINEAR, NORMALIZE_NO);
+    result = tsequence_make((const TInstant **) instants, seq->count,
+    seq->period.lower_inc, seq->period.upper_inc, STEP, NORMALIZE);
   }
     
   return k;
