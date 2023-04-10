@@ -569,6 +569,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
     return seq->count;
   
   /* General case */
+  const TInstant **instants = palloc(sizeof(TInstant *) * seq->count);
   const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
   Datum value1 = tinstant_value(inst1);
   Datum angdiff = Float8GetDatum(0);
@@ -590,13 +591,22 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
     angdiff2 = angular_difference(value2, value3);
 
     if ((angdiff > 120 && angdiff2 > 120)&&(i != seq->count - 1 || seq->period.upper_inc))
-      result[k++] = tinstant_make(angdiff, seq->temptype, inst2->t);
+    {
+      instants[k++] = inst1;
+      instants[k++] = inst2;
+      instants[k++] = inst3;
+    }
 
     inst1 = inst2;
     value1 = value2;
     inst2 = inst3;
     value2 = value3;
   }
+  if ( k > 0)
+  {
+    result = tsequence_make_free(instants, seq->count, seq->period.lower_inc, seq->period.upper_inc, LINEAR, NORMALIZE_NO);
+  }
+    
   return k;
 }
 
