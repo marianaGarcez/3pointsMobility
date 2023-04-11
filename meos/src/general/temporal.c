@@ -208,11 +208,14 @@ void
 ensure_increasing_timestamps(const TInstant *inst1, const TInstant *inst2,
   bool merge)
 {
+  double x1 = tnumberinst_double(inst1);
+  double x2 = tnumberinst_double(inst2);
   if ((merge && inst1->t > inst2->t) || (!merge && inst1->t >= inst2->t))
   {
     char *t1 = pg_timestamptz_out(inst1->t);
     char *t2 = pg_timestamptz_out(inst2->t);
-    elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s", t1, t2);
+
+    elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s, %ld, %ld", t1, t2,x1,x2);
   }
   if (merge && inst1->t == inst2->t &&
     ! datum_eq(tinstant_value(inst1), tinstant_value(inst2),
