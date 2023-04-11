@@ -213,11 +213,13 @@ ensure_increasing_timestamps(const TInstant *inst1, const TInstant *inst2,
   {
     char *t1 = pg_timestamptz_out(inst1->t);
     char *t2 = pg_timestamptz_out(inst2->t);
-    Datum *value1 = inst1->value;
-    Datum *value2 = inst2->value;
+    POINT2D valueA2, valueB2;
+    valueA2 = datum_point2d(tinstant_value(inst1));
+    valueB2 =  datum_point2d(tinstant_value(inst2));
+    double distance = dist2d_pt_pt(&valueA2, &valueB2); 
 
 
-    elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s, %s,%s", t1, t2, value1, value2);
+    elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s, %lf", t1, t2, distance);
   }
   if (merge && inst1->t == inst2->t &&
     ! datum_eq(tinstant_value(inst1), tinstant_value(inst2),
