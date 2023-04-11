@@ -208,7 +208,7 @@ void
 ensure_increasing_timestamps(const TInstant *inst1, const TInstant *inst2,
   bool merge)
 {
-  POINT2D value1, value2;
+  POINT2D *value1, *value2;
   value1 = DATUM_POINT2D_P(tinstant_value(inst1));
   value2 = DATUM_POINT2D_P(tinstant_value(inst2));
 
