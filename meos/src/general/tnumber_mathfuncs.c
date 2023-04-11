@@ -600,6 +600,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
     inst2 = inst3;
     value2 = value3;
   }
+  elog(INFO,"Result %s",tboolseqset_as_mfjson((TSequenceSet *)result, 0));
   
   return k;
 }
