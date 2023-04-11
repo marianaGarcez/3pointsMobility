@@ -587,7 +587,14 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
     angdiff = angular_difference(value1, value2);
     angdiff2 = angular_difference(value2, value3);
 
-    elog(INFO, "value: %f,%f ", angdiff, angdiff2);
+    elog(INFO, "Point coordinates: (%f, %f), (%f, %f), (%f, %f)",
+     DatumGetFloat8(tinstant_value(inst1)),
+     DatumGetFloat8(tinstant_value(inst1)),
+     DatumGetFloat8(tinstant_value(inst2)),
+     DatumGetFloat8(tinstant_value(inst2)),
+     DatumGetFloat8(tinstant_value(inst3)),
+     DatumGetFloat8(tinstant_value(inst3)));
+
 
     if (angdiff > 120 && angdiff2 > 120)
     {
