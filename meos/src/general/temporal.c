@@ -207,18 +207,17 @@ ensure_same_temptype(const Temporal *temp1, const Temporal *temp2)
 void
 ensure_increasing_timestamps(const TInstant *inst1, const TInstant *inst2,
   bool merge)
-{ 
-  POINT2D value1, value2;
-  value1 = datum_point2d(tinstant_value(inst1));
-  value2 = datum_point2d(tinstant_value(inst2));
-  
+{   
 
   if ((merge && inst1->t > inst2->t) || (!merge && inst1->t >= inst2->t))
   {
     char *t1 = pg_timestamptz_out(inst1->t);
     char *t2 = pg_timestamptz_out(inst2->t);
+    char *value1 = inst1->value;
+    char *value2 = inst2->value;
 
-    elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s, %s,%s,%s,%s", t1, t2, value1.x, value1.y, value2.x, value2.y);
+
+    elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s, %s,%s", t1, t2, value1, value2);
   }
   if (merge && inst1->t == inst2->t &&
     ! datum_eq(tinstant_value(inst1), tinstant_value(inst2),
