@@ -587,6 +587,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
     angdiff = angular_difference(value1, value2);
     angdiff2 = angular_difference(value2, value3);
 
+    elog(INFO,"I %d angdiff %f",i,DatumGetFloat8(angular_difference(value1, value2)));
 
     if (angdiff > 120 && angdiff2 > 120)
     {
