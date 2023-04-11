@@ -213,8 +213,8 @@ ensure_increasing_timestamps(const TInstant *inst1, const TInstant *inst2,
   {
     char *t1 = pg_timestamptz_out(inst1->t);
     char *t2 = pg_timestamptz_out(inst2->t);
-    char *value1 = inst1->value;
-    char *value2 = inst2->value;
+    Datum *value1 = inst1->value;
+    Datum *value2 = inst2->value;
 
 
     elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s, %s,%s", t1, t2, value1, value2);
