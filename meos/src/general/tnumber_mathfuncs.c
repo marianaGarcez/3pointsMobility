@@ -575,9 +575,6 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
   Datum angdiff = Float8GetDatum(0);
   Datum angdiff2 = Float8GetDatum(0);
   int k = 0;
-  if (seq->period.lower_inc)
-    result[k++] = tinstant_make(angdiff, seq->temptype, inst1->t);
-
 
   TInstant *inst2 = TSEQUENCE_INST_N(seq, 1);
   Datum value2 = tinstant_value(inst2);
