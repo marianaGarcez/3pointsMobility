@@ -589,6 +589,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
 
     if ((angdiff > 120 && angdiff2 > 120)&&(i != seq->count - 1 || seq->period.upper_inc))
     {
+      elog(INFO, "value1: %f,%f,%f ", DatumGetFloat8(value1), DatumGetFloat8(value2), DatumGetFloat8(value3));
       result[k++] = inst1;
       result[k++] = inst2;
       result[k++] = inst3;
