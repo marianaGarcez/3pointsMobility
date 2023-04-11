@@ -209,8 +209,15 @@ ensure_increasing_timestamps(const TInstant *inst1, const TInstant *inst2,
   bool merge)
 {
   POINT2D *value1, *value2;
-  value1 = DATUM_POINT2D_P(tinstant_value(inst1));
-  value2 = DATUM_POINT2D_P(tinstant_value(inst2));
+  value1 = DATUM_POINT2D_P(&inst1->value);
+  value1 +=  lwprint_double(value1->x, 0, value1);
+  value1 += sprintf(value1, ",");
+  value1 += lwprint_double(value1->y, 0, value1);
+
+  value2 = DATUM_POINT2D_P(&inst2->value);
+  value2 +=  lwprint_double(value2->x, 0, value2);
+  value2 += sprintf(value2, ",");
+  value2 += lwprint_double(value2->y, 0, value2);
 
   if ((merge && inst1->t > inst2->t) || (!merge && inst1->t >= inst2->t))
   {
