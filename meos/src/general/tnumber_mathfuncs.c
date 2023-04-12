@@ -684,6 +684,7 @@ tnumberseq_angular_difference_3points(const TSequence *seq)
   if (k < 3)
     return tsequence_copy(seq);
   /* Resulting sequence has discrete interpolation */
+  elog(INFO,"calling from tnumberseq_angular_difference_3points");
   return tsequenceset_make_free(sequences, k, NORMALIZE);
 }
 /**
@@ -710,6 +711,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss)
     return NULL;
   }
   /* Resulting sequence has discrete interpolation */
+  elog(INFO,"calling from  tnumberseqset_angular_difference_3points");
   return tsequenceset_make_free(sequences, k, NORMALIZE);;
 }
 
