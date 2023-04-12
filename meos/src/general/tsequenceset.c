@@ -119,7 +119,8 @@ tsequenceset_make_valid(const TSequence **sequences, int count)
   for (int i = 0; i < count; i++)
   {
     if (sequences[i]->subtype != TSEQUENCE)
-      elog(ERROR, "Input values must be temporal sequences");
+      elog(ERROR, "Input values must be temporal sequences, subtype %d",
+        sequences[i]->subtype);
     if (MOBDB_FLAGS_GET_LINEAR(sequences[i]->flags) != linear)
       elog(ERROR, "Input sequences must have the same interpolation");
   }
