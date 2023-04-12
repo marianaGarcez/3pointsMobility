@@ -569,7 +569,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result)
     return seq->count;
   
   /* General case */
-  Tinstant *instants[seq->count];
+  TInstant *instants[seq->count];
   TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
   Datum value1 = tinstant_value(inst1);
   Datum angdiff = Float8GetDatum(0);
