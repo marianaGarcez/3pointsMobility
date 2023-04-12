@@ -597,7 +597,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result)
       instants[j++]=inst2;
       instants[j++]=inst3;
 
-      result[k++]= tsequence_make_free(instants, j, true, true, DISCRETE, NORMALIZE);
+      result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
       elog(INFO,"After sequ make %d",j);
 
     }
