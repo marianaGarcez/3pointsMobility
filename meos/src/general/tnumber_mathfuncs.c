@@ -569,7 +569,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result)
     return seq->count;
   
   /* General case */
-  
+  Tinstant *instants[seq->count];
   TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
   Datum value1 = tinstant_value(inst1);
   Datum angdiff = Float8GetDatum(0);
@@ -592,9 +592,12 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result)
 
     if (angdiff > 120 && angdiff2 > 120)
     {
-      result[k++] = inst1;
-      result[k++] = inst2;
-      result[k++] = inst3;
+      int j = 0;
+      instants[j++]=inst1;
+      instants[j++]=inst2;
+      instants[j++]=inst3;
+      result[k++]= tsequence_make_free(instants, j, true, true, DISCRETE, NORMALIZE);
+
     }
 
     inst1 = inst2;
