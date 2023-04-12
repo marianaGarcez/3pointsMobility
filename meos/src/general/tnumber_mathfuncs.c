@@ -559,7 +559,7 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
  * @brief This functions
  */
 static int
-tnumberseq_angular_difference3(const TSequence *seq, TInstant **result)
+tnumberseq_angular_difference3(const TSequence *seq, TSequence **result)
 {
   /* Instantaneous sequence */
   if (seq->count == 1)
@@ -677,14 +677,14 @@ tnumberseq_angular_difference_3points(const TSequence *seq)
 
   /* General case */
   /* We are sure that there are at least 2 instants */
-  TInstant **instants = palloc(sizeof(TInstant *) * seq->count);
-  int k = tnumberseq_angular_difference3(seq, instants);
+  TSequence **sequences = palloc(sizeof(TSequence *) * seq->count);
+  int k = tnumberseq_angular_difference3(seq, sequences);
   if (k == 0)
     return NULL;
   if (k < 3)
     return tsequence_copy(seq);
   /* Resulting sequence has discrete interpolation */
-  return tsequenceset_make_free(instants, k, NORMALIZE);
+  return tsequenceset_make_free(sequences, k, NORMALIZE);
 }
 /**
  * @brief Return the temporal delta_value of a temporal number.
@@ -697,18 +697,22 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss)
     return tnumberseq_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, 0));
 
   /* General case */
-  TInstant **instants = palloc(sizeof(TSequence *) * ss->totalcount);
+  TSequence **sequences = palloc(sizeof(TSequence *) * ss->totalcount);
   int k = 0;
   for (int i = 0; i < ss->count; i++)
   {
     const TSequence *seq = TSEQUENCESET_SEQ_N(ss, i);
-    k += tnumberseq_angular_difference3(seq, &instants[k]);
+    sequences[k++] = tfloatseq_derivative(seq);
   }
-  if (k == 0)
+   if (k == 0)
+  {
+    pfree(sequences);
     return NULL;
+  }
   /* Resulting sequence has discrete interpolation */
-  return tsequenceset_make_free(instants, k, NORMALIZE);;
+  return tsequenceset_make_free(sequences, k, NORMALIZE);;
 }
+
 
 /**
  * @ingroup mobilitydb_temporal_math
