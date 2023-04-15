@@ -727,7 +727,10 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
 {
   /* Singleton sequence set */
   if (ss->count == 1)
+  {
+    elog(INFO,"ONly one sequence");
     return tnumberseq_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, 0),originalseq);
+  }  
 
   /* General case */
   TSequence **sequences = palloc(sizeof(TSequence *) * ss->totalcount);
@@ -735,7 +738,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
   for (int i = 0; i < ss->count; i++)
   {
     const TSequence *seq = TSEQUENCESET_SEQ_N(ss, i);
-    TSequence *temp;
+    TSequence **temp;
     int j= tnumberseq_angular_difference3(seq, temp,originalseq);
 
     char *seq1_wkt = tpoint_as_ewkt((Temporal *) temp, 2);
@@ -767,15 +770,10 @@ tnumber_angular_difference_3points(const Temporal *temp,const Temporal *seq)
   if (temp->subtype == TINSTANT)
     ;
   else if (temp->subtype == TSEQUENCE)
-  {
-    elog(INFO,"return from tnumberSEQ_angular_difference_3points");
     result = (Temporal *) tnumberseq_angular_difference_3points((TSequenceSet *) temp,(TSequence *)seq);
-  }
   else /* temp->subtype == TSEQUENCESET */
-  {
-    elog(INFO,"return from tnumberSEQSET_angular_difference_3points");
     result = (Temporal *) tnumberseqset_angular_difference_3points((TSequenceSet *) temp,(TSequenceSet *)seq);
-  }
+
   return result;
 }
 
