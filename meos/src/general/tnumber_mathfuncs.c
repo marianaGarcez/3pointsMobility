@@ -561,7 +561,7 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
 static int
 tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequence *originalseq)
 {
-  elog(INFO, "Points: %s",tsequence_out(originalseq, originalseq->count));
+  elog(INFO, "Points: %s",originalseq);
 
   /* Instantaneous sequence */
   if (seq->count == 1)
