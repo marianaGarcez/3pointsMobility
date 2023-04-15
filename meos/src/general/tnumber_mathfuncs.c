@@ -715,7 +715,7 @@ tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalse
     return NULL;
 
   /* Resulting sequence has discrete interpolation */
-  return tsequenceset_make_free(sequences, k, NO_NORMALIZE);
+  return tsequenceset_make_free(sequences, k, NORMALIZE);
 }
 /**
  * @brief Return the temporal delta_value of a temporal number.
