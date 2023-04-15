@@ -589,6 +589,8 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
   Datum value2Angulo = tinstant_value(inst2Angulo);
   Datum value2 = tinstant_value(inst2);
 
+  char *seq1_wkt = tpoint_as_ewkt((Temporal *) inst1, 2);
+
   /* check angular difference between first and second point, then second and third point
   if the difference is greater than 120 in both cases, then the point is a turning point */
   
@@ -603,9 +605,9 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
     angdiff = angular_difference(value1Angulo, value2Angulo);
     angdiff2 = angular_difference(value2Angulo, value3Angulo);
 
-    //char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
+    
 
-    elog(INFO,"I %d angdiff %f",i,DatumGetFloat8(angular_difference(value1, value2)));
+    elog(INFO,"I %d angdiff %f",i,DatumGetFloat8(angular_difference(value1Angulo, value2Angulo)),seq1_wkt);
 
     if (angdiff > 120 && angdiff2 > 120)
     {
