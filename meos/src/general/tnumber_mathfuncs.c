@@ -561,6 +561,9 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
 static int
 tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequence *originalseq)
 {
+  char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
+  elog(INFO, "\nseql: %s\n", seq1_wkt);
+  free(seq1_wkt);
  
   /* Instantaneous sequence */
   if (seq->count == 1)
@@ -572,9 +575,6 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
   /* General case */
   TInstant **instants = palloc(sizeof(TInstant *) * 4);
   TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
-  
-  char *out =  tpoint_as_text((Temporal *)inst1, 2);
-  elog(INFO,"inst 1 %s",out);
   Datum value1 = tinstant_value(inst1);
   Datum angdiff = Float8GetDatum(0);
   Datum angdiff2 = Float8GetDatum(0);
