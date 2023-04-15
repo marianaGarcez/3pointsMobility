@@ -738,7 +738,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
     int j= tnumberseq_angular_difference3(seq, temp,originalseq);
 
     char *seq1_wkt = tpoint_as_ewkt((Temporal *) temp, 2);
-    elog(INFO, "\nseql: %s\n", seq1_wkt);
+    elog(INFO, "\nREturn : %s\n", seq1_wkt);
     
   }
    if (k == 0)
