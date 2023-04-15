@@ -623,8 +623,6 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
       instants[j++]=inst3;
 
       result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
-      char *seqF_wkt = tpoint_as_ewkt((Temporal *) result[k], 2);
-      elog(INFO, "RESULT: %s\n", seqF_wkt);
     }
 
     inst1 = inst2;
@@ -713,12 +711,11 @@ tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalse
   /* We are sure that there are at least 2 instants */
   TSequence **sequences = palloc(sizeof(TSequence *) * seq->count);
   int k = tnumberseq_angular_difference3(seq, sequences,originalseq);
+  elog(INFO,"K %d",k);
   if (k == 0)
     return NULL;
-  if (k < 3)
-    return tsequence_copy(originalseq);
+
   /* Resulting sequence has discrete interpolation */
-  elog(INFO,"return from tnumberseq_angular_difference_3points");
   return tsequenceset_make_free(sequences, k, NORMALIZE);
 }
 /**
