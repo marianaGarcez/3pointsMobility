@@ -731,8 +731,8 @@ tnumber_angular_difference_3points(const Temporal *temp)
 {
   Temporal *result = NULL;
   assert(temptype_subtype(temp->subtype));
-  elog(INFO,"points %s",temporal_to_string(temp));
-  
+  elog(INFO,"points %s",temp);
+
   if (temp->subtype == TINSTANT)
     ;
   else if (temp->subtype == TSEQUENCE)
