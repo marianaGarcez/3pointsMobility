@@ -561,6 +561,8 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
 static int
 tnumberseq_angular_difference3(const TSequence *seq, TSequence **result)
 {
+  elog(INFO, "Points: %s", tsequence_to_string(seq));
+
   /* Instantaneous sequence */
   if (seq->count == 1)
     return 0;
@@ -598,8 +600,6 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result)
       instants[j++]=inst3;
 
       result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
-      elog(INFO,"After sequ make %d",j);
-
     }
 
     inst1 = inst2;
@@ -689,7 +689,6 @@ tnumberseq_angular_difference_3points(const TSequence *seq)
   if (k < 3)
     return tsequence_copy(seq);
   /* Resulting sequence has discrete interpolation */
-  elog(INFO,"calling from tnumberseq_angular_difference_3points");
   return tsequenceset_make_free(sequences, k, NORMALIZE);
 }
 /**
@@ -716,7 +715,6 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss)
     return NULL;
   }
   /* Resulting sequence has discrete interpolation */
-  elog(INFO,"calling from  tnumberseqset_angular_difference_3points");
   return tsequenceset_make_free(sequences, k, NORMALIZE);;
 }
 
@@ -731,7 +729,6 @@ tnumber_angular_difference_3points(const Temporal *temp)
 {
   Temporal *result = NULL;
   assert(temptype_subtype(temp->subtype));
-  elog(INFO,"points %s",temp);
 
   if (temp->subtype == TINSTANT)
     ;
