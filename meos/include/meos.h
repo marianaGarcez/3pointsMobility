@@ -1101,7 +1101,7 @@ extern Temporal *tfloat_derivative(const Temporal *temp);
 extern Temporal *tnumber_abs(const Temporal *temp);
 extern Temporal *tnumber_delta_value(const Temporal *temp);
 extern Temporal *tnumber_angular_difference(const Temporal *temp);
-extern Temporal *tnumber_angular_difference_3points(const Temporal *temp);
+extern Temporal *tnumber_angular_difference_3points(const Temporal *temp,const Temporal * seq);
 /*****************************************************************************/
 
 /* Text functions for temporal types */

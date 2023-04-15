@@ -559,9 +559,9 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
  * @brief This functions
  */
 static int
-tnumberseq_angular_difference3(const TSequence *seq, TSequence **result)
+tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequence *originalseq)
 {
-  elog(INFO, "Points: %s",tsequence_out(seq, seq->count));
+  elog(INFO, "Points: %s",tsequence_out(originalseq, originalseq->count));
 
   /* Instantaneous sequence */
   if (seq->count == 1)
@@ -674,7 +674,7 @@ tnumber_angular_difference(const Temporal *temp)
 }
 
 static TSequenceSet *
-tnumberseq_angular_difference_3points(const TSequence *seq)
+tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalseq)
 {
   /* Instantaneous sequence */
   if (seq->count == 1)
@@ -683,7 +683,7 @@ tnumberseq_angular_difference_3points(const TSequence *seq)
   /* General case */
   /* We are sure that there are at least 2 instants */
   TSequence **sequences = palloc(sizeof(TSequence *) * seq->count);
-  int k = tnumberseq_angular_difference3(seq, sequences);
+  int k = tnumberseq_angular_difference3(seq, sequences,originalseq);
   if (k == 0)
     return NULL;
   if (k < 3)
@@ -695,11 +695,11 @@ tnumberseq_angular_difference_3points(const TSequence *seq)
  * @brief Return the temporal delta_value of a temporal number.
  */
 static TSequenceSet *
-tnumberseqset_angular_difference_3points(const TSequenceSet *ss)
+tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *originalseq)
 {
   /* Singleton sequence set */
   if (ss->count == 1)
-    return tnumberseq_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, 0));
+    return tnumberseq_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, 0),originalseq);
 
   /* General case */
   TSequence **sequences = palloc(sizeof(TSequence *) * ss->totalcount);
@@ -725,7 +725,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss)
  * @sqlfunc angularDifference()
  */
 Temporal *
-tnumber_angular_difference_3points(const Temporal *temp)
+tnumber_angular_difference_3points(const Temporal *temp,const Temporal *seq)
 {
   Temporal *result = NULL;
   assert(temptype_subtype(temp->subtype));
@@ -733,9 +733,9 @@ tnumber_angular_difference_3points(const Temporal *temp)
   if (temp->subtype == TINSTANT)
     ;
   else if (temp->subtype == TSEQUENCE)
-    result = (Temporal *) tnumberseq_angular_difference_3points((TSequenceSet *) temp);
+    result = (Temporal *) tnumberseq_angular_difference_3points((TSequenceSet *) temp,(TSequence *)seq);
   else /* temp->subtype == TSEQUENCESET */
-    result = (Temporal *) tnumberseqset_angular_difference_3points((TSequenceSet *) temp);
+    result = (Temporal *) tnumberseqset_angular_difference_3points((TSequenceSet *) temp,(TSequenceSet *)seq);
   return result;
 }
 

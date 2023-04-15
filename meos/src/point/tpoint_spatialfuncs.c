@@ -2790,7 +2790,7 @@ tpoint_angular_difference_3points(const Temporal *temp)
   if (tazimuth)
   {
     Temporal *tazimuth_deg = tfloat_degrees(tazimuth, false);
-    result = tnumber_angular_difference_3points(tazimuth_deg);
+    result = tnumber_angular_difference_3points(tazimuth_deg,temp);
     pfree(tazimuth_deg);
   }
   return result;
