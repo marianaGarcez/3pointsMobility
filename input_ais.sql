@@ -38,8 +38,8 @@ BEGIN
   COPY AISInput(T, TypeOfMobile, MMSI, Latitude, Longitude, NavigationalStatus,
     ROT, SOG, COG, Heading, IMO, CallSign, Name, ShipType, CargoType, Width, Length,
     TypeOfPositionFixingDevice, Draught, Destination, ETA, DataSourceType,
-    SizeA, SizeB, SizeC, SizeD)
-  FROM '/home/marianamgd/aisdk-2022-11-01.csv' DELIMITER ',' CSV HEADER;
+    SizeA, SizeB, SizeC, SizeD, Geom)
+  FROM '/home/marianamgd/ais.csv' DELIMITER ',' CSV HEADER;
 
   RAISE INFO 'Updating AISInput table ...';
   
@@ -62,7 +62,7 @@ BEGIN
   RAISE INFO 'Creating Ships table ...';
 
   DROP TABLE IF EXISTS Ships;
-  CREATE TABLE Shipst(MMSI,T, Trip, SOG, COG) AS
+  CREATE TABLE Ships(MMSI,T, Trip, SOG, COG) AS
   SELECT MMSI,T,
     tgeompoint_seq(array_agg(tgeompoint_inst(ST_Transform(Geom, 25832), T) ORDER BY T)),
     tfloat_seq(array_agg(tfloat_inst(SOG, T) ORDER BY T) FILTER (WHERE SOG IS NOT NULL)),
