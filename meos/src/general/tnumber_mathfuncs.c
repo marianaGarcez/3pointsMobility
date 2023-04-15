@@ -772,7 +772,10 @@ tnumber_angular_difference_3points(const Temporal *temp,const Temporal *seq)
     result = (Temporal *) tnumberseq_angular_difference_3points((TSequenceSet *) temp,(TSequence *)seq);
   }
   else /* temp->subtype == TSEQUENCESET */
+  {
+    elog(INFO,"return from tnumberSEQSET_angular_difference_3points");
     result = (Temporal *) tnumberseqset_angular_difference_3points((TSequenceSet *) temp,(TSequenceSet *)seq);
+  }
   return result;
 }
 
