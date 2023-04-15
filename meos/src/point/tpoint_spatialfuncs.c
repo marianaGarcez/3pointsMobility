@@ -2786,7 +2786,6 @@ Temporal *
 tpoint_angular_difference_3points(const Temporal *temp)
 {
   Temporal *tazimuth = tpoint_azimuth(temp);
-  elog(INFO, "temp: %s",temp);
   Temporal *result = NULL;
   if (tazimuth)
   {
