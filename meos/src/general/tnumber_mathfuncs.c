@@ -623,6 +623,8 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
       instants[j++]=inst3;
 
       result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
+      char *seqF_wkt = tpoint_as_ewkt((Temporal *) result[k], 2);
+      elog(INFO, "RESULT: %s\n", seqF_wkt);
     }
 
     inst1 = inst2;
@@ -634,8 +636,6 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
     value2 = value3;
     value2Angulo = value3Angulo;
   }
-  char *seqF_wkt = tpoint_as_ewkt((Temporal *) result, 2);
-  elog(INFO, "RESULT: %s\n", seqF_wkt);
 
   return k;
 }
