@@ -711,12 +711,11 @@ tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalse
   /* We are sure that there are at least 2 instants */
   TSequence **sequences = palloc(sizeof(TSequence *) * seq->count);
   int k = tnumberseq_angular_difference3(seq, sequences,originalseq);
-  elog(INFO,"K %d",k);
   if (k == 0)
     return NULL;
 
   /* Resulting sequence has discrete interpolation */
-  return tsequenceset_make_free(sequences, k, NORMALIZE);
+  return tsequenceset_make_free(sequences, k, NO_NORMALIZE);
 }
 /**
  * @brief Return the temporal delta_value of a temporal number.
@@ -740,7 +739,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
     TSequence **temp;
     int j= tnumberseq_angular_difference3(seq, temp,originalseq);
 
-    char *seq1_wkt = tpoint_as_ewkt((Temporal *) temp, 2);
+    //char *seq1_wkt = tpoint_as_ewkt((Temporal *) temp, 2);
     //elog(INFO, "\nREturn : %s\n", seq1_wkt);
     
   }
