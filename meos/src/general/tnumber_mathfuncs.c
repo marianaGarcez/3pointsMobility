@@ -572,7 +572,8 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
   /* General case */
   TInstant **instants = palloc(sizeof(TInstant *) * 4);
   TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
-  char *out =  tpoint_as_text(inst1, 2);
+  
+  char *out =  tpoint_as_text((Temporal *)inst1, 2);
   elog(INFO,"inst 1 %s",out);
   Datum value1 = tinstant_value(inst1);
   Datum angdiff = Float8GetDatum(0);
