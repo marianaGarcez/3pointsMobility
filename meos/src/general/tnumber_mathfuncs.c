@@ -565,8 +565,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
   for (int i = 0; i < originalseq->count; i++) {
     TInstant *inst = TSEQUENCE_INST_N(originalseq, i);
     Datum value = tinstant_value(inst);
-    Point *point = DatumGetPointP(value);
-    snprintf(point_str, 100, "(%.2f, %.2f)", point->x, point->y);
+    snprintf(point_str, 100, "(%.2f, %.2f)", value->x, value->y);
     elog(INFO, "Point %d: %s", i, point_str);
   }
 
