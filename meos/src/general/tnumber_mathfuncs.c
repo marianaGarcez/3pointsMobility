@@ -561,7 +561,7 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
 static int
 tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequence *originalseq)
 {
-  char *seq1_wkt = tpoint_as_ewkt((Temporal *) seq, 2);
+  char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
   elog(INFO, "\nseql: %s\n", seq1_wkt);
  
   /* Instantaneous sequence */
@@ -573,23 +573,37 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
   
   /* General case */
   TInstant **instants = palloc(sizeof(TInstant *) * 4);
-  TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
+
+  TInstant *inst1Angulo = TSEQUENCE_INST_N(seq, 0);
+  TInstant *inst1 = TSEQUENCE_INST_N(originalseq, 0);
+
+  Datum value1Angulo = tinstant_value(inst1Angulo);
   Datum value1 = tinstant_value(inst1);
+
   Datum angdiff = Float8GetDatum(0);
   Datum angdiff2 = Float8GetDatum(0);
   int k = 0;
 
-  TInstant *inst2 = TSEQUENCE_INST_N(seq, 1);
+  TInstant *inst2Angulo = TSEQUENCE_INST_N(seq, 1);
+  TInstant *inst2 = TSEQUENCE_INST_N(originalseq, 1);
+  Datum value2Angulo = tinstant_value(inst2Angulo);
   Datum value2 = tinstant_value(inst2);
+
   /* check angular difference between first and second point, then second and third point
   if the difference is greater than 120 in both cases, then the point is a turning point */
   
   for (int i = 2; i < seq->count; i++)
   {
-    TInstant *inst3 = TSEQUENCE_INST_N(seq, i);
+    TInstant *inst3Angulo = TSEQUENCE_INST_N(seq, i);
+    TInstant *inst3 = TSEQUENCE_INST_N(originalseq, i);
+
+    Datum value3Angulo = tinstant_value(inst3Angulo);
     Datum value3 = tinstant_value(inst3);
-    angdiff = angular_difference(value1, value2);
-    angdiff2 = angular_difference(value2, value3);
+
+    angdiff = angular_difference(value1Angulo, value2Angulo);
+    angdiff2 = angular_difference(value2Angulo, value3Angulo);
+
+    //char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
 
     elog(INFO,"I %d angdiff %f",i,DatumGetFloat8(angular_difference(value1, value2)));
 
