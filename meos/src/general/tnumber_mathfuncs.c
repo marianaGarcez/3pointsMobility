@@ -48,6 +48,7 @@
 #include "general/pg_types.h"
 #include "general/temporaltypes.h"
 #include "general/type_util.h"
+#include "utils/geo_decls.h"
 
 /*****************************************************************************
  * Miscellaneous functions on datums
@@ -565,7 +566,8 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
   for (int i = 0; i < originalseq->count; i++) {
     TInstant *inst = TSEQUENCE_INST_N(originalseq, i);
     Datum value = tinstant_value(inst);
-    snprintf(point_str, 100, "(%.2f, %.2f)", value->x, value->y);
+    Point *point = DatumGetPointP(value);
+    snprintf(point_str, 100, "(%.2f, %.2f)", point->x, point->y);
     elog(INFO, "Point %d: %s", i, point_str);
   }
 
