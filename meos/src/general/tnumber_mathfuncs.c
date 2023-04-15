@@ -561,7 +561,7 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
 static int
 tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequence *originalseq)
 {
-  char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
+  char *seq1_wkt = tpoint_as_ewkt((Temporal *) seq, 2);
   elog(INFO, "\nseql: %s\n", seq1_wkt);
  
   /* Instantaneous sequence */
