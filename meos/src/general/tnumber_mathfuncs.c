@@ -734,7 +734,12 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
   for (int i = 0; i < ss->count; i++)
   {
     const TSequence *seq = TSEQUENCESET_SEQ_N(ss, i);
-    sequences[k++] = tnumberseq_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, i),originalseq);
+    TSequence *temp;
+    int j= tnumberseq_angular_difference3(seq, temp,originalseq);
+
+    char *seq1_wkt = tpoint_as_ewkt((Temporal *) temp, 2);
+    elog(INFO, "\nseql: %s\n", seq1_wkt);
+    
   }
    if (k == 0)
   {
