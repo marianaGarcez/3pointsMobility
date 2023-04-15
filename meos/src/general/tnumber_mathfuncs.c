@@ -615,7 +615,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
       char *seq1_wkt2 = tpoint_as_ewkt((Temporal *) inst1, 2);
       char *seq2_wkt2 = tpoint_as_ewkt((Temporal *) inst2, 2);
       char *seq3_wkt2 = tpoint_as_ewkt((Temporal *) inst3, 2);
-      
+
       elog(INFO,"Points %s,%s,%s",seq1_wkt2,seq2_wkt2,seq3_wkt2);
 
       instants[j++]=inst1;
@@ -714,7 +714,7 @@ tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalse
   if (k == 0)
     return NULL;
   if (k < 3)
-    return tsequence_copy(seq);
+    return tsequence_copy(originalseq);
   /* Resulting sequence has discrete interpolation */
   return tsequenceset_make_free(sequences, k, NORMALIZE);
 }
@@ -734,7 +734,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
   for (int i = 0; i < ss->count; i++)
   {
     const TSequence *seq = TSEQUENCESET_SEQ_N(ss, i);
-    sequences[k++] = tfloatseq_derivative(seq);
+    sequences[k++] = tnumberseq_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, i),originalseq);
   }
    if (k == 0)
   {
@@ -742,7 +742,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
     return NULL;
   }
   /* Resulting sequence has discrete interpolation */
-  return tsequenceset_make_free(sequences, k, NORMALIZE);;
+  return tsequenceset_make_free(sequences, k, NORMALIZE);
 }
 
 
