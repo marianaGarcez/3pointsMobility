@@ -769,9 +769,17 @@ tnumber_angular_difference_3points(const Temporal *temp,const Temporal *seq)
   if (temp->subtype == TINSTANT)
     ;
   else if (temp->subtype == TSEQUENCE)
+  {
+    elog(INFO,"tnumberseq_angular_difference_3points");
     result = (Temporal *) tnumberseq_angular_difference_3points((TSequenceSet *) temp,(TSequence *)seq);
+    elog(INFO,"tnumberseq_angular_difference_3points RETURN");
+  }
   else /* temp->subtype == TSEQUENCESET */
+  {
+    elog(INFO,"tnumberseqset_angular_difference_3points");
     result = (Temporal *) tnumberseqset_angular_difference_3points((TSequenceSet *) temp,(TSequenceSet *)seq);
+    elog(INFO,"tnumberseqset_angular_difference_3points RETURN");
+  }
   return result;
 }
 
