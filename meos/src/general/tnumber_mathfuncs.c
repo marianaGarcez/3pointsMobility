@@ -772,9 +772,6 @@ tnumber_angular_difference_3points(const Temporal *temp,const Temporal *seq)
     result = (Temporal *) tnumberseq_angular_difference_3points((TSequenceSet *) temp,(TSequence *)seq);
   else /* temp->subtype == TSEQUENCESET */
     result = (Temporal *) tnumberseqset_angular_difference_3points((TSequenceSet *) temp,(TSequenceSet *)seq);
-
-  char *seq1_wkt = tpoint_as_ewkt((Temporal *) result, 2);
-  elog(INFO, "RESULT: %s\n", seq1_wkt);
   return result;
 }
 
