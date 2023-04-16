@@ -1,0 +1,64 @@
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: /Users/marianaduarte/developMobility/3pointsMobility/build/CMakeFiles/CMakeScratch/TryCompile-t55f97
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_f6910/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_f6910.dir/build.make CMakeFiles/cmTC_f6910.dir/build
+Building C object CMakeFiles/cmTC_f6910.dir/CMakeCCompilerABI.c.o
+/opt/homebrew/opt/llvm/bin/clang-cl   -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.2   -v -Wl,-v -o CMakeFiles/cmTC_f6910.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/Cellar/cmake/3.25.1/share/cmake/Modules/CMakeCCompilerABI.c
+clang-16: warning: unknown argument ignored in clang-cl: '-arch' [-Wunknown-argument]
+clang-16: warning: unknown argument ignored in clang-cl: '-isysroot' [-Wunknown-argument]
+clang-16: warning: unknown argument ignored in clang-cl: '-mmacosx-version-min=13.2' [-Wunknown-argument]
+Homebrew clang version 16.0.0
+Target: arm64-pc-windows-msvc
+Thread model: posix
+InstalledDir: /opt/homebrew/opt/llvm/bin
+clang-16: warning: arm64: 'linker' input unused [-Wunused-command-line-argument]
+clang-16: warning: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk: 'linker' input unused [-Wunused-command-line-argument]
+clang-16: warning: argument unused during compilation: '-Wl,-v' [-Wunused-command-line-argument]
+Linking C executable cmTC_f6910
+/opt/homebrew/Cellar/cmake/3.25.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f6910.dir/link.txt --verbose=1
+/opt/homebrew/opt/llvm/bin/clang-cl  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.2 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  -v -Wl,-v CMakeFiles/cmTC_f6910.dir/CMakeCCompilerABI.c.o -o cmTC_f6910 
+clang-16: warning: unknown argument ignored in clang-cl: '-arch' [-Wunknown-argument]
+clang-16: warning: unknown argument ignored in clang-cl: '-isysroot' [-Wunknown-argument]
+clang-16: warning: unknown argument ignored in clang-cl: '-mmacosx-version-min=13.2' [-Wunknown-argument]
+Homebrew clang version 16.0.0
+Target: arm64-pc-windows-msvc
+Thread model: posix
+InstalledDir: /opt/homebrew/opt/llvm/bin
+clang-16: warning: unable to find a Visual Studio installation; try running Clang from a developer command prompt [-Wmsvc-not-found]
+ "link.exe" -out:cmTC_f6910.exe -libpath:lib/arm64 -libpath:atlmfc/lib/arm64 -nologo arm64 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk CMakeFiles/cmTC_f6910.dir/CMakeCCompilerABI.c.o
+clang-16: error: unable to execute command: Executable "link.exe" doesn't exist!
+clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [cmTC_f6910] Error 1
+make: *** [cmTC_f6910/fast] Error 2
+
+
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: /Users/marianaduarte/developMobility/3pointsMobility/build/CMakeFiles/CMakeScratch/TryCompile-2eJ9bz
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c9d39/fast && /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_c9d39.dir/build.make CMakeFiles/cmTC_c9d39.dir/build
+Building C object CMakeFiles/cmTC_c9d39.dir/testCCompiler.c.o
+/opt/homebrew/opt/llvm/bin/clang-cl   -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.2 -o CMakeFiles/cmTC_c9d39.dir/testCCompiler.c.o -c /Users/marianaduarte/developMobility/3pointsMobility/build/CMakeFiles/CMakeScratch/TryCompile-2eJ9bz/testCCompiler.c
+clang-16: warning: unknown argument ignored in clang-cl: '-arch' [-Wunknown-argument]
+clang-16: warning: unknown argument ignored in clang-cl: '-isysroot' [-Wunknown-argument]
+clang-16: warning: unknown argument ignored in clang-cl: '-mmacosx-version-min=13.2' [-Wunknown-argument]
+clang-16: warning: '/Users/marianaduarte/developMobility/3pointsMobility/build/CMakeFiles/CMakeScratch/TryCompile-2eJ9bz/testCCompiler.c' treated as the '/U' option [-Wslash-u-filename]
+clang-16: note: use '--' to treat subsequent arguments as filenames
+clang-16: warning: arm64: 'linker' input unused [-Wunused-command-line-argument]
+clang-16: warning: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk: 'linker' input unused [-Wunused-command-line-argument]
+clang-16: warning: argument unused during compilation: '/U sers/marianaduarte/developMobility/3pointsMobility/build/CMakeFiles/CMakeScratch/TryCompile-2eJ9bz/testCCompiler.c' [-Wunused-command-line-argument]
+Linking C executable cmTC_c9d39
+/opt/homebrew/Cellar/cmake/3.25.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c9d39.dir/link.txt --verbose=1
+/opt/homebrew/opt/llvm/bin/clang-cl  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.2 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_c9d39.dir/testCCompiler.c.o -o cmTC_c9d39 
+clang-16: warning: unknown argument ignored in clang-cl: '-arch' [-Wunknown-argument]
+clang-16: warning: unknown argument ignored in clang-cl: '-isysroot' [-Wunknown-argument]
+clang-16: warning: unknown argument ignored in clang-cl: '-mmacosx-version-min=13.2' [-Wunknown-argument]
+clang-16: warning: unable to find a Visual Studio installation; try running Clang from a developer command prompt [-Wmsvc-not-found]
+clang-16: error: unable to execute command: Executable "link.exe" doesn't exist!
+clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [cmTC_c9d39] Error 1
+make: *** [cmTC_c9d39/fast] Error 2
+
+
+
