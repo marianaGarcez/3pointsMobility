@@ -2794,7 +2794,7 @@ tpoint_angular_difference_3points(const Temporal *temp)
     Temporal *tazimuth_deg = tfloat_degrees(tazimuth, false);
     elog(INFO, "before funtion tnumber_angular_difference_3points\n");
     result = tnumber_angular_difference_3points(tazimuth_deg,temp);
-    elog(INFO, "after funtion tnumber\n")
+    elog(INFO, "after funtion tnumber\n");
     pfree(tazimuth_deg);
   }
   char *seq1_wkt = tpoint_as_ewkt((Temporal *) result, 2);
