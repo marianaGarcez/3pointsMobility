@@ -360,10 +360,7 @@ ensure_valid_tseqarr(const TSequence **sequences, int count)
            sequences[i]->period.lower_inc ) )
     {
       char *t1 = pg_timestamptz_out(upper1);
-      char *seq1_wkt = tpoint_as_ewkt((Temporal *) sequences[i - 1], 2);
-      elog(INFO, "P1: %s\n", seq1_wkt);
-      char *seq2_wkt = tpoint_as_ewkt((Temporal *) sequences[i], 2);
-      elog(INFO, "P2: %s\n", seq2_wkt);
+
       char *t2 = pg_timestamptz_out(lower2);
       elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s", t1, t2);
     }
