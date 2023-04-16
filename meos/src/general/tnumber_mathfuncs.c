@@ -617,9 +617,9 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
       char *seq3_wkt2 = tpoint_as_ewkt((Temporal *) inst3, 2);
 
       elog(INFO,"Points %s,%s,%s",seq1_wkt2,seq2_wkt2,seq3_wkt2);
-      inst1->t += 1;
-      inst2->t += 1;
-      inst3->t += 1;
+      inst1->t += 1000000000;
+      inst2->t += 1000000000;
+      inst3->t += 1000000000;
       instants[j++]=inst1;
       instants[j++]=inst2;
       instants[j++]=inst3;
