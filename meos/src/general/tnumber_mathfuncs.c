@@ -604,9 +604,6 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
 
     angdiff = angular_difference(value1Angulo, value2Angulo);
     angdiff2 = angular_difference(value2Angulo, value3Angulo);
-
-    
-
     elog(INFO,"I %d angdiff %f",i,DatumGetFloat8(angular_difference(value1Angulo, value2Angulo)));
 
     if (angdiff > 120 && angdiff2 > 120)
@@ -642,7 +639,6 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
 
   return k;
 }
-
 
 
 static TSequence *
@@ -777,6 +773,8 @@ tnumber_angular_difference_3points(const Temporal *temp,const Temporal *seq)
   else /* temp->subtype == TSEQUENCESET */
     result = (Temporal *) tnumberseqset_angular_difference_3points((TSequenceSet *) temp,(TSequenceSet *)seq);
 
+  char *seq1_wkt = tpoint_as_ewkt((Temporal *) result, 2);
+  elog(INFO, "RESULT: %s\n", seq1_wkt);
   return result;
 }
 
