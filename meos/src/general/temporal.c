@@ -364,7 +364,10 @@ ensure_valid_tseqarr(const TSequence **sequences, int count)
       char *t1 = pg_timestamptz_out(upper1);
 
       char *t2 = pg_timestamptz_out(lower2);
-      elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s", t1, t2);
+      char *seq1_wkt2 = tpoint_as_ewkt((Temporal *) inst1, 2);
+      char *seq2_wkt2 = tpoint_as_ewkt((Temporal *) inst2, 2);
+
+    elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s",seq1_wkt2,seq2_wkt2);
     }
     ensure_spatial_validity((Temporal *)sequences[i - 1], (Temporal *)sequences[i]);
   }
