@@ -624,7 +624,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
       TimestampTz aux = inst3->t;
       inst3->t = inst2->t;
       instants[j++]=inst3;
-      inst2->t=aux;
+      inst2->t += aux;
       instants[j++]=inst2;
 
       result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
