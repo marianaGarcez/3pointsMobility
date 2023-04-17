@@ -609,15 +609,17 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
     if (angdiff > 120 && angdiff2 > 120)
     {
       int j = 0;
+
+
+      inst1->t = (k)*100000000;
+      inst3->t = (k+1)*100000000;
+      inst2->t = (k+2)*100000000;
+
       char *seq1_wkt2 = tpoint_as_ewkt((Temporal *) inst1, 2);
       char *seq2_wkt2 = tpoint_as_ewkt((Temporal *) inst2, 2);
       char *seq3_wkt2 = tpoint_as_ewkt((Temporal *) inst3, 2);
 
-      elog(INFO,"Points %s,%s,%s",seq1_wkt2,seq2_wkt2,seq3_wkt2);
-
-      inst1->t = (k)*100000000;
-      inst3->t = (k)*200000000;
-      inst2->t = (k)*300000000;
+      elog(INFO,"Points 1 %s,2 %s,3 %s",seq1_wkt2,seq2_wkt2,seq3_wkt2);
 
       instants[j++]=inst1;
       instants[j++]=inst3;
