@@ -706,7 +706,7 @@ tnumberseq_angular_difference3_1(const TSequence *seq, TInstant **result,TSequen
         inst3->t += 10000000000000;
       }
       result[j++]=inst1;
-      inst2->t += int3->t;
+      inst2->t += inst3->t;
       result[j++]=inst3;
       result[j++]=inst2;
     }
