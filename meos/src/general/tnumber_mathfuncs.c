@@ -646,7 +646,7 @@ tnumberseq_angular_difference3_1(const TSequence *seq, TSequence **result,TSeque
  * @brief This functions
  */
 static int
-tnumberseq_angular_difference3_1(const TSequence *seq, TInstant **result,TSequence *originalseq)
+tnumberseq_angular_difference3(const TSequence *seq, TInstant **result,TSequence *originalseq)
 {
   //char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
   //elog(INFO, "seql: %s\n", seq1_wkt);
