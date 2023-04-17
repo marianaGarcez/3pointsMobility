@@ -213,8 +213,10 @@ ensure_increasing_timestamps(const TInstant *inst1, const TInstant *inst2,
   {
     char *t1 = pg_timestamptz_out(inst1->t);
     char *t2 = pg_timestamptz_out(inst2->t);
+    char *seq1_wkt2 = tpoint_as_ewkt((Temporal *) inst1, 2);
+    char *seq2_wkt2 = tpoint_as_ewkt((Temporal *) inst2, 2);
 
-    elog(ERROR, "Timestamps for temporal value must be increasing: %s, %s", t1, t2);
+    elog(ERROR, "Timestamps for temporal value must be increasing: %s %s, %s %s",seq1_wkt2,t1,seq2_wkt2 t2);
   }
   if (merge && inst1->t == inst2->t &&
     ! datum_eq(tinstant_value(inst1), tinstant_value(inst2),
