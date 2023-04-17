@@ -559,7 +559,7 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
  * @brief This functions
  */
 static int
-tnumberseq_angular_difference3_1(const TSequence *seq, TSequence **result,TSequence *originalseq)
+tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequence *originalseq)
 {
   //char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
   //elog(INFO, "seql: %s\n", seq1_wkt);
@@ -613,7 +613,7 @@ tnumberseq_angular_difference3_1(const TSequence *seq, TSequence **result,TSeque
       char *seq2_wkt2 = tpoint_as_ewkt((Temporal *) inst2, 2);
       char *seq3_wkt2 = tpoint_as_ewkt((Temporal *) inst3, 2);
 
-      //elog(INFO,"Points %s,%s,%s",seq1_wkt2,seq2_wkt2,seq3_wkt2);
+      elog(INFO,"Points %s,%s,%s",seq1_wkt2,seq2_wkt2,seq3_wkt2);
       if (i != 2)
       {
         inst1->t += 10000000000000;
@@ -621,94 +621,11 @@ tnumberseq_angular_difference3_1(const TSequence *seq, TSequence **result,TSeque
         inst3->t += 10000000000000;
       }
       instants[j++]=inst1;
-      instants[j++]=inst2;
       instants[j++]=inst3;
+      inst2->t += inst3->t;
+      instants[j++]=inst2;
 
       result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
-    }
-
-    inst1 = inst2;
-    inst1Angulo = inst2Angulo;
-    value1 = value2;
-    value1Angulo = value2Angulo;
-    inst2 = inst3;
-    inst2Angulo = inst3Angulo;
-    value2 = value3;
-    value2Angulo = value3Angulo;
-  }
-
-  return k;
-}
-
-
-/**
- * @brief Return the temporal number if the angular difference between three poits is less than 180
- * @brief This functions
- */
-static int
-tnumberseq_angular_difference3(const TSequence *seq, TInstant **result,TSequence *originalseq)
-{
-  //char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
-  //elog(INFO, "seql: %s\n", seq1_wkt);
- 
-  /* Instantaneous sequence */
-  if (seq->count == 1)
-    return 0;
-
-  if (seq->count < 3)
-    return seq->count;
-  
-  /* General case */
-  TInstant *inst1Angulo = TSEQUENCE_INST_N(seq, 0);
-  TInstant *inst1 = TSEQUENCE_INST_N(originalseq, 0);
-
-  Datum value1Angulo = tinstant_value(inst1Angulo);
-  Datum value1 = tinstant_value(inst1);
-
-  Datum angdiff = Float8GetDatum(0);
-  Datum angdiff2 = Float8GetDatum(0);
-  int k = 0;
-
-  TInstant *inst2Angulo = TSEQUENCE_INST_N(seq, 1);
-  TInstant *inst2 = TSEQUENCE_INST_N(originalseq, 1);
-  Datum value2Angulo = tinstant_value(inst2Angulo);
-  Datum value2 = tinstant_value(inst2);
-
-  
-
-  /* check angular difference between first and second point, then second and third point
-  if the difference is greater than 120 in both cases, then the point is a turning point */
-  
-  for (int i = 2; i < seq->count; i++)
-  {
-    TInstant *inst3Angulo = TSEQUENCE_INST_N(seq, i);
-    TInstant *inst3 = TSEQUENCE_INST_N(originalseq, i);
-
-    Datum value3Angulo = tinstant_value(inst3Angulo);
-    Datum value3 = tinstant_value(inst3);
-
-    angdiff = angular_difference(value1Angulo, value2Angulo);
-    angdiff2 = angular_difference(value2Angulo, value3Angulo);
-    //elog(INFO,"I %d angdiff %f",i,DatumGetFloat8(angular_difference(value1Angulo, value2Angulo)));
-
-    if (angdiff > 120 && angdiff2 > 120)
-    {
-      int j = 0;
-      //char *seq1_wkt2 = tpoint_as_ewkt((Temporal *) inst1, 2);
-      //char *seq2_wkt2 = tpoint_as_ewkt((Temporal *) inst2, 2);
-      //char *seq3_wkt2 = tpoint_as_ewkt((Temporal *) inst3, 2);
-      //elog(INFO,"Points %s,%s,%s",seq1_wkt2,seq2_wkt2,seq3_wkt2);
-
-      if (i != 2)
-      {
-        inst1->t += 10000000000000;
-        inst2->t += 10000000000000;
-        inst3->t += 10000000000000;
-      }
-      result[j++]=inst1;
-      inst2->t += inst3->t;
-      result[j++]=inst3;
-      result[j++]=inst2;
     }
 
     inst1 = inst2;
@@ -794,14 +711,13 @@ tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalse
 
   /* General case */
   /* We are sure that there are at least 2 instants */
-  TInstant **sequences = palloc(sizeof(TSequence *) * seq->count);
+  TSequence **sequences = palloc(sizeof(TSequence *) * seq->count);
   int k = tnumberseq_angular_difference3(seq, sequences,originalseq);
   if (k == 0)
     return NULL;
 
   /* Resulting sequence has discrete interpolation */
-  //return tsequenceset_make_free(sequences, k, NORMALIZE);
-  return tsequence_make_free(sequences, k, true, true, DISCRETE, NORMALIZE);
+  return tsequenceset_make_free(sequences, k, NORMALIZE);
 }
 /**
  * @brief Return the temporal delta_value of a temporal number.
@@ -845,7 +761,7 @@ tnumber_angular_difference_3points(const Temporal *temp,const Temporal *seq)
 
   if (temp->subtype == TINSTANT);
   else if (temp->subtype == TSEQUENCE)
-    result = (Temporal *) tnumberseq_angular_difference_3points((TSequence *) temp,(TSequence *)seq);
+    result = (Temporal *) tnumberseq_angular_difference_3points((TSequenceSet *) temp,(TSequence *)seq);
   else /* temp->subtype == TSEQUENCESET */
     result = (Temporal *) tnumberseqset_angular_difference_3points((TSequenceSet *) temp,(TSequenceSet *)seq);
 
