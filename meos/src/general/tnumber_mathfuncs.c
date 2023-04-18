@@ -554,6 +554,19 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
 }
 
 
+
+bool notInList(TInstant **instants, TInstant *inst){
+  for (int i = 0; i < 4; i++)
+  {
+    if (instants[i] == inst)
+      return false;
+  }
+  return true;
+}
+
+
+
+
 /**
  * @brief Return the temporal number if the angular difference between three poits is less than 180
  * @brief This functions
@@ -611,19 +624,21 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
       int j = 0;
 
 
-      inst1->t = (k)*100000000;
-      inst3->t = (k+1)*100000000;
-      inst2->t = (k+2)*100000000;
-
       char *seq1_wkt2 = tpoint_as_ewkt((Temporal *) inst1, 2);
       char *seq2_wkt2 = tpoint_as_ewkt((Temporal *) inst2, 2);
       char *seq3_wkt2 = tpoint_as_ewkt((Temporal *) inst3, 2);
 
       elog(INFO,"Points 1 %s,2 %s,3 %s",seq1_wkt2,seq2_wkt2,seq3_wkt2);
 
-      instants[j++]=inst1;
-      instants[j++]=inst3;
-      instants[j++]=inst2;
+      /* TODO if point is at list of out-of-order, change based on distance
+      if point is already in the list, do not add it */
+      if (notInList(instants,inst1))
+        instants[j++]=inst1;
+      if (notInList(instants,inst2))
+        instants[j++]=inst2;
+      if (notInList(instants,inst3))
+        instants[j++]=inst3;
+
 
       result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
     }
