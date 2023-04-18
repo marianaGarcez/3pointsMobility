@@ -585,22 +585,19 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
     return seq->count;
   
   /* General case */
-  TInstant **instants = palloc(sizeof(TInstant *) * 4);
+  const TInstant **instants = palloc(sizeof(TInstant *) * 4);
 
-  TInstant *inst1Angulo = TSEQUENCE_INST_N(seq, 0);
-  TInstant *inst1 = TSEQUENCE_INST_N(originalseq, 0);
+  const TInstant *inst1Angulo = TSEQUENCE_INST_N(seq, 0);
+  const TInstant *inst1 = TSEQUENCE_INST_N(originalseq, 0);
 
   Datum value1Angulo = tinstant_value(inst1Angulo);
-  Datum value1 = tinstant_value(inst1);
-
   Datum angdiff = Float8GetDatum(0);
   Datum angdiff2 = Float8GetDatum(0);
   int k = 0;
 
-  TInstant *inst2Angulo = TSEQUENCE_INST_N(seq, 1);
-  TInstant *inst2 = TSEQUENCE_INST_N(originalseq, 1);
+  const TInstant *inst2Angulo = TSEQUENCE_INST_N(seq, 1);
+  const TInstant *inst2 = TSEQUENCE_INST_N(originalseq, 1);
   Datum value2Angulo = tinstant_value(inst2Angulo);
-  Datum value2 = tinstant_value(inst2);
 
   
   /* check angular difference between first and second point, then second and third point
@@ -608,11 +605,10 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
   
   for (int i = 2; i < seq->count; i++)
   {
-    TInstant *inst3Angulo = TSEQUENCE_INST_N(seq, i);
-    TInstant *inst3 = TSEQUENCE_INST_N(originalseq, i);
+    const TInstant *inst3Angulo = TSEQUENCE_INST_N(seq, i);
+    const TInstant *inst3 = TSEQUENCE_INST_N(originalseq, i);
 
     Datum value3Angulo = tinstant_value(inst3Angulo);
-    Datum value3 = tinstant_value(inst3);
 
     angdiff = angular_difference(value1Angulo, value2Angulo);
     angdiff2 = angular_difference(value2Angulo, value3Angulo);
@@ -644,11 +640,9 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
     /* Advance in sliding window window */
     inst1 = inst2;
     inst1Angulo = inst2Angulo;
-    value1 = value2;
     value1Angulo = value2Angulo;
     inst2 = inst3;
     inst2Angulo = inst3Angulo;
-    value2 = value3;
     value2Angulo = value3Angulo;
   }
 
