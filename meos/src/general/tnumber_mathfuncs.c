@@ -572,7 +572,7 @@ bool notInList(TInstant **instants, TInstant *inst){
  * @brief This functions
  */
 static int
-tnumberseq_angular_difference3(const TSequence *seq, TSequence *result,TSequence *originalseq)
+tnumberseq_angular_difference3(const TSequence *seq, TInstant **result,TSequence *originalseq)
 {
   //char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
   //elog(INFO, "seql: %s\n", seq1_wkt);
@@ -726,7 +726,7 @@ tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalse
 
   /* General case */
   /* We are sure that there are at least 2 instants */
-  TSequence *sequences = palloc(sizeof(TSequence *) * seq->count);
+  TInstant **sequences = palloc(sizeof(TInstant *) * seq->count);
   int k = tnumberseq_angular_difference3(seq, sequences,originalseq);
   if (k == 0)
     return NULL;
@@ -737,7 +737,7 @@ tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalse
 /**
  * @brief Return the temporal delta_value of a temporal number.
  */
-static TSequence *
+static TSequenceSet *
 tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *originalseq)
 {
   /* Singleton sequence set */
@@ -750,7 +750,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
   for (int i = 0; i < ss->count; i++)
   {
     const TSequence *seq = TSEQUENCESET_SEQ_N(ss, i);
-    TSequence **temp;
+    TInstant **temp = palloc(sizeof(TInstant *) * seq->count);
     int j= tnumberseq_angular_difference3(seq, temp,originalseq);
   }
    if (k == 0)
@@ -759,7 +759,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
     return NULL;
   }
   /* Resulting sequence has discrete interpolation */
-  return tsequence_make_free(sequences, k, true, true, DISCRETE, NORMALIZE);
+  return tsequenceset_make_free(sequences, k, NORMALIZE);
 }
 
 
