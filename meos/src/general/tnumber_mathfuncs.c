@@ -739,7 +739,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
 {
   /* Singleton sequence set */
   if (ss->count == 1)
-    return tnumberseqset_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, 0));
+    return tnumberseqset_angular_difference_3points(TSEQUENCESET_SEQ_N(ss, 0),originalseq);
 
   /* General case */
   TInstant **instants = palloc(sizeof(TSequence *) * ss->totalcount);
