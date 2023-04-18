@@ -572,7 +572,7 @@ bool notInList(TInstant **instants, TInstant *inst){
  * @brief This functions
  */
 static int
-tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequence *originalseq)
+tnumberseq_angular_difference3(const TSequence *seq, TSequence *result,TSequence *originalseq)
 {
   //char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
   //elog(INFO, "seql: %s\n", seq1_wkt);
@@ -585,7 +585,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
     return seq->count;
   
   /* General case */
-  TInstant **instants = palloc(sizeof(TInstant *) * 4);
+  //TInstant **instants = palloc(sizeof(TInstant *) * 4);
 
   TInstant *inst1Angulo = TSEQUENCE_INST_N(seq, 0);
   TInstant *inst1 = TSEQUENCE_INST_N(originalseq, 0);
@@ -630,17 +630,17 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
 
       elog(INFO,"Points 1 %s,2 %s,3 %s",seq1_wkt2,seq2_wkt2,seq3_wkt2);
 
-      /* TODO if point is at list of out-of-order, change based on distance
-      if point is already in the list, do not add it */
-      if (notInList(instants,inst1))
-        instants[j++]=inst1;
-      if (notInList(instants,inst2))
-        instants[j++]=inst2;
-      if (notInList(instants,inst3))
-        instants[j++]=inst3;
+      /* If point is already in the list, do not add it */
+      if (notInList(result,inst1))
+        result[j++]=inst1;
+      if (notInList(result,inst2))
+        result[j++]=inst2;
+      if (notInList(result,inst3))
+        result[j++]=inst3;
 
+      /* TODO if point is at list of out-of-order, change based on distance */
 
-      result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
+      //result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
     }
 
     inst1 = inst2;
@@ -717,7 +717,7 @@ tnumber_angular_difference(const Temporal *temp)
   return result;
 }
 
-static TSequenceSet *
+static TSequence *
 tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalseq)
 {
   /* Instantaneous sequence */
@@ -726,18 +726,18 @@ tnumberseq_angular_difference_3points(const TSequence *seq,TSequence *originalse
 
   /* General case */
   /* We are sure that there are at least 2 instants */
-  TSequence **sequences = palloc(sizeof(TSequence *) * seq->count);
+  TSequence *sequences = palloc(sizeof(TSequence *) * seq->count);
   int k = tnumberseq_angular_difference3(seq, sequences,originalseq);
   if (k == 0)
     return NULL;
 
   /* Resulting sequence has discrete interpolation */
-  return tsequenceset_make_free(sequences, k, NORMALIZE);
+  return tsequence_make_free(sequences, k, true, true, DISCRETE, NORMALIZE);
 }
 /**
  * @brief Return the temporal delta_value of a temporal number.
  */
-static TSequenceSet *
+static TSequence *
 tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *originalseq)
 {
   /* Singleton sequence set */
@@ -759,7 +759,7 @@ tnumberseqset_angular_difference_3points(const TSequenceSet *ss,TSequence *origi
     return NULL;
   }
   /* Resulting sequence has discrete interpolation */
-  return tsequenceset_make_free(sequences, k, NORMALIZE);
+  return tsequence_make_free(sequences, k, true, true, DISCRETE, NORMALIZE);
 }
 
 
@@ -776,7 +776,7 @@ tnumber_angular_difference_3points(const Temporal *temp,const Temporal *seq)
 
   if (temp->subtype == TINSTANT);
   else if (temp->subtype == TSEQUENCE)
-    result = (Temporal *) tnumberseq_angular_difference_3points((TSequenceSet *) temp,(TSequence *)seq);
+    result = (Temporal *) tnumberseq_angular_difference_3points((TSequence *) temp,(TSequence *)seq);
   else /* temp->subtype == TSEQUENCESET */
     result = (Temporal *) tnumberseqset_angular_difference_3points((TSequenceSet *) temp,(TSequenceSet *)seq);
 
