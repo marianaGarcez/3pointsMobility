@@ -114,13 +114,8 @@ Datum MAXspeed(trip_record * trips, int ship)
     for (int i=0; i < trips[ship].trip->count ; i++)
     {       
         Temporal *speed = tpoint_speed((Temporal *)seq);
-        Datum speednow = temporal_max_value(speed);
-        maxspeed = tinstant_value(speed);
-
-        if (speednow > maxspeed)
-        {
-            maxspeed = speednow;
-        }
+        char *temp = temporal_out(speed,2);
+        printf("%s\n",temp);
     }
   return maxspeed;
 }
