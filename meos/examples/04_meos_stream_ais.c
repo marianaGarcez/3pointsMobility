@@ -313,7 +313,7 @@ main(int argc, char **argv)
       trips[ship].trip = tsequence_make_exp((const TInstant **) &inst, 1,
         NO_INSTANTS_BATCH, true, true, LINEAR, false);
     else
-      tsequence_append_tinstant(trips[ship].trip, inst, true);
+      tsequence_append_tinstant(trips[ship].trip, inst, 1000, maxt,true);
   } while (!feof(file));
 
   printf("\n%d records read.\n%d incomplete records ignored. %d writes to the database\n",

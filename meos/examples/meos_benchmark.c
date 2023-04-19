@@ -43,6 +43,7 @@
 
 #include <assert.h>
 #include <float.h>
+
 /* PostgreSQL */
 #include <postgres.h>
 /* PostGIS */
