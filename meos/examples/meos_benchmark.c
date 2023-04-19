@@ -116,28 +116,10 @@ double MAXspeed(trip_record * trips, int ship)
 
     for (int i=0; i < trips[ship].trip->count ; i++)
     {       
+        Temporal *speed = tpoint_speed(seq);
+        char *seq1_wkt = tpoint_as_ewkt((Temporal *) speed, 10);
+        printf("%s",seq1_wkt);
 
-        const TInstant *start = TSEQUENCE_INST_N(seq, i);
-        const TInstant *end = TSEQUENCE_INST_N(seq, i + 1);
-
-        double distance = 0;
-   
-        Datum value1 = tinstant_value(start);
-        Datum value2 = tinstant_value(end);
-
-        valueinst12D = DATUM_POINT2D_P(value1);
-        valueinst22D = DATUM_POINT2D_P(value2);
-
-        distance = tpoint_length((Temporal *)seq);
-        distance *= 1000;
-        double totaltime = ((double) end->t - (double) start->t)/10000000;
-
-        /*printf("distance %lf, time %lf\n", distanceAB, totaltime);*/
-
-        double speedNow = distance /totaltime;
-
-        if (speedNow > maxspeed)
-            maxspeed = speedNow;
     }
   return maxspeed;
 }
