@@ -317,7 +317,7 @@ main(int argc, char **argv)
       maxspeed[i] = 0;
       speed = tpoint_speed((Temporal *)trips[i].trip);
 
-      if (speed > maxspeed[i])
+      if ((double)speed > maxspeed[i])
       {
         maxspeed[i] = speed;
       }
