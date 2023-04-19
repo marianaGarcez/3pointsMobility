@@ -44,8 +44,6 @@
 #include <assert.h>
 #include <float.h>
 
-/* PostGIS */
-#include <liblwgeom_internal.h>
 /* MEOS */
 #include <meos.h>
 #include <meos_internal.h>
