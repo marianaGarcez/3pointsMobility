@@ -324,8 +324,6 @@ main(int argc, char **argv)
     {
         fprintf(fileOut, "%ld, %s\n",trips[i].MMSI, maxspeed[i]);
         printf("%ld, %s\n",trips[i].MMSI, maxspeed[i]);
-        /* Free memory */
-        free(temp_out);
     }
 
 
