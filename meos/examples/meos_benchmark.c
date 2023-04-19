@@ -103,6 +103,7 @@ double MAXspeed(trip_record * trips, int ship)
 {
     double maxspeed = 0.0;
     const TSequence *seq = trips[ship].trip;
+    bool hasz = MOBDB_FLAGS_GET_Z(seq->flags);
 
     for (int i=0; i < trips[ship].trip->count ; i++)
     {       
