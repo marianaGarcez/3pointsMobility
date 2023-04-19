@@ -109,6 +109,7 @@ main(int argc, char **argv)
   char text_buffer[MAX_LENGTH_HEADER];
   /* Allocate space to build the trips */
   trip_record trips[MAX_TRIPS] = {0};
+  double maxspeed[numships];
   /* Number of ships */
   int numships = 0;
   /* Iterator variable */
@@ -308,13 +309,12 @@ main(int argc, char **argv)
      * Query six - List the highest speed for each ship. */
     printf("Query 6 - List the highest speed for each ship.\n");
     t = clock();
-    //double maxspeed[numships];
     TSequence *speed = NULL;
 
 
      for (i = 0; i < numships; i++)
     {
-      //maxspeed[i] = 0;
+      maxspeed[i] = 0;
       speed = tpointseq_speed(trips[i].trip);
       printf("speed: %s\n", tsequence_out(speed, 15));
     }
