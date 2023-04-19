@@ -309,18 +309,15 @@ main(int argc, char **argv)
     printf("Query 6 - List the highest speed for each ship.\n");
     t = clock();
     double maxspeed[numships];
-    Temporal *speed = NULL;
+    TSequence *speed = NULL;
 
 
      for (i = 0; i < numships; i++)
     {
       maxspeed[i] = 0;
-      speed = tpoint_speed((Temporal *)trips[i].trip);
+      speed = tpointseq_speed(trips[i].trip);
 
-      if ((double)speed > maxspeed[i])
-      {
-        maxspeed[i] = speed;
-      }
+        printf("speed: %s\n", tsequence_out(speed, 15));
     }
 
     for (i = 0; i < numships; i++)
