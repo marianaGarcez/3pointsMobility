@@ -101,23 +101,40 @@ int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
 
 double MAXspeed(trip_record * trips, int ship)
 {
-
-    double speed;
     double maxspeed = 0.0;
     const TSequence *seq = trips[ship].trip;
 
     for (int i=0; i < trips[ship].trip->count ; i++)
-    {   
+    {       
+        POINT2D valueinst12D, valueinst22D;
+        POINT3DZ valueinst1, valueinst2;
         
-        const TInstant *inst1 = TSEQUENCE_INST_N(seq, i);
-        const TInstant *inst2 = TSEQUENCE_INST_N(seq, i + 1);
-        Datum value1 = inst1->value;
-        Datum value2 = inst2->value;
+        const TInstant *start = TSEQUENCE_INST_N(seq, i);
+        const TInstant *end = TSEQUENCE_INST_N(seq, i + 1);
+        double distance = 0;
 
-        speed = datum_point_eq(value1, value2) ? 0.0 : DatumGetFloat8(func(value1, value2)) /((double)(inst2->t - inst1->t) / 1000000.0);
+        if (hasz)
+        {
+            valueinst1  = datum_point3dz(tinstant_value(start));
+            valueinst2  = datum_point3dz(tinstant_value(end));
+            distance = dist3d_pt_pt(&valueinst1, &valueinst2);
+        }
+        else 
+        {
+            valueinst12D = datum_point2d(tinstant_value(start));
+            valueinst22D =  datum_point2d(tinstant_value(end));
+            distance = dist2d_pt_pt(&valueinst12D, &valueinst22D);  
+        }
 
-        if (speed > maxspeed)
-            maxspeed = speed;
+        distance *= 1000;
+        double totaltime = ((double) end->t - (double) start->t)/10000000;
+
+        /*printf("distance %lf, time %lf\n", distanceAB, totaltime);*/
+
+        double speedNow = distance /totaltime;
+
+        if (speedNow > maxspeed)
+            maxspeed = speedNow;
     }
   return maxspeed;
 }
