@@ -125,10 +125,10 @@ double MAXspeed(trip_record * trips, int ship)
         Datum value1 = tinstant_value(start);
         Datum value2 = tinstant_value(end);
 
-        valueinst12D = datum_point2d(value1);
-        valueinst22D = datum_point2d(value2);
+        valueinst12D = DATUM_POINT2D_P(value1);
+        valueinst22D = DATUM_POINT2D_P(value2);
 
-        distance = dist2d_pt_pt(&valueinst12D, &valueinst22D);
+        distance = tpoint_length((Temporal *)seq);
         distance *= 1000;
         double totaltime = ((double) end->t - (double) start->t)/10000000;
 
