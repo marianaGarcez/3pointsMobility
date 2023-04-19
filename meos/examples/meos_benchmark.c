@@ -152,10 +152,12 @@ main(int argc, char **argv)
   /***************************************************************************
    * Section 3: Read input file line by line and append each observation as a
    * temporal point in MEOS
+   * 
+   * printf("Accumulating %d instants before sending them to the logfile\n"
+    "(one marker every logfile update)\n", NO_INSTANTS_BATCH);
    ***************************************************************************/
 
-  printf("Accumulating %d instants before sending them to the logfile\n"
-    "(one marker every logfile update)\n", NO_INSTANTS_BATCH);
+  
 
   /* Read the first line of the file with the headers */
   fscanf(fileIn, "%1023s\n", text_buffer);
@@ -247,6 +249,7 @@ main(int argc, char **argv)
       {
         char *temp_out = tsequence_out(trips[i].trip, 15);
         fprintf(fileOut, "%ld, %s\n",trips[i].MMSI, temp_out);
+        printf("%ld, %s\n",trips[i].MMSI, temp_out);
         /* Free memory */
         free(temp_out);
       }
@@ -255,7 +258,7 @@ main(int argc, char **argv)
     /* Calculate the elapsed time */
     t = clock() - t;
     double time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("The program took %f seconds to execute\n", time_taken);
+    printf("Query one took %f seconds to execute\n", time_taken);
 
 
     /***************************************************************************
