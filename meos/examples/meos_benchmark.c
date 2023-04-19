@@ -108,22 +108,21 @@ double MAXspeed(trip_record * trips, int ship)
     for (int i=0; i < trips[ship].trip->count ; i++)
     {       
         POINT2D valueinst12D, valueinst22D;
-        POINT3DZ valueinst1, valueinst2;
         
         const TInstant *start = TSEQUENCE_INST_N(seq, i);
         const TInstant *end = TSEQUENCE_INST_N(seq, i + 1);
         double distance = 0;
 
         if (hasz)
-        {
-            valueinst1  = datum_point3dz(tinstant_value(start));
-            valueinst2  = datum_point3dz(tinstant_value(end));
+        {            
+            const POINT3DZ *valueinst1 = DATUM_POINT3DZ_P(&start->value);
+            const POINT3DZ *valueinst2 = DATUM_POINT3DZ_P(&end->value);
             distance = dist3d_pt_pt(&valueinst1, &valueinst2);
         }
         else 
         {
-            valueinst12D = datum_point2d(tinstant_value(start));
-            valueinst22D =  datum_point2d(tinstant_value(end));
+            const POINT2D *valueinst12D = DATUM_POINT2D_P(&start->value);
+            const POINT2D *valueinst22D = DATUM_POINT2D_P(&end->value);
             distance = dist2d_pt_pt(&valueinst12D, &valueinst22D);  
         }
 
