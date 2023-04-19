@@ -103,7 +103,8 @@ double speed(trip_record * trips, int ship)
 
     double speed;
     double maxspeed = 0.0;
-    for (trips[i].trip->count )
+    
+    for (i=0; i < trips[ship].trip->count ; i++)
     {   
         TInstant *inst1 = trips[ship].trip->instants[i];
         TInstant *inst2 = trips[ship].trip->instants[i + 1];
