@@ -106,17 +106,19 @@ int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
 }
 
 
-Temporal * MAXspeed(trip_record * trips, int ship)
+Datum MAXspeed(trip_record * trips, int ship)
 {
-    Temporal * maxspeed = NULL;
     const TSequence *seq = trips[ship].trip;
 
     for (int i=0; i < trips[ship].trip->count ; i++)
     {       
         Temporal *speed = tpoint_speed((Temporal *)seq);
-        if (maxspeed < speed)
+        datum speednow = temporal_max_value(speed);
+        Datum maxspeed = tinstant_value(speed);
+
+        if (speednow > maxspeed)
         {
-            maxspeed = speed;
+            maxspeed = speednow;
         }
     }
   return maxspeed;
