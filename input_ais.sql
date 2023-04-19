@@ -39,7 +39,7 @@ BEGIN
     ROT, SOG, COG, Heading, IMO, CallSign, Name, ShipType, CargoType, Width, Length,
     TypeOfPositionFixingDevice, Draught, Destination, ETA, DataSourceType,
     SizeA, SizeB, SizeC, SizeD)
-  FROM '/home/marianamgd/ppdaa.csv' DELIMITER ',' CSV HEADER;
+  FROM '/home/marianamgd/aisdk-2022-11-01.csv' DELIMITER ',' CSV HEADER;
 
   RAISE INFO 'Updating AISInput table ...';
   
