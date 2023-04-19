@@ -101,14 +101,14 @@ int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
 double speed(trip_record * trips, int ship)
 {
 
-    Datum value1 = inst1->value;
-    Datum value2 = inst2->value;
     double speed;
     double maxspeed = 0.0;
     for (trips[i].trip->count )
     {   
         TInstant *inst1 = trips[ship].trip->instants[i];
         TInstant *inst2 = trips[ship].trip->instants[i + 1];
+        Datum value1 = inst1->value;
+        Datum value2 = inst2->value;
 
         speed = datum_point_eq(value1, value2) ? 0.0 :
       DatumGetFloat8(func(value1, value2)) /
