@@ -98,6 +98,31 @@ int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
   return 1;
 }
 
+double speed(trip_record * trips, int ship)
+{
+
+    Datum value1 = inst1->value;
+    Datum value2 = inst2->value;
+    double speed;
+    double maxspeed = 0.0;
+    for (trips[i].trip->count )
+    {   
+        TInstant *inst1 = trips[ship].trip->instants[i];
+        TInstant *inst2 = trips[ship].trip->instants[i + 1];
+
+        speed = datum_point_eq(value1, value2) ? 0.0 :
+      DatumGetFloat8(func(value1, value2)) /
+        ((double)(inst2->t - inst1->t) / 1000000.0);
+        if (speed > maxspeed)
+        {
+            maxspeed = speed;
+        }
+    }
+  
+  return maxspeed;
+}
+
+
 
 
 int
@@ -312,12 +337,11 @@ main(int argc, char **argv)
     printf("Query 6 - List the highest speed for each ship.\n");
     t = clock();
     TSequence *speed = NULL;
+    double speed_value = 0;
 
      for (i = 0; i < numships; i++)
     {
-      maxspeed[i] = 0;
-      speed = tpointseq_speed(trips[i].trip);
-      printf("speed: %s\n", tsequence_out(speed, 15));
+      printf("Ship %d, max speed %d\n",i,speed(trips,i));
     }
 
     t = clock() - t;
