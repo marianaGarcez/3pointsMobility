@@ -43,6 +43,7 @@
 #include <meos.h>
 #include <time.h>
 #include <meos_internal.h>
+#include <tpoint_spatialfuncs.h>
 
 /* Number of instants to send in batch to the file  */
 #define NO_INSTANTS_BATCH 500
@@ -113,9 +114,8 @@ double MAXspeed(trip_record * trips, int ship)
         Datum value1 = inst1->value;
         Datum value2 = inst2->value;
 
-        speed = datum_point_eq(value1, value2) ? 0.0 :
-      DatumGetFloat8(func(value1, value2)) /
-        ((double)(inst2->t - inst1->t) / 1000000.0);
+        speed = datum_point_eq(value1, value2) ? 0.0 : DatumGetFloat8(func(value1, value2)) /((double)(inst2->t - inst1->t) / 1000000.0);
+
         if (speed > maxspeed)
             maxspeed = speed;
     }
