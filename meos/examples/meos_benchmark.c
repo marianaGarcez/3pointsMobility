@@ -247,7 +247,8 @@ main(int argc, char **argv)
     {
       if (trips[i].trip->count > 300)
       {
-        char *temp_out = tsequence_out(trips[i].trip, 15);
+        //char *temp_out = tsequence_out(trips[i].trip, 15);
+        char *temp_out = tpoint_as_ewkt((Temporal *) trips[i].trip, 3);
         fprintf(fileOut, "%ld, %s\n",trips[i].MMSI, temp_out);
         printf("%ld, %s\n",trips[i].MMSI, temp_out);
         /* Free memory */
@@ -263,9 +264,13 @@ main(int argc, char **argv)
 
     /***************************************************************************
     * Query two -  List the ships that were within a region from Ports. */
+    t = clock();
+    printf("Query 2 - List the ships that were within a region from Ports.\n");    
 
 
-
+    t = clock() - t;
+    time_taken = ((double) t) / CLOCKS_PER_SEC;
+    printf("Query two took %f seconds to execute\n", time_taken);
    /***************************************************************************
     * Query three -  List the pair of ships that were both located within a region from a Port. */
 
