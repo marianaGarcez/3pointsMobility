@@ -250,7 +250,7 @@ main(int argc, char **argv)
         //char *temp_out = tsequence_out(trips[i].trip, 15);
         char *temp_out = tpoint_as_ewkt((Temporal *) trips[i].trip, 3);
         fprintf(fileOut, "%ld, %s\n",trips[i].MMSI, temp_out);
-        printf("%ld, %s\n",trips[i].MMSI, temp_out);
+        //printf("%ld, %s\n",trips[i].MMSI, temp_out);
         /* Free memory */
         free(temp_out);
       }
@@ -268,13 +268,88 @@ main(int argc, char **argv)
     printf("Query 2 - List the ships that were within a region from Ports.\n");    
 
 
+
     t = clock() - t;
     time_taken = ((double) t) / CLOCKS_PER_SEC;
     printf("Query two took %f seconds to execute\n", time_taken);
    /***************************************************************************
     * Query three -  List the pair of ships that were both located within a region from a Port. */
+    printf("Query 3 - List the pair of ships that were both located within a region from a Port.\n");
+    t = clock();
 
 
+    t = clock() - t;
+    time_taken = ((double) t) / CLOCKS_PER_SEC;
+    printf("Query three took %f seconds to execute\n", time_taken);
+
+    /***************************************************************************
+     * Query four - List the pair of ships that were both located within a region from a Port. */
+    printf("Query 4 - List the pair of ships that were both located within a region from a Port.\n");
+    t = clock();
+
+
+
+    t = clock() - t;
+    time_taken = ((double) t) / CLOCKS_PER_SEC;
+    printf("Query four took %f seconds to execute\n", time_taken);
+
+    /***************************************************************************
+     * Query five - Compute how many ships were active at each period in Periods. */
+    printf("Query 5 - Compute how many ships were active at each period in Periods.\n");
+    t = clock();
+
+    
+    t = clock() - t;
+    time_taken = ((double) t) / CLOCKS_PER_SEC;
+    printf("Query five took %f seconds to execute\n", time_taken);
+
+
+    /***************************************************************************
+     * Query six - List the highest speed for each ship. */
+    printf("Query 6 - List the highest speed for each ship.\n");
+    t = clock();
+    double maxspeed[numships];
+    Temporal *speed = NULL;
+
+
+     for (i = 0; i < numships; i++)
+    {
+      maxspeed[i] = 0;
+      speed = tpoint_speed((Temporal *)trips[i].trip);
+
+      if (speed > maxspeed[i])
+      {
+        maxspeed[i] = speed;
+      }
+    }
+
+    for (i = 0; i < numships; i++)
+    {
+        fprintf(fileOut, "%ld, %s\n",trips[i].MMSI, maxspeed[i]);
+        printf("%ld, %s\n",trips[i].MMSI, maxspeed[i]);
+        /* Free memory */
+        free(temp_out);
+    }
+
+
+    t = clock() - t;
+    time_taken = ((double) t) / CLOCKS_PER_SEC;
+    printf("Query six took %f seconds to execute\n", time_taken);
+
+    /***************************************************************************
+     * Query seven - Count the number of trips that were active during each hour in November 1st 2022. */
+    printf("Query 7 - Count the number of trips that were active during each hour in November 1st 2022.\n");
+    t = clock();
+
+
+    t = clock() - t;
+    time_taken = ((double) t) / CLOCKS_PER_SEC;
+    printf("Query seven took %f seconds to execute\n", time_taken);
+
+
+
+
+    /***************************************************************************/
   /* Close the file */
   fclose(fileIn);
 
