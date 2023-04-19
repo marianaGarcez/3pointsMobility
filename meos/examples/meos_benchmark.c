@@ -44,8 +44,6 @@
 #include <assert.h>
 #include <float.h>
 
-/* PostgreSQL */
-#include <postgres.h>
 /* PostGIS */
 #include <liblwgeom_internal.h>
 /* MEOS */
@@ -58,6 +56,8 @@
 #include "general/type_util.h"
 #include <time.h>
 #include "../include/point/tpoint_spatialfuncs.h"
+#include <libpq-fe.h>
+
 
 
 /* Number of instants to send in batch to the file  */
