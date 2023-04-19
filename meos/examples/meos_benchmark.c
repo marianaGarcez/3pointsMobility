@@ -308,24 +308,16 @@ main(int argc, char **argv)
      * Query six - List the highest speed for each ship. */
     printf("Query 6 - List the highest speed for each ship.\n");
     t = clock();
-    double maxspeed2[numships];
+    double maxspeed[numships];
     TSequence *speed = NULL;
 
 
      for (i = 0; i < numships; i++)
     {
-      maxspeed2[i] = 0;
+      maxspeed[i] = 0;
       speed = tpointseq_speed(trips[i].trip);
-
-        printf("speed: %s\n", tsequence_out(speed, 15));
+      printf("speed: %s\n", tsequence_out(speed, 15));
     }
-
-    // for (i = 0; i < numships; i++)
-    // {
-    //     fprintf(fileOut, "%ld, %s\n",trips[i].MMSI, maxspeed[i]);
-    //     printf("%ld, %s\n",trips[i].MMSI, maxspeed[i]);
-    // }
-
 
     t = clock() - t;
     time_taken = ((double) t) / CLOCKS_PER_SEC;
@@ -346,7 +338,6 @@ main(int argc, char **argv)
 
 /* Clean up */
 cleanup:
-
  /* Free memory */
   for (i = 0; i < numships; i++)
     free(trips[i].trip);
