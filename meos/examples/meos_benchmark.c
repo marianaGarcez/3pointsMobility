@@ -104,7 +104,7 @@ main(int argc, char **argv)
   AIS_record rec;
   int no_records = 0;
   int no_nulls = 0;
-  const Interval *maxtime = pg_interval_in("1 day", -1);
+  const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
   /* Allocate space to build the trips */
