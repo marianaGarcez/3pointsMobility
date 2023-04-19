@@ -114,7 +114,10 @@ double MAXspeed(trip_record * trips, int ship)
     for (int i=0; i < trips[ship].trip->count ; i++)
     {       
         Temporal *speed = tpoint_speed((Temporal *)seq);
-        printf("%s",speed);
+        if (maxspeed < DatumGetFloat8(temporal_value_at_timestamp(speed, seq->periods[i].lower)))
+        {
+            maxspeed = DatumGetFloat8(temporal_value_at_timestamp(speed, seq->periods[i].lower));
+        }
     }
   return maxspeed;
 }
@@ -273,8 +276,8 @@ main(int argc, char **argv)
       if (trips[i].trip->count > 300)
       {
         //char *temp_out = tsequence_out(trips[i].trip, 15);
-        char *temp_out = tpoint_as_ewkt((Temporal *) trips[i].trip, 3);
-        fprintf(fileOut, "%ld, %s\n",trips[i].MMSI, temp_out);
+        //char *temp_out = tpoint_as_ewkt((Temporal *) trips[i].trip, 3);
+        fprintf(fileOut, "%ld, %s\n",trips[i].MMSI);
         //printf("%ld, %s\n",trips[i].MMSI, temp_out);
         /* Free memory */
         free(temp_out);
