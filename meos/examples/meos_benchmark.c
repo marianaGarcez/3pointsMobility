@@ -264,44 +264,44 @@ main(int argc, char **argv)
 
     /***************************************************************************
     * Query two -  List the ships that were within a region from Ports. */
-    t = clock();
-    printf("Query 2 - List the ships that were within a region from Ports.\n");    
+    // t = clock();
+    // printf("Query 2 - List the ships that were within a region from Ports.\n");    
 
 
 
-    t = clock() - t;
-    time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query two took %f seconds to execute\n", time_taken);
+    // t = clock() - t;
+    // time_taken = ((double) t) / CLOCKS_PER_SEC;
+    // printf("Query two took %f seconds to execute\n", time_taken);
    /***************************************************************************
     * Query three -  List the pair of ships that were both located within a region from a Port. */
-    printf("Query 3 - List the pair of ships that were both located within a region from a Port.\n");
-    t = clock();
+    // printf("Query 3 - List the pair of ships that were both located within a region from a Port.\n");
+    // t = clock();
 
 
-    t = clock() - t;
-    time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query three took %f seconds to execute\n", time_taken);
+    // t = clock() - t;
+    // time_taken = ((double) t) / CLOCKS_PER_SEC;
+    // printf("Query three took %f seconds to execute\n", time_taken);
 
     /***************************************************************************
      * Query four - List the pair of ships that were both located within a region from a Port. */
-    printf("Query 4 - List the pair of ships that were both located within a region from a Port.\n");
-    t = clock();
+    // printf("Query 4 - List the pair of ships that were both located within a region from a Port.\n");
+    // t = clock();
 
 
 
-    t = clock() - t;
-    time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query four took %f seconds to execute\n", time_taken);
+    // t = clock() - t;
+    // time_taken = ((double) t) / CLOCKS_PER_SEC;
+    // printf("Query four took %f seconds to execute\n", time_taken);
 
     /***************************************************************************
      * Query five - Compute how many ships were active at each period in Periods. */
-    printf("Query 5 - Compute how many ships were active at each period in Periods.\n");
-    t = clock();
+    // printf("Query 5 - Compute how many ships were active at each period in Periods.\n");
+    // t = clock();
 
     
-    t = clock() - t;
-    time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query five took %f seconds to execute\n", time_taken);
+    // t = clock() - t;
+    // time_taken = ((double) t) / CLOCKS_PER_SEC;
+    // printf("Query five took %f seconds to execute\n", time_taken);
 
 
     /***************************************************************************
@@ -320,11 +320,11 @@ main(int argc, char **argv)
         printf("speed: %s\n", tsequence_out(speed, 15));
     }
 
-    for (i = 0; i < numships; i++)
-    {
-        fprintf(fileOut, "%ld, %s\n",trips[i].MMSI, maxspeed[i]);
-        printf("%ld, %s\n",trips[i].MMSI, maxspeed[i]);
-    }
+    // for (i = 0; i < numships; i++)
+    // {
+    //     fprintf(fileOut, "%ld, %s\n",trips[i].MMSI, maxspeed[i]);
+    //     printf("%ld, %s\n",trips[i].MMSI, maxspeed[i]);
+    // }
 
 
     t = clock() - t;
@@ -333,20 +333,16 @@ main(int argc, char **argv)
 
     /***************************************************************************
      * Query seven - Count the number of trips that were active during each hour in November 1st 2022. */
-    printf("Query 7 - Count the number of trips that were active during each hour in November 1st 2022.\n");
-    t = clock();
+    // printf("Query 7 - Count the number of trips that were active during each hour in November 1st 2022.\n");
+    // t = clock();
 
 
-    t = clock() - t;
-    time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query seven took %f seconds to execute\n", time_taken);
-
-
+    // t = clock() - t;
+    // time_taken = ((double) t) / CLOCKS_PER_SEC;
+    // printf("Query seven took %f seconds to execute\n", time_taken);
 
 
     /***************************************************************************/
-  /* Close the file */
-  fclose(fileIn);
 
 /* Clean up */
 cleanup:
@@ -360,6 +356,9 @@ cleanup:
 
   /* Close the connection to the logfile */
   fclose(fileOut);
+
+  /* Close the file */
+  fclose(fileIn);
 
   return return_value;
 }
