@@ -41,6 +41,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <meos.h>
+#include <time.h>
 #include <meos_internal.h>
 
 /* Number of instants to send in batch to the file  */
@@ -103,6 +104,7 @@ main(int argc, char **argv)
   AIS_record rec;
   int no_records = 0;
   int no_nulls = 0;
+  const Interval *maxtime = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
   /* Allocate space to build the trips */
@@ -224,7 +226,7 @@ main(int argc, char **argv)
       trips[ship].trip = tsequence_make_exp((const TInstant **) &inst, 1,
         NO_INSTANTS_BATCH, true, true, LINEAR, false);
     else
-      tsequence_append_tinstant(trips[ship].trip, inst, true);
+      tsequence_append_tinstant(trips[ship].trip, inst, 1000, maxt,true);
   } while (!feof(fileIn));
 
   printf("\n%d records read.\n%d incomplete records ignored. %d writes to the logfile\n",
