@@ -178,6 +178,7 @@ main(int argc, char **argv)
   char text_buffer[MAX_LENGTH_HEADER];
   /* Allocate space to build the trips */
   trip_record trips[MAX_TRIPS] = {0};
+  const Interval *maxt = pg_interval_in("1 day", -1);
   /* Number of ships */
   int numships = 0;
   /* Iterator variable */
