@@ -280,7 +280,7 @@ main(int argc, char **argv)
         fprintf(fileOut, "%ld, %s\n",trips[i].MMSI);
         //printf("%ld, %s\n",trips[i].MMSI, temp_out);
         /* Free memory */
-        free(temp_out);
+        //free(temp_out);
       }
     }
 
