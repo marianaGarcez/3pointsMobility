@@ -98,16 +98,18 @@ int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
   return 1;
 }
 
-double speed(trip_record * trips, int ship)
+double MAXspeed(trip_record * trips, int ship)
 {
 
     double speed;
     double maxspeed = 0.0;
+    const TSequence *seq = trips[ship].trip;
 
     for (int i=0; i < trips[ship].trip->count ; i++)
     {   
-        TInstant *inst1 = trips[ship].trip->instants[i];
-        TInstant *inst2 = trips[ship].trip->instants[i + 1];
+        
+        const TInstant *inst1 = TSEQUENCE_INST_N(seq, i);
+        const TInstant *inst2 = TSEQUENCE_INST_N(seq, i + 1);
         Datum value1 = inst1->value;
         Datum value2 = inst2->value;
 
@@ -115,11 +117,8 @@ double speed(trip_record * trips, int ship)
       DatumGetFloat8(func(value1, value2)) /
         ((double)(inst2->t - inst1->t) / 1000000.0);
         if (speed > maxspeed)
-        {
             maxspeed = speed;
-        }
     }
-  
   return maxspeed;
 }
 
@@ -342,7 +341,7 @@ main(int argc, char **argv)
 
      for (i = 0; i < numships; i++)
     {
-      printf("Ship %d, max speed %d\n",i,speed(trips,i));
+      printf("Ship %d, max speed %d\n",i,MAXspeed(trips,i));
     }
 
     t = clock() - t;
