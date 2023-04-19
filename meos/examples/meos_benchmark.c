@@ -33,16 +33,29 @@
  * We include a benchmark of the library with 12 queries.
  * The program can be build as follows
  * @code
- * gcc -Wall -g -I/usr/local/include -o meos_benchmark meos_benchmark.c -L/usr/local/lib -lmeos
+ * gcc -Wall -g -I/usr/local/include -I/usr/include/postgresql -o meos_benchmark meos_benchmark.c -L/usr/local/lib -lmeos -lpq
  * @endcode
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <assert.h>
+#include <float.h>
+/* PostgreSQL */
+#include <postgres.h>
+/* PostGIS */
+#include <liblwgeom_internal.h>
+/* MEOS */
 #include <meos.h>
-#include <time.h>
 #include <meos_internal.h>
+#include "general/pg_types.h"
+#include "general/tinstant.h"
+#include "general/tsequence.h"
+#include "general/tsequenceset.h"
+#include "general/type_util.h"
+#include <time.h>
 #include "../include/point/tpoint_spatialfuncs.h"
 
 
@@ -106,28 +119,23 @@ double MAXspeed(trip_record * trips, int ship)
     double maxspeed = 0.0;
     const TSequence *seq = trips[ship].trip;
     bool hasz = MOBDB_FLAGS_GET_Z(seq->flags);
+    POINT2D valueinst12D, valueinst22D;
 
     for (int i=0; i < trips[ship].trip->count ; i++)
     {       
-        POINT2D valueinst12D, valueinst22D;
-        
+
         const TInstant *start = TSEQUENCE_INST_N(seq, i);
         const TInstant *end = TSEQUENCE_INST_N(seq, i + 1);
+
         double distance = 0;
+   
+        Datum value1 = tinstant_value(start);
+        Datum value2 = tinstant_value(end);
 
-        if (hasz)
-        {            
-            const POINT3DZ *valueinst1 = DATUM_POINT3DZ_P(&start->value);
-            const POINT3DZ *valueinst2 = DATUM_POINT3DZ_P(&end->value);
-            distance = dist3d_pt_pt(&valueinst1, &valueinst2);
-        }
-        else 
-        {
-            const POINT2D *valueinst12D = DATUM_POINT2D_P(&start->value);
-            const POINT2D *valueinst22D = DATUM_POINT2D_P(&end->value);
-            distance = dist2d_pt_pt(&valueinst12D, &valueinst22D);  
-        }
+        valueinst12D = datum_point2d(value1);
+        valueinst22D = datum_point2d(value2);
 
+        distance = dist2d_pt_pt(&valueinst12D, &valueinst22D);
         distance *= 1000;
         double totaltime = ((double) end->t - (double) start->t)/10000000;
 
@@ -334,7 +342,7 @@ main(int argc, char **argv)
     // printf("Query 4 - List the pair of ships that were both located within a region from a Port.\n");
     // t = clock();
 
-
+    //Temporal *atgeom = tpoint_at_geometry(trip_rec.trip, communes[i].geom);
 
     // t = clock() - t;
     // time_taken = ((double) t) / CLOCKS_PER_SEC;
