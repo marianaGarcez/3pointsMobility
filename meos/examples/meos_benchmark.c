@@ -48,7 +48,6 @@
 #include <meos.h>
 #include <meos_internal.h>
 #include <time.h>
-#include "../include/point/tpoint_spatialfuncs.h"
 #include <libpq-fe.h>
 
 
