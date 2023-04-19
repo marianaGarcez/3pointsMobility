@@ -33,7 +33,7 @@
  * We include a benchmark of the library with 12 queries.
  * The program can be build as follows
  * @code
- * gcc -Wall -g -I/usr/local/include -I/usr/include/postgresql -o meos_benchmark meos_benchmark.c -L/usr/local/lib -lmeos -lpq
+ * gcc -Wall -g -I/usr/local/include  -o meos_benchmark meos_benchmark.c -L/usr/local/lib -lmeos 
  * @endcode
  */
 
@@ -48,7 +48,6 @@
 #include <meos.h>
 #include <meos_internal.h>
 #include <time.h>
-#include <libpq-fe.h>
 
 
 
@@ -119,7 +118,6 @@ double MAXspeed(trip_record * trips, int ship)
         Temporal *speed = tpoint_speed((Temporal *)seq);
         char *seq1_wkt = tpoint_as_ewkt((Temporal *) speed, 10);
         printf("%s",seq1_wkt);
-
     }
   return maxspeed;
 }
