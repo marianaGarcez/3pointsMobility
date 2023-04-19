@@ -116,7 +116,7 @@ double MAXspeed(trip_record * trips, int ship)
 
     for (int i=0; i < trips[ship].trip->count ; i++)
     {       
-        Temporal *speed = tpoint_speed(seq);
+        Temporal *speed = tpoint_speed((Temporal *)seq);
         char *seq1_wkt = tpoint_as_ewkt((Temporal *) speed, 10);
         printf("%s",seq1_wkt);
 
