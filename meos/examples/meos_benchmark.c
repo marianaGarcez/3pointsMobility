@@ -47,11 +47,6 @@
 /* MEOS */
 #include <meos.h>
 #include <meos_internal.h>
-#include "../include/general/pg_types.h"
-#include "../include/general/tinstant.h"
-#include "../include/general/tsequence.h"
-#include "../include/general/tsequenceset.h"
-#include "../include/general/type_util.h"
 #include <time.h>
 #include "../include/point/tpoint_spatialfuncs.h"
 #include <libpq-fe.h>
