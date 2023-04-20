@@ -295,6 +295,7 @@ main(int argc, char **argv)
     /* Transform the string representing the timestamp into a timestamp value */
  
     no_ports++;
+    printf("\n%d Ports read.\n",no_ports);
 
   } while (!feof(filePorts));
 
