@@ -76,7 +76,7 @@ int count=0;
 typedef struct
 {
   int id;  
-  long float WorldPortIndexNumber;
+  double WorldPortIndexNumber;
   char CountryCode[15];
   double Latitude;
   double Longitude;
