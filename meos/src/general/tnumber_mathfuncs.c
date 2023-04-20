@@ -521,7 +521,7 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
   {
     POINT3DZ valueinst1, valueinst2;
     valueinst1  = datum_point3dz(tinstant_value(start));
-    valueinst2  = Ddatum_point3dz(tinstant_value(start));
+    valueinst2  = datum_point3dz(tinstant_value(start));
     distance = dist3d_pt_pt(&valueinst1, &valueinst2);
   }
   else 
