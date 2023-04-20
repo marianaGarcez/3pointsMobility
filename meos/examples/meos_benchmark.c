@@ -126,7 +126,7 @@ int
 main(int argc, char **argv)
 {
   AIS_record rec;
-  Port_record port;
+  Port_record portRead;
   int no_records = 0;
   int no_nulls = 0;
   int no_ports = 0;
@@ -290,17 +290,17 @@ main(int argc, char **argv)
     }
 
     int read = fscanf(filePorts, "%32[^,],%ld,%s,%lf,%lf,%s,%s,%s\n",
-      text_buffer2, &port.WorldPortIndexNumber, &port.CountryCode, &port.Latitude, &port.Longitude,
-      &port.SuppliesFuelOil,&port.DieselOil,&port.Repairs);
+      text_buffer2, &portRead.WorldPortIndexNumber, &portRead.CountryCode, &portRead.Latitude, &portRead.Longitude,
+      &portRead.SuppliesFuelOil,&portRead.DieselOil,&portRead.Repairs);
     /* Transform the string representing the timestamp into a timestamp value */
 
-    ports[no_ports].WorldPortIndexNumber = port.WorldPortIndexNumber;
-    ports[no_ports].CountryCode = port.CountryCode;
-    ports[no_ports].Latitude = port.Latitude;
-    ports[no_ports].Longitude = port.Longitude;
-    ports[no_ports].SuppliesFuelOil = port.SuppliesFuelOil;
-    ports[no_ports].DieselOil = port.DieselOil;
-    ports[no_ports].Repairs = port.Repairs;
+    ports[no_ports].WorldPortIndexNumber = portRead.WorldPortIndexNumber;
+    ports[no_ports].CountryCode = portRead.CountryCode;
+    ports[no_ports].Latitude = portRead.Latitude;
+    ports[no_ports].Longitude = portRead.Longitude;
+    ports[no_ports].SuppliesFuelOil = portRead.SuppliesFuelOil;
+    ports[no_ports].DieselOil = portRead.DieselOil;
+    ports[no_ports].Repairs = portRead.Repairs;
  
     no_ports++;
 
