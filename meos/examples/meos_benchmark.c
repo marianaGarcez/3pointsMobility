@@ -280,6 +280,7 @@ main(int argc, char **argv)
    ***************************************************************************/
     /* Read the first line of the file with the headers */
    fscanf(filePorts, "%1023s\n", text_buffer2);
+   printf("%s\n", text_buffer2);
 
   /* Continue reading the file */
   do
@@ -290,15 +291,11 @@ main(int argc, char **argv)
       goto cleanup;
     }
 
-    int read2 = fscanf(filePorts, "%32[^,],%d,%ld,%s,%lf,%lf,%s,%s,%s\n",text_buffer2,&(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
+    int read2 = fscanf(filePorts, "%d,%ld,%s,%lf,%lf,%s,%s,%s\n",text_buffer2,&(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
       &(portRead.SuppliesFuelOil),&(portRead.DieselOil),&(portRead.Repairs));
-
-
-    printf("%d,%ld,%s,%lf,%lf,%s,%s,%s\n", portRead.id, portRead.WorldPortIndexNumber, portRead.CountryCode, portRead.Latitude, portRead.Longitude,
-      portRead.SuppliesFuelOil, portRead.DieselOil, portRead.Repairs);
  
     no_ports++;
-    printf("\n%d Ports read.\n",no_ports);
+    //printf("\n%d Ports read.\n",no_ports);
 
   } while (!feof(filePorts));
 
