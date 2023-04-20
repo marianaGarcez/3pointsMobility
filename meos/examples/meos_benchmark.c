@@ -106,21 +106,6 @@ int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
 }
 
 
-Datum MAXspeed(trip_record * trips, int ship)
-{
-    const TSequence *seq = trips[ship].trip;
-    Datum maxspeed = 0;
-
-    for (int i=0; i < trips[ship].trip->count ; i++)
-    {   
-        const TInstant *inst= TSEQUENCE_INST_N(seq, i);
-        Temporal *speed = tpoint_speed((Temporal *) inst);
-    }
-  return maxspeed;
-}
-
-
-
 
 int
 main(int argc, char **argv)
