@@ -599,7 +599,6 @@ Temporal * temporal_maxSpeed(Temporal *temp)
   double resultSpeed = 0;
   double * resultSpeedSet = NULL;
   
-  ensure_valid_tempsubtype(temp->subtype);
   if (temp->subtype == TINSTANT || ! MOBDB_FLAGS_GET_LINEAR(temp->flags))
     resultSpeed = 0;
 
