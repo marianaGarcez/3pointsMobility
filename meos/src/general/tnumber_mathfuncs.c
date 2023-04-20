@@ -542,8 +542,6 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
   double totaltime = ((double) end->t - (double) start->t)/1000000;
   distance *= 100000; // convert to meters
 
-  printf("distance %lf, time %lf\n", distance, totaltime);
-
   double speedNow = distance /totaltime;
   /* a = Δv/Δt. */
   return speedNow;
@@ -574,7 +572,6 @@ double tsequence_max_speed(const TSequence* seq)
     }
     inst1 = inst2;
   }
-  printf("max speed %lf\n", maxSpeed);
   return maxSpeed;
 }
 
