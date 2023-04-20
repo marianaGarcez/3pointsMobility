@@ -520,15 +520,15 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
   if (hasz)
   {
     POINT3DZ valueinst1, valueinst2;
-    valueinst1  = datum_point3dz(tinstant_value(start));
-    valueinst2  = datum_point3dz(tinstant_value(end));
+    valueinst1  = DATUM_POINT3DZ_P(tinstant_value(start));
+    valueinst2  = DATUM_POINT3DZ_P(tinstant_value(end));
     distance = dist3d_pt_pt(&valueinst1, &valueinst2);
   }
   else 
   {
     POINT2D valueinst12D, valueinst22D;
-    valueinst12D = datum_point2d(tinstant_value(start));
-    valueinst22D =  datum_point2d(tinstant_value(end));
+    valueinst12D = DATUM_POINT2D_P(tinstant_value(start));
+    valueinst22D =  DATUM_POINT2D_P(tinstant_value(end));
     distance = dist2d_pt_pt(&valueinst12D, &valueinst22D);  
   }
 
@@ -551,12 +551,12 @@ double tsequence_max_speed(const TSequence* seq)
 
   bool hasz = MOBDB_FLAGS_GET_Z(seq->flags);
   
-  const TInstant *inst1 = tsequence_inst_n(seq, 0);
+  const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
   double maxSpeed=0;
 
   for (int i=1; i < seq->count; i++)
   {
-    const TInstant *inst2 = tsequence_inst_n(seq, i);
+    const TInstant *inst2 = TSEQUENCE_INST_N(seq, i);
     double speedNow = speed(inst1, inst2, hasz);
     if (speedNow > maxSpeed)
       maxSpeed = speedNow;
@@ -568,12 +568,13 @@ double tsequence_max_speed(const TSequence* seq)
 }
 
 
-double *tsequenceset_max_speed(TSequenceSet *ss, double max_speed, double min_speed)
+double *tsequenceset_max_speed(TSequenceSet *ss)
 {
   double *result[ss->count];
 
   for (int i = 0; i < ss->count; i++)
   {
+    const TSequence *seq = TSEQUENCE_INST_N(ss, i);
     result[i] = tsequence_max_speed(seq);
   }
   return result;
