@@ -565,13 +565,12 @@ double tsequence_max_speed(const TSequence* seq)
   {
     const TInstant *inst2 = TSEQUENCE_INST_N(seq, i);
     double speedNow = speed(inst1, inst2, hasz);
-    printf("speed %lf\n", speedNow);
     if ((speedNow > maxSpeed)&& (speedNow < 1000))
       maxSpeed = speedNow;
 
     inst1 = inst2;
   }
-
+  printf("max speed %lf\n", maxSpeed);
   return maxSpeed;
 }
 
