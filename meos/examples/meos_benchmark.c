@@ -143,7 +143,7 @@ main(int argc, char **argv)
 
 
   /***************************************************************************
-   * Section 2: Initialize MEOS and open the input AIS file
+   * Section 2: Initialize MEOS, open the input AIS file and ports file
    ***************************************************************************/
 
   /* Initialize MEOS */
@@ -158,6 +158,17 @@ main(int argc, char **argv)
     return_value = 1;
     goto cleanup;
   }
+
+    /* Open the Ports file */
+    /* You may substitute the full file path in the first argument of fopen */
+    FILE *filePorts = fopen("UpdatedPub150.csv", "r");
+
+    if (! fileOut)
+    {
+        printf("Error opening ports file\n");
+        return_value = 1;
+        goto cleanup;
+    }
 
   /***************************************************************************
    * Section 3: Read input file line by line and append each observation as a
@@ -274,19 +285,12 @@ main(int argc, char **argv)
 
     /***************************************************************************
     * Query two -  List the ships that were within a region from Ports. */
+    //--------------------------------------------------------------------------
+    
     t = clock();
     printf("Query 2 - List the ships that were within a region from Ports.\n");    
 
-    /* Open/create the output file */
-    /* You may substitute the full file path in the first argument of fopen */
-    FILE *filePorts = fopen("UpdatedPub150.csv", "r");
 
-    if (! fileOut)
-    {
-        printf("Error opening ports file\n");
-        return_value = 1;
-        goto cleanup;
-    }
 
 
     t = clock() - t;
@@ -333,7 +337,7 @@ main(int argc, char **argv)
      for (i = 0; i < numships; i++)
     {
       speed_value = tsequence_max_speed(trips[i].trip);
-      printf("Ship %d, max speed %lf\n",i,speed_value);
+      printf("Ship %ld, max speed %lf\n",trips[i].MMSI,speed_value);
     }
 
     t = clock() - t;
@@ -364,6 +368,7 @@ cleanup:
 
   /* Close the connection to the logfile */
   fclose(fileOut);
+  fclose(filePorts);
 
   /* Close the file */
   fclose(fileIn);
