@@ -77,7 +77,6 @@ typedef struct
 {
   int id;  
   long int PortID;
-  char CountryCode[15];
   double Latitude;
   double Longitude;
 } Port_record;
@@ -282,15 +281,15 @@ main(int argc, char **argv)
   /* Continue reading the file */
   do
   {
-    //fscanf(filePorts, "%s\n", text_buffer2);
-    //printf("%s\n", text_buffer2);
+    fscanf(filePorts, "%s\n", text_buffer2);
+    printf("%s\n", text_buffer2);
 
-    int read = fscanf(filePorts, "%d,%ld,%s,%lf,%lf\n",
-      &ports[no_ports].id, &ports[no_ports].PortID, ports[no_ports].CountryCode, 
+    sscanf(text_buffer2, "%d,%ld,%lf,%lf\n",
+      &ports[no_ports].id, &ports[no_ports].PortID, 
       &ports[no_ports].Latitude, &ports[no_ports].Longitude);
 
-    printf("%d,%ld,%s,%lf,%lf\n",
-      ports[no_ports].id, ports[no_ports].PortID, ports[no_ports].CountryCode,
+    printf("%d,%ld,%lf,%lf\n",
+      ports[no_ports].id, ports[no_ports].PortID,
       ports[no_ports].Latitude, ports[no_ports].Longitude);
 
     no_ports++;
