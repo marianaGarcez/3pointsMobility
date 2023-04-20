@@ -292,6 +292,16 @@ main(int argc, char **argv)
     // t = clock();
     // printf("Query 2 - List the ships that were within a region from Ports.\n");    
 
+    // /* Open/create the output file */
+    // /* You may substitute the full file path in the first argument of fopen */
+    // FILE *filePorts = fopen("", "r");
+
+    // if (! fileOut)
+    // {
+    //     printf("Error opening ports file\n");
+    //     return_value = 1;
+    //     goto cleanup;
+    // }
 
 
     // t = clock() - t;
@@ -333,12 +343,12 @@ main(int argc, char **argv)
      * Query six - List the highest speed for each ship. */
     printf("Query 6 - List the highest speed for each ship.\n");
     t = clock();
-    TSequence *speed = NULL;
     double speed_value = 0;
 
      for (i = 0; i < numships; i++)
     {
-      printf("Ship %d, max speed %d\n",i,MAXspeed(trips,i));
+      speed_value= tsequence_max_speed(trips[i].trip);
+      printf("Ship %d, max speed %d\n",i,speed_value);
     }
 
     t = clock() - t;

@@ -505,6 +505,107 @@ tnumber_delta_value(const Temporal *temp)
   return result;
 }
 
+
+
+/*****************************************************************************
+ * Speed
+ *****************************************************************************/
+
+
+
+double speed(const TInstant *start, const TInstant *end, bool hasz)
+{
+  double distance = 0;
+
+  if (hasz)
+  {
+    POINT3DZ valueinst1, valueinst2;
+    valueinst1  = datum_point3dz(tinstant_value(start));
+    valueinst2  = datum_point3dz(tinstant_value(end));
+    distance = dist3d_pt_pt(&valueinst1, &valueinst2);
+  }
+  else 
+  {
+    POINT2D valueinst12D, valueinst22D;
+    valueinst12D = datum_point2d(tinstant_value(start));
+    valueinst22D =  datum_point2d(tinstant_value(end));
+    distance = dist2d_pt_pt(&valueinst12D, &valueinst22D);  
+  }
+
+  distance *= 1000;
+  double totaltime = ((double) end->t - (double) start->t)/10000000;
+
+  /*printf("distance %lf, time %lf\n", distanceAB, totaltime);*/
+
+  double speedNow = distance /totaltime;
+  /* a = Δv/Δt. */
+  return speedNow;
+}
+
+double tsequence_max_speed(const TSequence* seq)
+{
+
+  /* Do not try to detect speed on really short things */
+  if (seq->count < 2)
+    return 0;
+
+  bool hasz = MOBDB_FLAGS_GET_Z(seq->flags);
+  
+  const TInstant *inst1 = tsequence_inst_n(seq, 0);
+  double maxSpeed=0;
+
+  for (int i=1; i < seq->count; i++)
+  {
+    const TInstant *inst2 = tsequence_inst_n(seq, i);
+    double speedNow = speed(inst1, inst2, hasz);
+    if (speedNow > maxSpeed)
+      maxSpeed = speedNow;
+
+    inst1 = inst2;
+  }
+
+  return maxSpeed;
+}
+
+
+double *tsequenceset_max_speed(TSequenceSet *ss, double max_speed, double min_speed)
+{
+  double *result[ss->count];
+
+  for (int i = 0; i < ss->count; i++)
+  {
+    result[i] = tsequence_max_speed(seq);
+  }
+  return result;
+}
+
+ /**
+ * @ingroup filter outlier
+ * @brief Detect outliers in a the temporal type using a heuritic
+ * based on algorithm. based on speed
+ * @sqlfunc outlierSpeed
+ */
+double * temporal_maxSpeed(Temporal *temp)
+{
+  double *result;
+  
+  ensure_valid_tempsubtype(temp->subtype);
+  if (temp->subtype == TINSTANT || ! MOBDB_FLAGS_GET_LINEAR(temp->flags))
+    result = 0;
+
+  else if (temp->subtype == TSEQUENCE)
+    result = tsequence_max_speed((TSequence *) temp);
+
+  else /* temp->subtype == TSEQUENCESET */
+    result = tsequenceset_max_speed((TSequenceSet *) temp);
+
+  return result;
+}
+
+
+
+
+
 /*****************************************************************************
  * Angular difference
  *****************************************************************************/
