@@ -539,8 +539,7 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
     distance = distance2d_pt_pt(&valueinst12D, &valueinst22D);  
   }
 
-  distance *= 1000;
-  double totaltime = ((double) end->t - (double) start->t)/10000000;
+  double totaltime = ((double) end->t - (double) start->t);
 
   /*printf("distance %lf, time %lf\n", distanceAB, totaltime);*/
 
@@ -559,12 +558,13 @@ double tsequence_max_speed(const TSequence* seq)
   bool hasz = MOBDB_FLAGS_GET_Z(seq->flags);
   
   const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
-  double maxSpeed=0;
+  double maxSpeed = 0;
 
   for (int i=1; i < seq->count; i++)
   {
     const TInstant *inst2 = TSEQUENCE_INST_N(seq, i);
     double speedNow = speed(inst1, inst2, hasz);
+    printf("speed %lf\n", speedNow);
     if (speedNow > maxSpeed)
       maxSpeed = speedNow;
 
