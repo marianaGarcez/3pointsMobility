@@ -529,14 +529,14 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
     POINT3DZ valueinst1, valueinst2;
     valueinst1  = datum_point3dz(tinstant_value(start));
     valueinst2  = datum_point3dz(tinstant_value(start));
-    distance = dist3d_pt_pt(&valueinst1, &valueinst2);
+    distance = distance3d_pt_pt(&valueinst1, &valueinst2);
   }
   else 
   {
     POINT2D valueinst12D, valueinst22D;
     valueinst12D = datum_point2d(tinstant_value(start));
     valueinst22D = datum_point2d(tinstant_value(end));
-    distance = dist2d_pt_pt(&valueinst12D, &valueinst22D);  
+    distance = distance2d_pt_pt(&valueinst12D, &valueinst22D);  
   }
 
   distance *= 1000;
@@ -575,9 +575,9 @@ double tsequence_max_speed(const TSequence* seq)
 }
 
 
-double *tsequenceset_max_speed(TSequenceSet *ss)
+double * tsequenceset_max_speed(TSequenceSet *ss)
 {
-  double *result[ss->count];
+  double result[ss->count];
 
   for (int i = 0; i < ss->count; i++)
   {
@@ -593,9 +593,9 @@ double *tsequenceset_max_speed(TSequenceSet *ss)
  * based on algorithm. based on speed
  * @sqlfunc outlierSpeed
  */
-double * temporal_maxSpeed(Temporal *temp)
+Temporal * temporal_maxSpeed(Temporal *temp)
 {
-  double *result;
+  Temporal *result= NULL;
   
   ensure_valid_tempsubtype(temp->subtype);
   if (temp->subtype == TINSTANT || ! MOBDB_FLAGS_GET_LINEAR(temp->flags))
