@@ -181,7 +181,7 @@ main(int argc, char **argv)
 
     /* Open the Ports file */
     /* You may substitute the full file path in the first argument of fopen */
-    FILE *filePorts = fopen("UpdatedPub150.csv", "r");
+    FILE *filePorts = fopen("Ports.csv", "r");
 
     if (! fileOut)
     {
