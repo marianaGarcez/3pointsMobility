@@ -75,6 +75,7 @@ int count=0;
 
 typedef struct
 {
+  int id;  
   long int WorldPortIndexNumber;
   char CountryCode[15];
   double Latitude;
@@ -289,8 +290,8 @@ main(int argc, char **argv)
       goto cleanup;
     }
 
-    int read = fscanf(filePorts, "%32[^,],%ld,%s,%lf,%lf,%s,%s,%s\n",
-      text_buffer2, &(ports[no_ports].WorldPortIndexNumber), &(ports[no_ports].CountryCode), &(ports[no_ports].Latitude), &(ports[no_ports].Longitude),
+    int read = fscanf(filePorts, "%32[^,],%d,%ld,%s,%lf,%lf,%s,%s,%s\n",
+      text_buffer2,&(ports[no_ports].id), &(ports[no_ports].WorldPortIndexNumber), &(ports[no_ports].CountryCode), &(ports[no_ports].Latitude), &(ports[no_ports].Longitude),
       &(ports[no_ports].SuppliesFuelOil),&(ports[no_ports].DieselOil),&(ports[no_ports].Repairs));
     /* Transform the string representing the timestamp into a timestamp value */
  

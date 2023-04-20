@@ -1,4 +1,4 @@
-,World Port Index Number,Country Code,Latitude,Longitude,Supplies - Fuel Oil,Supplies - Diesel Oil,Repairs
+id,WorldPortIndexNumber,CountryCode,Latitude,Longitude,SuppliesFuelOil,SuppliesDieselOil,Repairs
 0,7950.0,United States,40.533333,-74.25,Yes,Yes,Moderate
 1,52235.0,Indonesia,-2.733333,121.066667,No,No,None
 2,47620.0,Madagascar,-13.35,50.0,No,No,Emergency Only
