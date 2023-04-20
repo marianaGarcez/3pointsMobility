@@ -285,14 +285,13 @@ main(int argc, char **argv)
   /* Continue reading the file */
   do
   {
-
     fscanf(filePorts, "%s\n", text_buffer2);
     printf("%s\n", text_buffer2);
 
     sscanf(text_buffer2,"%d,%lf,%s,%lf,%lf,%s,%s,%s\n", &(ports[no_ports].id), &(ports[no_ports].WorldPortIndexNumber), &(ports[no_ports].CountryCode), &(ports[no_ports].Latitude), &(ports[no_ports].Longitude),
       &(ports[no_ports].SuppliesFuelOil),&(ports[no_ports].DieselOil),&(ports[no_ports].Repairs));
 
-    printf("%d,%lf,%s,%lf,%lf,%s,%s,%s\n",ports[no_ports].id,ports[no_ports].WorldPortIndexNumber,
+    printf("%d,%lf,%s,%lf,%lf,%s,%s,%s\n -------------",ports[no_ports].id,ports[no_ports].WorldPortIndexNumber,
      ports[no_ports].CountryCode, ports[no_ports].Latitude, ports[no_ports].Longitude,
       ports[no_ports].SuppliesFuelOil,ports[no_ports].DieselOil,ports[no_ports].Repairs);
 
