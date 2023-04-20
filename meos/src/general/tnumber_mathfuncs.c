@@ -596,16 +596,18 @@ double * tsequenceset_max_speed(TSequenceSet *ss)
 Temporal * temporal_maxSpeed(Temporal *temp)
 {
   Temporal *result= NULL;
+  double resultSpeed = 0;
+  double * resultSpeedSet = NULL;
   
   ensure_valid_tempsubtype(temp->subtype);
   if (temp->subtype == TINSTANT || ! MOBDB_FLAGS_GET_LINEAR(temp->flags))
-    result = 0;
+    resultSpeed = 0;
 
   else if (temp->subtype == TSEQUENCE)
-    result = tsequence_max_speed((TSequence *) temp);
+    resultSpeed = tsequence_max_speed((TSequence *) temp);
 
   else /* temp->subtype == TSEQUENCESET */
-    result = tsequenceset_max_speed((TSequenceSet *) temp);
+    resultSpeedSet = tsequenceset_max_speed((TSequenceSet *) temp);
 
   return result;
 }
