@@ -296,7 +296,7 @@ main(int argc, char **argv)
  
     no_ports++;
 
-  } while (!feof(fileIn));
+  } while (!feof(filePorts));
 
   printf("\n%d Ports read.\n",no_ports);
 
