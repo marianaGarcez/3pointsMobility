@@ -290,12 +290,12 @@ main(int argc, char **argv)
       goto cleanup;
     }
 
-    int read2 = fscanf(filePorts, "%d,%ld,%s,%lf,%lf,%s,%s,%s\n",&(ports[no_ports].id), &(ports[no_ports].WorldPortIndexNumber), &(ports[no_ports].CountryCode), &(ports[no_ports].Latitude), &(ports[no_ports].Longitude),
-      &(ports[no_ports].SuppliesFuelOil),&(ports[no_ports].DieselOil),&(ports[no_ports].Repairs));
+    int read2 = fscanf(filePorts, "%d,%ld,%s,%lf,%lf,%s,%s,%s\n",&(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
+      &(portRead.SuppliesFuelOil),&(portRead.DieselOil),&(portRead.Repairs));
 
 
-    printf("%d,%ld,%s,%lf,%lf,%s,%s,%s\n",ports[no_ports].id, ports[no_ports].WorldPortIndexNumber, ports[no_ports].CountryCode, ports[no_ports].Latitude, ports[no_ports].Longitude,
-      ports[no_ports].SuppliesFuelOil,ports[no_ports].DieselOil,ports[no_ports].Repairs);
+    printf("%d,%ld,%s,%lf,%lf,%s,%s,%s\n", portRead.id, portRead.WorldPortIndexNumber, portRead.CountryCode, portRead.Latitude, portRead.Longitude,
+      portRead.SuppliesFuelOil, portRead.DieselOil, portRead.Repairs);
  
     no_ports++;
     printf("\n%d Ports read.\n",no_ports);
