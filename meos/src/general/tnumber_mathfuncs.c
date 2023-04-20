@@ -539,8 +539,8 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
     distance = distance2d_pt_pt(&valueinst12D, &valueinst22D);  
   }
 
-  double totaltime = ((double) end->t - (double) start->t)/100000;
-  distance *= 1000000; // convert to meters
+  double totaltime = ((double) end->t - (double) start->t)/1000000;
+  distance *= 10000000; // convert to meters
 
   printf("distance %lf, time %lf\n", distance, totaltime);
 

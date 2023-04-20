@@ -332,8 +332,9 @@ main(int argc, char **argv)
 
      for (i = 0; i < numships; i++)
     {
+      speed_value = 0;
       speed_value = tsequence_max_speed(trips[i].trip);
-      printf("Ship %d, max speed %d\n",i,speed_value);
+      printf("Ship %d, max speed %lf\n",i,speed_value);
     }
 
     t = clock() - t;
