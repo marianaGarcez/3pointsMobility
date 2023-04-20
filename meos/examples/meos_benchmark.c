@@ -279,7 +279,7 @@ main(int argc, char **argv)
 
     /* Open/create the output file */
     /* You may substitute the full file path in the first argument of fopen */
-    FILE *filePorts = fopen("", "r");
+    FILE *filePorts = fopen("UpdatedPub150.csv", "r");
 
     if (! fileOut)
     {
