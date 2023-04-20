@@ -67,8 +67,23 @@
 #define MAX_TRIPS 5
 /* Maximum number of ships */
 #define MAX_SHIPS 10000
+/* Maximum number of ports */
+#define MAX_PORTS 3740
+
 
 int count=0;
+
+typedef struct
+{
+  long int WorldPortIndexNumber;
+  char CountryCode[15];
+  double Latitude;
+  double Longitude;
+  char SuppliesFuelOil[8];
+  char DieselOil[8];
+  char Repairs[15];
+} Port_record;
+
 
 typedef struct
 {
@@ -111,13 +126,18 @@ int
 main(int argc, char **argv)
 {
   AIS_record rec;
+  Port_record port;
   int no_records = 0;
   int no_nulls = 0;
+  int no_ports = 0;
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
+  char text_buffer2[MAX_LENGTH_HEADER];
   /* Allocate space to build the trips */
   trip_record trips[MAX_TRIPS] = {0};
+  /* Allocate space to build the ports */
+  Port_record ports[MAX_PORTS] = {0};
   double maxspeed[MAX_SHIPS];
   /* Number of ships */
   int numships = 0;
@@ -174,11 +194,7 @@ main(int argc, char **argv)
    * Section 3: Read input file line by line and append each observation as a
    * temporal point in MEOS
    * 
-   * printf("Accumulating %d instants before sending them to the logfile\n"
-    "(one marker every logfile update)\n", NO_INSTANTS_BATCH);
    ***************************************************************************/
-
-  
 
   /* Read the first line of the file with the headers */
   fscanf(fileIn, "%1023s\n", text_buffer);
@@ -255,8 +271,47 @@ main(int argc, char **argv)
   printf("\n%d records read.\n%d incomplete records ignored. %d writes to the logfile\n",
     no_records, no_nulls,count);
 
+
     /***************************************************************************
-   * Section 4: Benchmarking
+   * Section 4: Read Port file line by line and append each observation as a
+   * temporal point in MEOS
+   * 
+   ***************************************************************************/
+    /* Read the first line of the file with the headers */
+   fscanf(filePorts, "%1023s\n", text_buffer2);
+
+  /* Continue reading the file */
+  do
+  {
+    if (ferror(filePorts))
+    {
+      printf("Error reading file\n");
+      goto cleanup;
+    }
+
+    int read = fscanf(filePorts, "%32[^,],%ld,%s,%lf,%lf,%s,%s,%s\n",
+      text_buffer2, &port.WorldPortIndexNumber, &port.CountryCode, &port.Latitude, &port.Longitude,
+      &port.SuppliesFuelOil,&port.DieselOil,&port.Repairs);
+    /* Transform the string representing the timestamp into a timestamp value */
+
+    ports[no_ports].WorldPortIndexNumber = port.WorldPortIndexNumber;
+    ports[no_ports].CountryCode = port.CountryCode;
+    ports[no_ports].Latitude = port.Latitude;
+    ports[no_ports].Longitude = port.Longitude;
+    ports[no_ports].SuppliesFuelOil = port.SuppliesFuelOil;
+    ports[no_ports].DieselOil = port.DieselOil;
+    ports[no_ports].Repairs = port.Repairs;
+ 
+    no_ports++;
+
+  } while (!feof(fileIn));
+
+  printf("\n%d Ports read.\n",no_ports);
+
+
+
+    /***************************************************************************
+   * Section 5: Benchmarking
    * Queries 1 to 12
    ****************************************************************************/
     /* Query one - List the ships that have trajectories with more than 300 points. */
@@ -362,6 +417,8 @@ cleanup:
  /* Free memory */
   for (i = 0; i < numships; i++)
     free(trips[i].trip);
+
+  
 
   /* Finalize MEOS */
   meos_finalize();
