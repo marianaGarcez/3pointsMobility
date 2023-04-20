@@ -76,13 +76,10 @@ int count=0;
 typedef struct
 {
   int id;  
-  double WorldPortIndexNumber;
+  long int PortID;
   char CountryCode[15];
   double Latitude;
   double Longitude;
-  char SuppliesFuelOil[8];
-  char DieselOil[8];
-  char Repairs[15];
 } Port_record;
 
 
@@ -285,17 +282,16 @@ main(int argc, char **argv)
   /* Continue reading the file */
   do
   {
-    char text_buffer3[MAX_LENGTH_HEADER];
-    fscanf(filePorts, "%s\n", text_buffer3);
-    printf("%s\n", text_buffer3);
+    //fscanf(filePorts, "%s\n", text_buffer2);
+    //printf("%s\n", text_buffer2);
 
-    sscanf(text_buffer3,"%d,%lf,%s,%lf,%lf,%s,%s,%s\n", &(ports[no_ports].id), &(ports[no_ports].WorldPortIndexNumber), &(ports[no_ports].CountryCode), &(ports[no_ports].Latitude), &(ports[no_ports].Longitude),
-      &(ports[no_ports].SuppliesFuelOil),&(ports[no_ports].DieselOil),&(ports[no_ports].Repairs));
+    int read = fscanf(filePorts, "%d,%ld,%s,%lf,%lf\n",
+      &ports[no_ports].id, &ports[no_ports].PortID, ports[no_ports].CountryCode, 
+      &ports[no_ports].Latitude, &ports[no_ports].Longitude);
 
-    printf("%d,%lf,%s,%lf,%lf,%s,%s, repairs %s\n ------------- \n",ports[no_ports].id,ports[no_ports].WorldPortIndexNumber,
-     ports[no_ports].CountryCode, ports[no_ports].Latitude, ports[no_ports].Longitude,
-      ports[no_ports].SuppliesFuelOil,ports[no_ports].DieselOil,ports[no_ports].Repairs);
-
+    printf("%d,%ld,%s,%lf,%lf\n",
+      ports[no_ports].id, ports[no_ports].PortID, ports[no_ports].CountryCode,
+      ports[no_ports].Latitude, ports[no_ports].Longitude);
 
     no_ports++;
     //printf("\n%d Ports read.\n",no_ports);
