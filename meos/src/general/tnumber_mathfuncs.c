@@ -540,7 +540,7 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
   }
 
   double totaltime = ((double) end->t - (double) start->t)/1000000;
-  distance *= 10000000; // convert to meters
+  distance *= 100000; // convert to meters
 
   printf("distance %lf, time %lf\n", distance, totaltime);
 
