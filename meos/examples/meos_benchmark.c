@@ -259,8 +259,8 @@ main(int argc, char **argv)
       {
         //char *temp_out = tsequence_out(trips[i].trip, 15);
         //char *temp_out = tpoint_as_ewkt((Temporal *) trips[i].trip, 3);
-        fprintf(fileOut, "%ld, %s\n",trips[i].MMSI);
-        //printf("%ld, %s\n",trips[i].MMSI, temp_out);
+        //fprintf(fileOut, "%ld, %s\n",trips[i].MMSI);
+        printf("%ld, %s\n",trips[i].MMSI);
         /* Free memory */
         //free(temp_out);
       }
@@ -274,24 +274,24 @@ main(int argc, char **argv)
 
     /***************************************************************************
     * Query two -  List the ships that were within a region from Ports. */
-    // t = clock();
-    // printf("Query 2 - List the ships that were within a region from Ports.\n");    
+    t = clock();
+    printf("Query 2 - List the ships that were within a region from Ports.\n");    
 
-    // /* Open/create the output file */
-    // /* You may substitute the full file path in the first argument of fopen */
-    // FILE *filePorts = fopen("", "r");
+    /* Open/create the output file */
+    /* You may substitute the full file path in the first argument of fopen */
+    FILE *filePorts = fopen("", "r");
 
-    // if (! fileOut)
-    // {
-    //     printf("Error opening ports file\n");
-    //     return_value = 1;
-    //     goto cleanup;
-    // }
+    if (! fileOut)
+    {
+        printf("Error opening ports file\n");
+        return_value = 1;
+        goto cleanup;
+    }
 
 
-    // t = clock() - t;
-    // time_taken = ((double) t) / CLOCKS_PER_SEC;
-    // printf("Query two took %f seconds to execute\n", time_taken);
+    t = clock() - t;
+    time_taken = ((double) t) / CLOCKS_PER_SEC;
+    printf("Query two took %f seconds to execute\n", time_taken);
    /***************************************************************************
     * Query three -  List the pair of ships that were both located within a region from a Port. */
     // printf("Query 3 - List the pair of ships that were both located within a region from a Port.\n");
@@ -332,7 +332,6 @@ main(int argc, char **argv)
 
      for (i = 0; i < numships; i++)
     {
-      speed_value = 0;
       speed_value = tsequence_max_speed(trips[i].trip);
       printf("Ship %d, max speed %lf\n",i,speed_value);
     }
