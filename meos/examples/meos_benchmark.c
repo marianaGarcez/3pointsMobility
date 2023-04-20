@@ -134,7 +134,6 @@ main(int argc, char **argv)
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
-  char text_buffer2[MAX_LENGTH_HEADER];
   /* Allocate space to build the trips */
   trip_record trips[MAX_TRIPS] = {0};
   /* Allocate space to build the ports */
@@ -290,9 +289,11 @@ main(int argc, char **argv)
       goto cleanup;
     }
 
-    int read = fscanf(filePorts, "%d,%ld,%s,%lf,%lf,%s,%s,%s\n",&(ports[no_ports].id), &(ports[no_ports].WorldPortIndexNumber), &(ports[no_ports].CountryCode), &(ports[no_ports].Latitude), &(ports[no_ports].Longitude),
+    int read2 = fscanf(filePorts, "%d,%ld,%s,%lf,%lf,%s,%s,%s\n",&(ports[no_ports].id), &(ports[no_ports].WorldPortIndexNumber), &(ports[no_ports].CountryCode), &(ports[no_ports].Latitude), &(ports[no_ports].Longitude),
       &(ports[no_ports].SuppliesFuelOil),&(ports[no_ports].DieselOil),&(ports[no_ports].Repairs));
     /* Transform the string representing the timestamp into a timestamp value */
+    printf("%d,%ld,%s,%lf,%lf,%s,%s,%s\n",ports[no_ports].id, ports[no_ports].WorldPortIndexNumber, ports[no_ports].CountryCode, ports[no_ports].Latitude, ports[no_ports].Longitude,
+      ports[no_ports].SuppliesFuelOil,ports[no_ports].DieselOil,ports[no_ports].Repairs);
  
     no_ports++;
     printf("\n%d Ports read.\n",no_ports);
@@ -410,8 +411,6 @@ cleanup:
  /* Free memory */
   for (i = 0; i < numships; i++)
     free(trips[i].trip);
-
-  
 
   /* Finalize MEOS */
   meos_finalize();
