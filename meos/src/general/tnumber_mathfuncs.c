@@ -48,11 +48,13 @@
 #include "general/pg_types.h"
 #include "general/temporaltypes.h"
 #include "general/type_util.h"
+#include "general/tsequence.h"
 #include "point/tpoint.h"
 #include "point/tpoint_boxops.h"
 #include "point/tpoint_distance.h"
 #include "point/tpoint_spatialfuncs.h"
 #include "point/tpoint_spatialrels.h"
+#include "point/geography_funcs.h"
 
 /*****************************************************************************
  * Miscellaneous functions on datums
