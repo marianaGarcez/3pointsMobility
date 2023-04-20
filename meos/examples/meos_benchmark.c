@@ -290,7 +290,7 @@ main(int argc, char **argv)
       goto cleanup;
     }
 
-    int read2 = fscanf(filePorts, "%d,%ld,%s,%lf,%lf,%s,%s,%s\n",&(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
+    int read2 = fscanf(filePorts, "%32[^,],%d,%ld,%s,%lf,%lf,%s,%s,%s\n",text_buffer2,&(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
       &(portRead.SuppliesFuelOil),&(portRead.DieselOil),&(portRead.Repairs));
 
 
