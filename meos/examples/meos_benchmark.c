@@ -76,7 +76,7 @@ int count=0;
 typedef struct
 {
   int id;  
-  long int WorldPortIndexNumber;
+  long float WorldPortIndexNumber;
   char CountryCode[15];
   double Latitude;
   double Longitude;
@@ -294,10 +294,10 @@ main(int argc, char **argv)
     fscanf(filePorts, "%s\n", text_buffer2);
     printf("%s\n", text_buffer2);
 
-    scanf(text_buffer2,"%d,%ld,%s,%lf,%lf,%s,%s,%s\n", &(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
+    scanf(text_buffer2,"%d,%lf,%s,%lf,%lf,%s,%s,%s\n", &(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
       &(portRead.SuppliesFuelOil),&(portRead.DieselOil),&(portRead.Repairs));
 
-    printf("%d,%ld,%s,%lf,%lf,%s,%s,%s\n",portRead.id,portRead.WorldPortIndexNumber,
+    printf("%d,%lf,%s,%lf,%lf,%s,%s,%s\n",portRead.id,portRead.WorldPortIndexNumber,
      portRead.CountryCode, portRead.Latitude, portRead.Longitude,
       portRead.SuppliesFuelOil,portRead.DieselOil,portRead.Repairs);
 
