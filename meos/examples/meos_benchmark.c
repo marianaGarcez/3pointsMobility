@@ -290,7 +290,7 @@ main(int argc, char **argv)
       goto cleanup;
     }
 
-    int read = fscanf(filePorts, "%32[^,],%d,%ld,%s,%lf,%lf,%s,%s,%s\n",&(ports[no_ports].id), &(ports[no_ports].WorldPortIndexNumber), &(ports[no_ports].CountryCode), &(ports[no_ports].Latitude), &(ports[no_ports].Longitude),
+    int read = fscanf(filePorts, "%d,%ld,%s,%lf,%lf,%s,%s,%s\n",&(ports[no_ports].id), &(ports[no_ports].WorldPortIndexNumber), &(ports[no_ports].CountryCode), &(ports[no_ports].Latitude), &(ports[no_ports].Longitude),
       &(ports[no_ports].SuppliesFuelOil),&(ports[no_ports].DieselOil),&(ports[no_ports].Repairs));
     /* Transform the string representing the timestamp into a timestamp value */
  
