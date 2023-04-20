@@ -541,7 +541,7 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
 
   double totaltime = ((double) end->t - (double) start->t);
 
-  /*printf("distance %lf, time %lf\n", distanceAB, totaltime);*/
+  printf("distance %lf, time %lf\n", distance, totaltime);
 
   double speedNow = distance /totaltime;
   /* a = Δv/Δt. */
