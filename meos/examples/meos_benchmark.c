@@ -260,7 +260,7 @@ main(int argc, char **argv)
         //char *temp_out = tsequence_out(trips[i].trip, 15);
         //char *temp_out = tpoint_as_ewkt((Temporal *) trips[i].trip, 3);
         //fprintf(fileOut, "%ld, %s\n",trips[i].MMSI);
-        printf("%ld, %s\n",trips[i].MMSI);
+        printf("%ld\n",trips[i].MMSI);
         /* Free memory */
         //free(temp_out);
       }
