@@ -285,16 +285,11 @@ main(int argc, char **argv)
   /* Continue reading the file */
   do
   {
-    if (ferror(filePorts))
-    {
-      printf("Error reading file\n");
-      goto cleanup;
-    }
 
     fscanf(filePorts, "%s\n", text_buffer2);
     printf("%s\n", text_buffer2);
 
-    scanf(text_buffer2,"%d,%lf,%s,%lf,%lf,%s,%s,%s\n", &(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
+    sscanf(text_buffer2,"%d,%lf,%s,%lf,%lf,%s,%s,%s\n", &(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
       &(portRead.SuppliesFuelOil),&(portRead.DieselOil),&(portRead.Repairs));
 
     printf("%d,%lf,%s,%lf,%lf,%s,%s,%s\n",portRead.id,portRead.WorldPortIndexNumber,
