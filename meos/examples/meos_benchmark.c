@@ -294,8 +294,13 @@ main(int argc, char **argv)
     fscanf(filePorts, "%s\n", text_buffer2);
     printf("%s\n", text_buffer2);
 
-    //scanf(text_buffer2,"%d,%ld,%s,%lf,%lf,%s,%s,%s\n", &(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
-    //  &(portRead.SuppliesFuelOil),&(portRead.DieselOil),&(portRead.Repairs));
+    scanf(text_buffer2,"%d,%ld,%s,%lf,%lf,%s,%s,%s\n", &(portRead.id), &(portRead.WorldPortIndexNumber), &(portRead.CountryCode), &(portRead.Latitude), &(portRead.Longitude),
+      &(portRead.SuppliesFuelOil),&(portRead.DieselOil),&(portRead.Repairs));
+
+    printf("%d,%ld,%s,%lf,%lf,%s,%s,%s\n",portRead.id,portRead.WorldPortIndexNumber,
+     portRead.CountryCode, portRead.Latitude, portRead.Longitude,
+      portRead.SuppliesFuelOil,portRead.DieselOil,portRead.Repairs);
+
 
     no_ports++;
     //printf("\n%d Ports read.\n",no_ports);
