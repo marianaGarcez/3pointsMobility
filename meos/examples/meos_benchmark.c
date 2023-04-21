@@ -344,7 +344,8 @@ main(int argc, char **argv)
     //for (i = 0; i < numships; i++)
     //{}
     Temporal *result = tdwithin_tpoint_tpoint((const Temporal *)trips[0].trip, (const Temporal *)trips[0].trip, 10,1,1);
-    char *temp_out = tpoint_as_ewkt((Temporal *) result, 3);
+    char *inst1_out = tpoint_as_text(result, 2);
+    printf("%s\n",inst1_out);
 
     t = clock() - t;
     time_taken = ((double) t) / CLOCKS_PER_SEC;
