@@ -289,9 +289,9 @@ main(int argc, char **argv)
       ports[no_ports].Latitude);
     printf("%s\n", point_buffer2);
 
-    //TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer2);
-   // ports[no_ports].trip = tsequence_make_exp((const TInstant **) &inst, 1,
-    //    NO_INSTANTS_BATCH, true, true, LINEAR, false);
+    TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer2);
+    ports[no_ports].trip = tsequence_make_exp((const TInstant **) &inst, 1,
+        NO_INSTANTS_BATCH, true, true, LINEAR, false);
 
     no_ports++;
 
