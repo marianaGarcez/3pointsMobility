@@ -341,17 +341,18 @@ main(int argc, char **argv)
     printf("Query 2 - List the ships that were in a port.\n");    
     
     
-    //for (i = 0; i < numships; i++)
-    //{}
-    Temporal *result = tdwithin_tpoint_tpoint((const Temporal *)trips[0].trip, (const Temporal *)trips[0].trip, 10,1,1);
-    if (result == NULL)
+    for (i = 0; i < numships; i++)
     {
-      printf("NULL\n");
-    }
-    else
-    {
-      char *temp_out = tpoint_as_ewkt((Temporal *) result, 3);
-      printf("%s\n",temp_out);
+        Temporal *result = tdwithin_tpoint_tpoint((const Temporal *)trips[numships].trip, (const Temporal *)ports[0].trip, 10,1,1);
+        if (result == NULL)
+        {
+        printf("NULL\n");
+        }
+        else
+        {
+        char *temp_out = tpoint_as_ewkt((Temporal *) result, 3);
+        printf("%s\n",temp_out);
+        }
     }
 
     t = clock() - t;
