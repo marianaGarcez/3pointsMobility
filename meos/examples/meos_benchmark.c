@@ -79,6 +79,7 @@ typedef struct
   long int PortID;
   double Latitude;
   double Longitude;
+  TSequence *trip
 } Port_record;
 
 
@@ -130,6 +131,7 @@ main(int argc, char **argv)
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
+  char point_buffer2[MAX_LENGTH_POINT];
   /* Allocate space to build the trips */
   trip_record trips[MAX_TRIPS] = {0};
   /* Allocate space to build the ports */
@@ -288,12 +290,19 @@ main(int argc, char **argv)
       &ports[no_ports].id, &ports[no_ports].PortID, 
       &ports[no_ports].Latitude, &ports[no_ports].Longitude);
 
-    printf("%d,%ld,%lf,%lf\n",
-      ports[no_ports].id, ports[no_ports].PortID,
-      ports[no_ports].Latitude, ports[no_ports].Longitude);
+    sprintf(point_buffer2, "SRID=4326;Point(%lf %lf)", rec.Longitude,
+      rec.Latitude);
+
+
+    /* Append the last observation */
+    TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer2);
+    if (! ports[no_ports].trip)
+      ports[no_ports].trip = tsequence_make_exp((const TInstant **) &inst, 1,
+        NO_INSTANTS_BATCH, true, true, LINEAR, false);
+    else    
+        tsequence_append_tinstant(ports[no_ports].trip, inst, 1000, maxt,true);
 
     no_ports++;
-    //printf("\n%d Ports read.\n",no_ports);
 
   } while (!feof(filePorts));
 
@@ -335,7 +344,7 @@ main(int argc, char **argv)
     
     t = clock();
     printf("Query 2 - List the ships that were within a region from Ports.\n");    
-
+    //tdwithin(T1.Trip, T2.Trip, 10.0)
 
 
 
@@ -392,7 +401,7 @@ main(int argc, char **argv)
 
     /***************************************************************************
      * Query seven - Count the number of trips that were active during each hour in November 1st 2022. */
-    // printf("Query 7 - Count the number of trips that were active during each hour in November 1st 2022.\n");
+    // printf("Query 7 - Count the number of trips that were active in November 1st 2022.\n");
     // t = clock();
 
 
