@@ -79,7 +79,7 @@ typedef struct
   long int PortID;
   double Latitude;
   double Longitude;
-  TSequence *trip
+  TSequence *trip;
 } Port_record;
 
 
