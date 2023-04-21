@@ -252,11 +252,6 @@ main(int argc, char **argv)
     sprintf(point_buffer, "SRID=4326;Point(%lf %lf)@%s+00", rec.Longitude,
       rec.Latitude, t_out);
 
-
-    /* Send to the logfile the trip if reached the maximum number of instants */
-    //windowManager(NO_INSTANTS_BATCH,trips, ship,fileOut);
-
-
     /* Append the last observation */
     TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer);
     if (! trips[ship].trip)
@@ -292,15 +287,11 @@ main(int argc, char **argv)
 
     sprintf(point_buffer2, "SRID=4326;Point(%lf %lf)", rec.Longitude,
       rec.Latitude);
+    printf("%s\n", point_buffer2);
 
-
-    /* Append the last observation */
     TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer2);
-    if (! ports[no_ports].trip)
-      ports[no_ports].trip = tsequence_make_exp((const TInstant **) &inst, 1,
-        NO_INSTANTS_BATCH, true, true, LINEAR, false);
-    else    
-        tsequence_append_tinstant(ports[no_ports].trip, inst, 1000, maxt,true);
+   // ports[no_ports].trip = tsequence_make_exp((const TInstant **) &inst, 1,
+    //    NO_INSTANTS_BATCH, true, true, LINEAR, false);
 
     no_ports++;
 
