@@ -340,8 +340,10 @@ main(int argc, char **argv)
     t = clock();
     printf("Query 2 - List the ships that were in a port.\n");    
     
-  
-    Temporal *result = tdwithin_tpoint_tpoint((const Temporal *)trips[i].trip, (const Temporal *)temp2, 10, bool restr, bool atvalue)
+    
+    //for (i = 0; i < numships; i++)
+    //{}
+    Temporal *result = tdwithin_tpoint_tpoint((const Temporal *)trips[0].trip, (const Temporal *)trips[0].trip, 10,1,1);
 
 
     t = clock() - t;
