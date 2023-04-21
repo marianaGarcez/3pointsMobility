@@ -272,6 +272,7 @@ main(int argc, char **argv)
    ***************************************************************************/
     /* Read the first line of the file with the headers */
    char text_buffer2[MAX_LENGTH_HEADER];
+
    fscanf(filePorts, "%s\n", text_buffer2);
    printf("%s\n", text_buffer2);
 
@@ -285,11 +286,11 @@ main(int argc, char **argv)
       &ports[no_ports].id, &ports[no_ports].PortID, 
       &ports[no_ports].Latitude, &ports[no_ports].Longitude);
 
-    sprintf(point_buffer2, "SRID=4326;Point(%lf %lf)", rec.Longitude,
-      rec.Latitude);
+    sprintf(point_buffer2, "SRID=4326;Point(%lf %lf)", ports[no_ports].Longitude,
+      ports[no_ports].Latitude);
     printf("%s\n", point_buffer2);
 
-    TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer2);
+    //TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer2);
    // ports[no_ports].trip = tsequence_make_exp((const TInstant **) &inst, 1,
     //    NO_INSTANTS_BATCH, true, true, LINEAR, false);
 
