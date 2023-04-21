@@ -280,7 +280,6 @@ main(int argc, char **argv)
   do
   {
     fscanf(filePorts, "%s\n", text_buffer2);
-    printf("%s\n", text_buffer2);
 
     sscanf(text_buffer2, "%d,%ld,%lf,%lf\n",
       &ports[no_ports].id, &ports[no_ports].PortID, 
