@@ -75,6 +75,7 @@ int count=0;
 
 typedef struct
 {
+  Timestamp T;
   int id;  
   long int PortID;
   double Latitude;
@@ -284,12 +285,17 @@ main(int argc, char **argv)
     sscanf(text_buffer2, "%d,%ld,%lf,%lf\n",
       &ports[no_ports].id, &ports[no_ports].PortID, 
       &ports[no_ports].Latitude, &ports[no_ports].Longitude);
+    
+    ports[no_ports].T = pg_timestamp_in("2021-01-08", -1);
 
-    sprintf(point_buffer2, "SRID=4326;Point(%lf %lf)", ports[no_ports].Longitude,
-      ports[no_ports].Latitude);
+    char *t_out = pg_timestamp_out(rec.T);
+
+    sprintf(point_buffer2, "SRID=4326;Point(%lf %lf)@%s+00", ports[no_ports].Longitude,
+      ports[no_ports].Latitude,t_out);
     printf("%s\n", point_buffer2);
 
     TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer2);
+
     ports[no_ports].trip = tsequence_make_exp((const TInstant **) &inst, 1,
         NO_INSTANTS_BATCH, true, true, LINEAR, false);
 
