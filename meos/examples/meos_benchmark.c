@@ -133,6 +133,7 @@ main(int argc, char **argv)
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
   char point_buffer2[MAX_LENGTH_POINT];
+  char text_buffer2[MAX_LENGTH_HEADER];
   /* Allocate space to build the trips */
   trip_record trips[MAX_TRIPS] = {0};
   /* Allocate space to build the ports */
@@ -272,7 +273,6 @@ main(int argc, char **argv)
    * 
    ***************************************************************************/
     /* Read the first line of the file with the headers */
-   char text_buffer2[MAX_LENGTH_HEADER];
 
    fscanf(filePorts, "%s\n", text_buffer2);
    printf("%s\n", text_buffer2);
@@ -292,7 +292,6 @@ main(int argc, char **argv)
 
     sprintf(point_buffer2, "SRID=4326;Point(%lf %lf)@%s+00", ports[no_ports].Longitude,
       ports[no_ports].Latitude,t_out);
-    printf("%s\n", point_buffer2);
 
     TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer2);
 
@@ -304,7 +303,6 @@ main(int argc, char **argv)
   } while (!feof(filePorts));
 
   printf("\n%d Ports read.\n",no_ports);
-
 
 
     /***************************************************************************
@@ -336,20 +334,21 @@ main(int argc, char **argv)
 
 
     /***************************************************************************
-    * Query two -  List the ships that were within a region from Ports. */
+    * Query two -  List the ships that were in a port. */
     //--------------------------------------------------------------------------
     
     t = clock();
-    printf("Query 2 - List the ships that were within a region from Ports.\n");    
-    //tdwithin(T1.Trip, T2.Trip, 10.0)
-
+    printf("Query 2 - List the ships that were in a port.\n");    
+    
+  
+    Temporal *result = tdwithin_tpoint_tpoint((const Temporal *)trips[i].trip, (const Temporal *)temp2, 10, bool restr, bool atvalue)
 
 
     t = clock() - t;
     time_taken = ((double) t) / CLOCKS_PER_SEC;
     printf("Query two took %f seconds to execute\n", time_taken);
    /***************************************************************************
-    * Query three -  List the pair of ships that were both located within a region from a Port. */
+    * Query three -  List the pair of ships that were both located within 10 m. */
     // printf("Query 3 - List the pair of ships that were both located within a region from a Port.\n");
     // t = clock();
 
@@ -359,7 +358,7 @@ main(int argc, char **argv)
     // printf("Query three took %f seconds to execute\n", time_taken);
 
     /***************************************************************************
-     * Query four - List the pair of ships that were both located within a region from a Port. */
+     * Query four - List the first time at which a ship visited a port. */
     // printf("Query 4 - List the pair of ships that were both located within a region from a Port.\n");
     // t = clock();
 
@@ -386,7 +385,7 @@ main(int argc, char **argv)
     t = clock();
     double speed_value = 0;
 
-     for (i = 0; i < numships; i++)
+    for (i = 0; i < numships; i++)
     {
       speed_value = tsequence_max_speed(trips[i].trip);
       printf("Ship %ld, max speed %lf\n",trips[i].MMSI,speed_value);
@@ -405,6 +404,12 @@ main(int argc, char **argv)
     // t = clock() - t;
     // time_taken = ((double) t) / CLOCKS_PER_SEC;
     // printf("Query seven took %f seconds to execute\n", time_taken);
+
+
+    /***************************************************************************/
+    /* Query ten - List pair of ships that come closer than 10 meters to one another. */
+    //ST_Distance(T1.Trajs, T2.Trajs)
+    //tdwithin(T1.Trip, T2.Trip, 100.0)
 
 
     /***************************************************************************/
