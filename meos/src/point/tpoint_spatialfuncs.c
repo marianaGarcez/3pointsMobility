@@ -2793,7 +2793,6 @@ tpoint_angular_difference_3points(const Temporal *temp)
     Temporal *tazimuth_deg = tfloat_degrees(tazimuth, false);
     result = tnumber_angular_difference_3points(tazimuth_deg,temp);
     pfree(tazimuth_deg);
-    char *seq1_wkt = tpoint_as_ewkt((Temporal *) result, 2);
   }
   return result;
 }

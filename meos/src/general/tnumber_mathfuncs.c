@@ -596,7 +596,6 @@ double * tsequenceset_max_speed(TSequenceSet *ss)
  */
 Temporal * temporal_maxSpeed(Temporal *temp)
 {
-  Temporal *result= NULL;
   double resultSpeed = 0;
   double * resultSpeedSet = NULL;
   
@@ -609,7 +608,7 @@ Temporal * temporal_maxSpeed(Temporal *temp)
   else /* temp->subtype == TSEQUENCESET */
     resultSpeedSet = tsequenceset_max_speed((TSequenceSet *) temp);
 
-  return result;
+  return NULL;
 }
 
 
@@ -666,7 +665,7 @@ tnumberseq_angular_difference1(const TSequence *seq, TInstant **result)
 
 
 
-bool notInList(TInstant **instants, TInstant *inst){
+bool notInList(const TInstant **instants, const TInstant *inst){
   for (int i = 0; i < 4; i++)
   {
     if (instants[i] == inst)
@@ -704,6 +703,7 @@ bool NoTurns(TSequence *fixedorder)
     value2Angulo = value3Angulo;
 
   }
+  return true;
 }
 
 
@@ -800,7 +800,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
       }
 
       /* if point is already in the list, do not add it */
-      results[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
+      result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
     }
     /* Advance in sliding window */
     inst1 = inst2;
