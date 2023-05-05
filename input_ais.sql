@@ -38,8 +38,8 @@ BEGIN
   COPY AISInput(T, TypeOfMobile, MMSI, Latitude, Longitude, NavigationalStatus,
     ROT, SOG, COG, Heading, IMO, CallSign, Name, ShipType, CargoType, Width, Length,
     TypeOfPositionFixingDevice, Draught, Destination, ETA, DataSourceType,
-    SizeA, SizeB, SizeC, SizeD)
-  FROM '/home/marianamgd/aisdk-2022-11-01.csv' DELIMITER ',' CSV HEADER;
+    SizeA, SizeB, SizeC, SizeD, Geom)
+  FROM '/Users/marianaduarte/ais-2.csv' DELIMITER ',' CSV HEADER;
 
   RAISE INFO 'Updating AISInput table ...';
   

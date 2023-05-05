@@ -675,7 +675,58 @@ bool notInList(TInstant **instants, TInstant *inst){
   return true;
 }
 
+bool NoTurns(TSequence *fixedorder)
+{
+  // get azimuth angles
+  const TSequenceSet* angulos = tpointseq_azimuth(fixedorder);
+  Datum angdiff = Float8GetDatum(0);
+  Datum angdiff2 = Float8GetDatum(0);
 
+  const TInstant *inst1Angulo = TSEQUENCE_INST_N(angulos, 0);
+  Datum value1Angulo = tinstant_value(inst1Angulo);
+  const TInstant *inst2Angulo = TSEQUENCE_INST_N(angulos, 1);
+  Datum value2Angulo = tinstant_value(inst2Angulo);
+
+  for (int i = 2; i < fixedorder->count; i++)
+  {
+    const TInstant *inst3Angulo = TSEQUENCE_INST_N(angulos, i);
+    Datum value3Angulo = tinstant_value(inst3Angulo);
+    //check angles 3 by tree
+    angdiff = angular_difference(value1Angulo, value2Angulo);
+    angdiff2 = angular_difference(value2Angulo, value3Angulo);
+
+    if (angdiff > 120 && angdiff2 > 120)
+      return false;
+
+    inst1Angulo = inst2Angulo;
+    value1Angulo = value2Angulo;
+    inst2Angulo = inst3Angulo;
+    value2Angulo = value3Angulo;
+
+  }
+}
+
+
+
+void fixOutOfOrder( TSequence *originalseq, int *positions, int positionsSize ,TSequence *fixedorder)
+{
+  int k = 0;
+  const TInstant **instants = palloc(sizeof(TInstant *) * 4);
+  /* TODO if point is at list of out-of-order, change based on angle as brute force */
+  for (int i = 0; i < positionsSize; i++)
+  {
+    /*find where to put the point that is out of order,
+      while not best match continue changing points */
+    for (int j = 0; j < originalseq->count; j++)
+    {
+      const TInstant *inst = TSEQUENCE_INST_N(originalseq, positions[i]);
+      fixedorder = tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
+      // if no turning angles anymore, break
+      if (NoTurns(fixedorder))
+        break;
+    }
+  }
+}
 
 
 /**
@@ -688,14 +739,13 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
   //char *seq1_wkt = tpoint_as_ewkt((Temporal *) originalseq, 2);
   //elog(INFO, "seql: %s\n", seq1_wkt);
  
-  /* Instantaneous sequence */
-  if (seq->count == 1)
-    return 0;
-
+  /* Small sequence */
   if (seq->count < 3)
     return seq->count;
   
   /* General case */
+  int positions[seq->count];
+
   const TInstant **instants = palloc(sizeof(TInstant *) * 4);
 
   const TInstant *inst1Angulo = TSEQUENCE_INST_N(seq, 0);
@@ -705,6 +755,7 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
   Datum angdiff = Float8GetDatum(0);
   Datum angdiff2 = Float8GetDatum(0);
   int k = 0;
+  int l = 0;
 
   const TInstant *inst2Angulo = TSEQUENCE_INST_N(seq, 1);
   const TInstant *inst2 = TSEQUENCE_INST_N(originalseq, 1);
@@ -727,28 +778,31 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
     if (angdiff > 120 && angdiff2 > 120)
     {
       int j = 0;
-
-
-      char *seq1_wkt2 = tpoint_as_ewkt((Temporal *) inst1, 2);
-      char *seq2_wkt2 = tpoint_as_ewkt((Temporal *) inst2, 2);
-      char *seq3_wkt2 = tpoint_as_ewkt((Temporal *) inst3, 2);
-
-      //
+      // char *seq1_wkt2 = tpoint_as_ewkt((Temporal *) inst1, 2);
+      // char *seq2_wkt2 = tpoint_as_ewkt((Temporal *) inst2, 2);
+      // char *seq3_wkt2 = tpoint_as_ewkt((Temporal *) inst3, 2);
 
       /* If point is already in the list, do not add it */
       if (notInList(instants,inst1))
+      {
         instants[j++]=inst1;
+        positions[l++] = i-2;
+      }
       if (notInList(instants,inst2))
+      {
         instants[j++]=inst2;
+        positions[l++] = i-1;
+      }
       if (notInList(instants,inst3))
+      {
         instants[j++]=inst3;
+        positions[l++] = i;
+      }
 
-      /* TODO if point is at list of out-of-order, change based on distance
-      if point is already in the list, do not add it */
-
-      result[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
+      /* if point is already in the list, do not add it */
+      results[k++]= tsequence_make(instants, j, true, true, DISCRETE, NORMALIZE);
     }
-    /* Advance in sliding window window */
+    /* Advance in sliding window */
     inst1 = inst2;
     inst1Angulo = inst2Angulo;
     value1Angulo = value2Angulo;
@@ -756,7 +810,10 @@ tnumberseq_angular_difference3(const TSequence *seq, TSequence **result,TSequenc
     inst2Angulo = inst3Angulo;
     value2Angulo = value3Angulo;
   }
+  TSequence *fixedorder = NULL;
 
+  fixOutOfOrder(originalseq, positions, l, fixedorder);
+  //tsequenceset_to_tsequence
   return k;
 }
 

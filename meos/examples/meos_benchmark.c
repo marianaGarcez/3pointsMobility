@@ -351,7 +351,7 @@ main(int argc, char **argv)
         else
         {
         char *temp_out = tpoint_as_ewkt((Temporal *) result, 3);
-        printf("%s\n",temp_out);
+        
         }
     }
 
@@ -359,8 +359,8 @@ main(int argc, char **argv)
     time_taken = ((double) t) / CLOCKS_PER_SEC;
     printf("Query two took %f seconds to execute\n", time_taken);
    /***************************************************************************
-    * Query three -  List the pair of ships that were both located within 10 m. */
-    // printf("Query 3 - List the pair of ships that were both located within a region from a Port.\n");
+    * Query three -  List the first time at which a ship visited a port. */
+    // printf("Query 3 - List the first time at which a ship visited a port.\n");
     // t = clock();
 
 
@@ -369,8 +369,8 @@ main(int argc, char **argv)
     // printf("Query three took %f seconds to execute\n", time_taken);
 
     /***************************************************************************
-     * Query four - List the first time at which a ship visited a port. */
-    // printf("Query 4 - List the pair of ships that were both located within a region from a Port.\n");
+     * Query four - List the pair of ships that were both located within a defined region from a Port. */
+    // printf("Query 4 - List the pair of ships that were both located within a defined region from a Port.\n");
     // t = clock();
 
     //Temporal *atgeom = tpoint_at_geometry(trip_rec.trip, communes[i].geom);
@@ -378,21 +378,10 @@ main(int argc, char **argv)
     // t = clock() - t;
     // time_taken = ((double) t) / CLOCKS_PER_SEC;
     // printf("Query four took %f seconds to execute\n", time_taken);
-
+  
     /***************************************************************************
-     * Query five - Compute how many ships were active at each period in Periods. */
-    // printf("Query 5 - Compute how many ships were active at each period in Periods.\n");
-    // t = clock();
-
-    
-    // t = clock() - t;
-    // time_taken = ((double) t) / CLOCKS_PER_SEC;
-    // printf("Query five took %f seconds to execute\n", time_taken);
-
-
-    /***************************************************************************
-     * Query six - List the highest speed for each ship. */
-    printf("Query 6 - List the highest speed for each ship.\n");
+     * Query five - List the highest speed for each ship. */
+    printf("Query 5 - List the highest speed for each ship.\n");
     t = clock();
     double speed_value = 0;
 
@@ -404,11 +393,11 @@ main(int argc, char **argv)
 
     t = clock() - t;
     time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query six took %f seconds to execute\n", time_taken);
+    printf("Query five took %f seconds to execute\n", time_taken);
 
     /***************************************************************************
-     * Query seven - Count the number of trips that were active during each hour in November 1st 2022. */
-    // printf("Query 7 - Count the number of trips that were active in November 1st 2022.\n");
+     * Query six - Count the number of trips that were active during each hour in November 1st 2022. */
+    // printf("Query 6 - Count the number of trips that were active on November 1st, 2022.\n");
     // t = clock();
 
 
@@ -418,7 +407,7 @@ main(int argc, char **argv)
 
 
     /***************************************************************************/
-    /* Query ten - List pair of ships that come closer than 10 meters to one another. */
+    /* Query seven - List pair of ships that come closer than 10 meters to one another. */
     //ST_Distance(T1.Trajs, T2.Trajs)
     //tdwithin(T1.Trip, T2.Trip, 100.0)
 
