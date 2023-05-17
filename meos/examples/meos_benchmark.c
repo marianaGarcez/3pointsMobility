@@ -68,19 +68,15 @@
 /* Maximum number of ships */
 #define MAX_SHIPS 10000
 /* Maximum number of ports */
-#define MAX_PORTS 3740
+#define MAX_PORTS 3
 
 
 int count=0;
 
 typedef struct
 {
-  Timestamp T;
-  int id;  
-  long int PortID;
-  double Latitude;
-  double Longitude;
-  TSequence *trip;
+  char name[15];
+  const GSERIALIZED *geom;
 } Port_record;
 
 
@@ -132,8 +128,6 @@ main(int argc, char **argv)
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
-  char point_buffer2[MAX_LENGTH_POINT];
-  char text_buffer2[MAX_LENGTH_HEADER];
   /* Allocate space to build the trips */
   trip_record trips[MAX_TRIPS] = {0};
   /* Allocate space to build the ports */
@@ -163,7 +157,7 @@ main(int argc, char **argv)
 
 
   /***************************************************************************
-   * Section 2: Initialize MEOS, open the input AIS file and ports file
+   * Section 2: Initialize MEOS, open the input AIS file
    ***************************************************************************/
 
   /* Initialize MEOS */
@@ -178,17 +172,6 @@ main(int argc, char **argv)
     return_value = 1;
     goto cleanup;
   }
-
-    /* Open the Ports file */
-    /* You may substitute the full file path in the first argument of fopen */
-    FILE *filePorts = fopen("Ports.csv", "r");
-
-    if (! fileOut)
-    {
-        printf("Error opening ports file\n");
-        return_value = 1;
-        goto cleanup;
-    }
 
   /***************************************************************************
    * Section 3: Read input file line by line and append each observation as a
@@ -268,47 +251,70 @@ main(int argc, char **argv)
 
 
     /***************************************************************************
-   * Section 4: Read Port file line by line and append each observation as a
-   * temporal point in MEOS
-   * 
+   * Section 4: Create ports geometry
    ***************************************************************************/
-    /* Read the first line of the file with the headers */
 
-   fscanf(filePorts, "%s\n", text_buffer2);
-   printf("%s\n", text_buffer2);
-
-  /* Continue reading the file */
-  do
-  {
-    fscanf(filePorts, "%s\n", text_buffer2);
-
-    sscanf(text_buffer2, "%d,%ld,%lf,%lf\n",
-      &ports[no_ports].id, &ports[no_ports].PortID, 
-      &ports[no_ports].Latitude, &ports[no_ports].Longitude);
+    char *polygon_wkt_Rodby = "Polygon((651135 6058230,651422 6058230,651422 6058517,651135 6058517,651135 6058230))";
+    ports[0].name = "Rodby";
+    ports[0].geom = gserialized_in(polygon_wkt_Rodby, -1);
     
-    ports[no_ports].T = pg_timestamp_in("2021-01-08", -1);
-
-    char *t_out = pg_timestamp_out(rec.T);
-
-    sprintf(point_buffer2, "SRID=4326;Point(%lf %lf)@%s+00", ports[no_ports].Longitude,
-      ports[no_ports].Latitude,t_out);
-
-    TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer2);
-
-    ports[no_ports].trip = tsequence_make_exp((const TInstant **) &inst, 1,
-        NO_INSTANTS_BATCH, true, true, LINEAR, false);
-
-    no_ports++;
-
-  } while (!feof(filePorts));
-
-  printf("\n%d Ports read.\n",no_ports);
+    char *polygon_wkt_Puttgarden = "Polygon((644339 6042108,644896 6042487,644896 6042487,644339 6042108,644339 6042108))";
+    ports[1].name = "Puttgarden";
+    ports[1].geom = gserialized_in(polygon_wkt_Puttgarden, -1);
+    
 
 
-    /***************************************************************************
-   * Section 5: Benchmarking
-   * Queries 1 to 12
+   /***************************************************************************
+   * Section 5: Create bounding box that incorates both ports
    ****************************************************************************/
+    char *polygon_wkt_BoundingBox = "Polygon(())";
+
+
+
+  /***************************************************************************
+   * Section 6: Separate Ferries from all ships - extern int eintersects_tpoint_geo(const Temporal *temp, const GSERIALIZED *gs);
+
+   ****************************************************************************/
+
+
+   /***************************************************************************
+   * Section 6: Split Ferries trips into trips between ports - AtGeometry
+   ****************************************************************************/
+
+
+
+   /***************************************************************************
+   * Section 7: Split Ferries trips into trips between ports - AtStops
+   ****************************************************************************/
+
+  
+
+   /***************************************************************************
+   * Section 8 : Trips Functions
+   ****************************************************************************/
+    /* clean trips that are too short or too long */
+    for (i = 0; i < numships; i++)
+    {
+      if (trips[i].trip->count == 0 || trips[i].trip->count > 1500000)
+      {
+        trips[i].trip = NULL;
+        numships--;
+      }
+    }
+
+    /* Separate trips that are near the ports atSTbox */
+    for (i = 0; i < numships; i++)
+    {
+      for (j = 0; j < no_ports; j++)
+      {
+        if (tsequence_at_geometry(trips[i].trip, ports[j].trip, 0))
+        {
+      
+        }
+      }
+    }
+
+
     /* Query one - List the ships that have trajectories with more than 300 points. */
     printf("Query 1 - List the ships that have trajectories with more than 300 points.\n");
     clock_t t;
@@ -331,54 +337,7 @@ main(int argc, char **argv)
     t = clock() - t;
     double time_taken = ((double) t) / CLOCKS_PER_SEC;
     printf("Query one took %f seconds to execute\n", time_taken);
-
-
-    /***************************************************************************
-    * Query two -  List the ships that were in a port. */
-    //--------------------------------------------------------------------------
     
-    t = clock();
-    printf("Query 2 - List the ships that were in a port.\n");    
-    
-    
-    for (i = 0; i < numships; i++)
-    {
-        Temporal *result = tdwithin_tpoint_tpoint((const Temporal *)trips[numships].trip, (const Temporal *)ports[0].trip, 10,1,1);
-        if (result == NULL)
-        {
-        printf("NULL\n");
-        }
-        else
-        {
-        char *temp_out = tpoint_as_ewkt((Temporal *) result, 3);
-        
-        }
-    }
-
-    t = clock() - t;
-    time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query two took %f seconds to execute\n", time_taken);
-   /***************************************************************************
-    * Query three -  List the first time at which a ship visited a port. */
-    // printf("Query 3 - List the first time at which a ship visited a port.\n");
-    // t = clock();
-
-
-    // t = clock() - t;
-    // time_taken = ((double) t) / CLOCKS_PER_SEC;
-    // printf("Query three took %f seconds to execute\n", time_taken);
-
-    /***************************************************************************
-     * Query four - List the pair of ships that were both located within a defined region from a Port. */
-    // printf("Query 4 - List the pair of ships that were both located within a defined region from a Port.\n");
-    // t = clock();
-
-    //Temporal *atgeom = tpoint_at_geometry(trip_rec.trip, communes[i].geom);
-
-    // t = clock() - t;
-    // time_taken = ((double) t) / CLOCKS_PER_SEC;
-    // printf("Query four took %f seconds to execute\n", time_taken);
-  
     /***************************************************************************
      * Query five - List the highest speed for each ship. */
     printf("Query 5 - List the highest speed for each ship.\n");
@@ -395,23 +354,14 @@ main(int argc, char **argv)
     time_taken = ((double) t) / CLOCKS_PER_SEC;
     printf("Query five took %f seconds to execute\n", time_taken);
 
-    /***************************************************************************
-     * Query six - Count the number of trips that were active during each hour in November 1st 2022. */
-    // printf("Query 6 - Count the number of trips that were active on November 1st, 2022.\n");
-    // t = clock();
 
 
-    // t = clock() - t;
-    // time_taken = ((double) t) / CLOCKS_PER_SEC;
-    // printf("Query seven took %f seconds to execute\n", time_taken);
+   /***************************************************************************
+   * Section 9: ships that get close to ferries
+   ****************************************************************************/
 
 
-    /***************************************************************************/
-    /* Query seven - List pair of ships that come closer than 10 meters to one another. */
-    //ST_Distance(T1.Trajs, T2.Trajs)
-    //tdwithin(T1.Trip, T2.Trip, 100.0)
-
-
+  
     /***************************************************************************/
 
 /* Clean up */
@@ -425,8 +375,6 @@ cleanup:
 
   /* Close the connection to the logfile */
   fclose(fileOut);
-  fclose(filePorts);
-
   /* Close the file */
   fclose(fileIn);
 

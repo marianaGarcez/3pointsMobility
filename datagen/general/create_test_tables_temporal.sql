@@ -183,7 +183,48 @@ CREATE TABLE tbl_tstzrange AS
 /* Add perc NULL values */
 SELECT k, NULL
 FROM generate_series(1, perc) AS k UNION
-SELECT k, random_tstzrange('2001-01-01', '2001-12-31', 10) AS t
+SELECT k, random_-- Create a CTE with the start and end ports
+WITH port_transitions AS (
+  SELECT 
+    Ferries.MMSI,
+    (CASE WHEN ST_Intersects(Ferries.trip::geometry, (SELECT bbox_Rodby FROM temp_port_boxes)) THEN 'Rodby'
+          WHEN ST_Intersects(Ferries.trip::geometry, (SELECT bbox_Puttgarden FROM temp_port_boxes)) THEN 'Puttgarden'
+          ELSE NULL END) AS StartPort,
+    startTimestamp( atMin(getTimestamp(Ferries.trip))) AS StartTimestamp
+  FROM 
+    Ferries
+  WHERE 
+    ST_Intersects(Ferries.trip::geometry, (SELECT bbox_Rodby FROM temp_port_boxes)) OR
+    ST_Intersects(Ferries.trip::geometry, (SELECT bbox_Puttgarden FROM temp_port_boxes))
+)select Ferries.MMSI;
+
+IndividualTrips AS (
+  SELECT 
+    pt.MMSI,
+    pt.StartPort,
+    t.EndPort,
+    atPeriod(Ferries.trip, period(pt.StartTimestamp, t.NextTimestamp)) AS Trip
+  FROM 
+    port_transitions AS pt
+  INNER JOIN
+    (SELECT 
+       MMSI, 
+       StartTimestamp,
+       LEAD(StartPort) OVER (PARTITION BY MMSI ORDER BY StartTimestamp) AS EndPort,
+       LEAD(StartTimestamp) OVER (PARTITION BY MMSI ORDER BY StartTimestamp) AS NextTimestamp
+     FROM port_transitions) AS t
+  ON pt.MMSI = t.MMSI AND pt.StartTimestamp = t.StartTimestamp
+  INNER JOIN
+    Ferries 
+  ON pt.MMSI = Ferries.MMSI AND pt.StartTimestamp = getTimestamp(Ferries.trip) 
+)
+
+-- Create the final table by removing trips where the start port is the same as the end port
+SELECT * 
+INTO IndividualTrips
+FROM IndividualTrips
+WHERE StartPort <> EndPort;
+('2001-01-01', '2001-12-31', 10) AS t
 FROM generate_series(perc+1, size) AS k;
 
 DROP TABLE IF EXISTS tbl_tstzrange_array;

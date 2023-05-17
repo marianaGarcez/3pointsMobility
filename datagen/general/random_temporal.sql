@@ -66,7 +66,8 @@ FROM generate_series(1, 15) AS k;
 /**
  * Generate a random integer in a range
  *
- * @param[in] lowvalue, highvalue Inclusive bounds of the range
+ * @param[in] lowvalue, highvalue Inclusive bounds of the 
+ 
  */
 DROP FUNCTION IF EXISTS random_int;
 CREATE FUNCTION random_int(lowvalue int, highvalue int)
