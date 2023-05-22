@@ -275,13 +275,13 @@ main(int argc, char **argv)
 
     STBox *trip_extent = stbox_in("SRID=4326;STBOX X(((11.2240,54.5009),(11.3571,54.6577)))");
        /* separate allships that are near the bounding box */
-    //for (size_t i = 0; i < numships; i++)
-    //{
+    for (size_t i = 0; i < numships; i++)
+    {
       if (eintersects_tpoint_geo((const Temporal *) allships[0].trip, ports[2].geom))
       {
         printf("\n Ship is in the bounding box\n");
       }
-    //}
+    }
 
 
   /***************************************************************************
