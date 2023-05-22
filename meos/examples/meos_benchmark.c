@@ -64,7 +64,7 @@
 /* Number of inserts that are sent in bulk */
 #define NO_BULK_INSERT 20
 /* Maximum number of trips */
-#define MAX_TRIPS 5
+#define MAX_TRIPS 10000
 /* Maximum number of ships */
 #define MAX_SHIPS 10000
 /* Maximum number of ports */
