@@ -97,6 +97,7 @@ typedef struct
 //verifies if the size if greater than the max size, of so, it sends the data to the file
 int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
 {
+  printf("windowManager\n");
   if (trips[ship].trip && trips[ship].trip->count == NO_INSTANTS_BATCH)
   {
 
