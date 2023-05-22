@@ -115,7 +115,46 @@ int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
   return 1;
 }
 
+/**
+ * @brief Transform a temporal point into another spatial reference system
+ */
+TSequence *
+tpointseq_transform(const TSequence *seq, int srid)
+{
+  interpType interp = MOBDB_FLAGS_GET_INTERP(seq->flags);
 
+  /* Instantaneous sequence */
+  if (seq->count == 1)
+  {
+    TInstant *inst = tpointinst_transform(TSEQUENCE_INST_N(seq, 0),
+      Int32GetDatum(srid));
+    TSequence *result = tinstant_to_tsequence(inst, interp);
+    pfree(inst);
+    return result;
+  }
+
+  /* General case */
+  /* Call the discrete sequence function even for continuous sequences
+   * to obtain a Multipoint that is sent to PostGIS for transformion */
+  Datum multipoint = PointerGetDatum(tpointdiscseq_trajectory(seq));
+  Datum transf = datum_transform(multipoint, srid);
+  GSERIALIZED *gs = (GSERIALIZED *) PG_DETOAST_DATUM(transf);
+  LWMPOINT *lwmpoint = lwgeom_as_lwmpoint(lwgeom_from_gserialized(gs));
+  TInstant **instants = palloc(sizeof(TInstant *) * seq->count);
+  for (int i = 0; i < seq->count; i++)
+  {
+    Datum point = PointerGetDatum(geo_serialize((LWGEOM *) (lwmpoint->geoms[i])));
+    const TInstant *inst = TSEQUENCE_INST_N(seq, i);
+    instants[i] = tinstant_make(point, inst->temptype, inst->t);
+    pfree(DatumGetPointer(point));
+  }
+  PG_FREE_IF_COPY_P(gs, DatumGetPointer(transf));
+  pfree(DatumGetPointer(transf)); pfree(DatumGetPointer(multipoint));
+  lwmpoint_free(lwmpoint);
+
+  return tsequence_make_free(instants, seq->count, true, true, interp,
+    NORMALIZE_NO);
+}
 
 int
 main(int argc, char **argv)
