@@ -147,6 +147,7 @@ main(int argc, char **argv)
   /* Open/create the output file */
   /* You may substitute the full file path in the first argument of fopen */
   FILE *fileOut = fopen("aisoutput.csv", "w+");
+  printf("file out opened\n");
 
   if (! fileOut)
   {
@@ -165,6 +166,7 @@ main(int argc, char **argv)
 
   /* You may substitute the full file path in the first argument of fopen */
   FILE *fileIn = fopen("aisinput.csv", "r");
+  printf("file in opened\n");
 
   if (! fileIn)
   {
@@ -256,10 +258,11 @@ main(int argc, char **argv)
 
     char *polygon_wkt_Rodby = "Polygon((651135 6058230,651422 6058230,651422 6058517,651135 6058517,651135 6058230))";
     ports[0].geom = gserialized_in(polygon_wkt_Rodby, -1);
+    printf("\n Created Rodby\n");
     
     char *polygon_wkt_Puttgarden = "Polygon((644339 6042108,644896 6042487,644896 6042487,644339 6042108,644339 6042108))";
     ports[1].geom = gserialized_in(polygon_wkt_Puttgarden, -1);
-    
+    printf("\n Created Rodby\n");
 
 
    /***************************************************************************
