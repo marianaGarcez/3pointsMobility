@@ -153,7 +153,7 @@ tpointseq_transform(const TSequence *seq, int srid)
   lwmpoint_free(lwmpoint);
 
   return tsequence_make_free(instants, seq->count, true, true, interp,
-    NORMALIZE_NO);
+    false);
 }
 
 int
