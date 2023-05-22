@@ -317,7 +317,7 @@ void
 ensure_same_srid(int32_t srid1, int32_t srid2)
 {
   if (srid1 != srid2)
-    elog(ERROR, "Operation on mixed SRID");
+    elog(ERROR, "Operation on mixed SRID %d and %d", srid1, srid2);
   return;
 }
 

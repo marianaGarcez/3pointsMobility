@@ -274,8 +274,6 @@ main(int argc, char **argv)
     char *polygon_wkt_BoundingBox = "SRID=25832;Polygon((644339 6042108, 651422 6058548, 651422 6058548, 644339 6042108, 644339 6042108))";
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
     printf("\n Created Bounding box\n");
-    
-    int srid = gserialized_get_srid(ports[2].geom);
 
     /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
