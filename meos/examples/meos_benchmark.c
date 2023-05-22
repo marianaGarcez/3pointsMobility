@@ -237,7 +237,7 @@ main(int argc, char **argv)
      * - The timestamps are given in GMT time zone
      */
     char *t_out = pg_timestamp_out(rec.T);
-    sprintf(point_buffer, "SRID=25832;Point(%lf %lf)@%s+00", rec.Longitude,
+    sprintf(point_buffer, "SRID=4326;Point(%lf %lf)@%s+00", rec.Longitude,
       rec.Latitude, t_out);
 
     //windowManager(NO_INSTANTS_BATCH,ships, ship,fileOut);
@@ -259,11 +259,11 @@ main(int argc, char **argv)
    * Section 4: Create ports geometry
    ***************************************************************************/
 
-    char *polygon_wkt_Rodby = "Polygon((651135 6058230,651422 6058230,651422 6058517,651135 6058517,651135 6058230))";
+    char *polygon_wkt_Rodby = "SRID=25832;Polygon((651135 6058230,651422 6058230,651422 6058517,651135 6058517,651135 6058230))";
     ports[0].geom = gserialized_in(polygon_wkt_Rodby, -1);
     printf("\n Created Rodby\n");
     
-    char *polygon_wkt_Puttgarden = "Polygon((644339 6042108,644896 6042487,644896 6042487,644339 6042108,644339 6042108))";
+    char *polygon_wkt_Puttgarden = "SRID=25832;Polygon((644339 6042108,644896 6042487,644896 6042487,644339 6042108,644339 6042108))";
     ports[1].geom = gserialized_in(polygon_wkt_Puttgarden, -1);
     printf("\n Created Rodby\n");
 
@@ -271,10 +271,9 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 5: Create bounding box that incorates both ports
    ****************************************************************************/
-    char *polygon_wkt_BoundingBox = "Polygon((644339 6042108, 651422 6058548, 651422 6058548, 644339 6042108, 644339 6042108))";
+    char *polygon_wkt_BoundingBox = "SRID=25832;Polygon((644339 6042108, 651422 6058548, 651422 6058548, 644339 6042108, 644339 6042108))";
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
     printf("\n Created Bounding box\n");
-    int sidPort =  gserialized_get_srid(ports[2].geom);
 
     /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
