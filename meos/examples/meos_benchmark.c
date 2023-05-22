@@ -128,8 +128,9 @@ main(int argc, char **argv)
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
-  /* Allocate space to build the trips */
-  trip_record trips[MAX_TRIPS] = {0};
+  /* Allocate space to build the allships */
+  trip_record allships[MAX_TRIPS] = {0};
+  trip_record ships[MAX_SHIPS] = {0};
   /* Allocate space to build the ports */
   Port_record ports[MAX_PORTS] = {0};
   double maxspeed[MAX_SHIPS];
@@ -210,7 +211,7 @@ main(int argc, char **argv)
     int ship = -1;
     for (i = 0; i < MAX_TRIPS; i++)
     {
-      if (trips[i].MMSI == rec.MMSI)
+      if (allships[i].MMSI == rec.MMSI)
       {
         ship = i;
         break;
@@ -225,7 +226,7 @@ main(int argc, char **argv)
         return_value = 1;
         goto cleanup;
       }
-      trips[ship].MMSI = rec.MMSI;
+      allships[ship].MMSI = rec.MMSI;
     }
     /*
      * Append the latest observation to the corresponding ship.
@@ -239,11 +240,11 @@ main(int argc, char **argv)
 
     /* Append the last observation */
     TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer);
-    if (! trips[ship].trip)
-      trips[ship].trip = tsequence_make_exp((const TInstant **) &inst, 1,
+    if (! allships[ship].trip)
+      allships[ship].trip = tsequence_make_exp((const TInstant **) &inst, 1,
         NO_INSTANTS_BATCH, true, true, LINEAR, false);
     else
-      tsequence_append_tinstant(trips[ship].trip, inst, 1000, maxt,true);
+      tsequence_append_tinstant(allships[ship].trip, inst, 1000, maxt,true);
   } while (!feof(fileIn));
 
   printf("\n%d records read.\n%d incomplete records ignored. %d writes to the logfile\n",
@@ -267,13 +268,23 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 5: Create bounding box that incorates both ports
    ****************************************************************************/
-    char *polygon_wkt_BoundingBox = "Polygon(())";
+    char *polygon_wkt_BoundingBox = "Polygon((644339 6042108, 651422 6058548, 651422 6058548, 644339 6042108, 644339 6042108))";
+    ports[2].name = "BoundingBox";
+    ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
 
+    /* separate allships that are near the bounding box */
+    for (size_t i = 0; i < numships; i++)
+    {
+      if (eintersects_tpoint_geo(allships[i].trip, ports[2].geom))
+      {
+        ships[numships].MMSI = allships[ship].MMSI;
+        ships[numships].trip = allships[ship].trip;
+      }
+    }
 
 
   /***************************************************************************
    * Section 6: Separate Ferries from all ships - extern int eintersects_tpoint_geo(const Temporal *temp, const GSERIALIZED *gs);
-
    ****************************************************************************/
 
 
@@ -368,7 +379,7 @@ main(int argc, char **argv)
 cleanup:
  /* Free memory */
   for (i = 0; i < numships; i++)
-    free(trips[i].trip);
+    free(allships[i].trip);
 
   /* Finalize MEOS */
   meos_finalize();
