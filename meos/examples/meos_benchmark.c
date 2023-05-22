@@ -97,7 +97,6 @@ typedef struct
 //verifies if the size if greater than the max size, of so, it sends the data to the file
 int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
 {
-  printf("windowManager\n");
   if (trips[ship].trip && trips[ship].trip->count == NO_INSTANTS_BATCH)
   {
 
@@ -166,7 +165,7 @@ main(int argc, char **argv)
   meos_initialize(NULL);
 
   /* You may substitute the full file path in the first argument of fopen */
-  FILE *fileIn = fopen("aisinput.csv", "r");
+  FILE *fileIn = fopen("aisinput2.csv", "r");
   printf("file in opened\n");
 
   if (! fileIn)
@@ -182,8 +181,7 @@ main(int argc, char **argv)
    * 
    ***************************************************************************/
 
-  printf("Accumulating %d instants before sending them to the logfile\n"
-    "(one marker every logfile update)\n", NO_INSTANTS_BATCH);
+  //printf("Accumulating %d instants before sending them to the logfile\n" "(one marker every logfile update)\n", NO_INSTANTS_BATCH);
   /* Read the first line of the file with the headers */
   fscanf(fileIn, "%1023s\n", text_buffer);
 
@@ -243,7 +241,7 @@ main(int argc, char **argv)
     sprintf(point_buffer, "SRID=4326;Point(%lf %lf)@%s+00", rec.Longitude,
       rec.Latitude, t_out);
 
-    windowManager(NO_INSTANTS_BATCH,ships, ship,fileOut);
+    //windowManager(NO_INSTANTS_BATCH,ships, ship,fileOut);
 
     /* Append the last observation */
     TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer);
