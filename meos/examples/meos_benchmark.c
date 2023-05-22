@@ -162,7 +162,7 @@ main(int argc, char **argv)
   meos_initialize(NULL);
 
   /* You may substitute the full file path in the first argument of fopen */
-  FILE *fileIn = fopen("aisinput2.csv", "r");
+  FILE *fileIn = fopen("aisinput.csv", "r");
   printf("file in opened\n");
 
   if (! fileIn)
@@ -185,6 +185,7 @@ main(int argc, char **argv)
   /* Continue reading the file */
   do
   {
+    printf("read %d\n",no_records);
     int read = fscanf(fileIn, "%32[^,],%ld,%lf,%lf,%lf\n",
       text_buffer, &rec.MMSI, &rec.Latitude, &rec.Longitude, &rec.SOG);
     /* Transform the string representing the timestamp into a timestamp value */
