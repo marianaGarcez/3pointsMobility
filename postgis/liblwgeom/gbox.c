@@ -285,7 +285,8 @@ int gbox_overlaps(const GBOX *g1, const GBOX *g2)
 
 	/* Make sure our boxes are consistent */
 	if ( FLAGS_GET_GEODETIC(g1->flags) != FLAGS_GET_GEODETIC(g2->flags) )
-		lwerror("gbox_overlaps: cannot compare geodetic and non-geodetic boxes");
+		lwerror("gbox_overlaps: cannot compare geodetic and non-geodetic boxes %d,%d",
+		        FLAGS_GET_GEODETIC(g1->flags), FLAGS_GET_GEODETIC(g2->flags));
 
 	/* Check X/Y first */
 	if ( g1->xmax < g2->xmin || g1->ymax < g2->ymin ||
