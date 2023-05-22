@@ -52,7 +52,7 @@
 
 
 /* Number of instants to send in batch to the file  */
-#define NO_INSTANTS_BATCH 5000
+#define NO_INSTANTS_BATCH 500
 /* Number of instants to keep when restarting a sequence */
 #define NO_INSTANTS_KEEP 2
 /* Maximum length in characters of a header record in the input CSV file */
@@ -64,9 +64,9 @@
 /* Number of inserts that are sent in bulk */
 #define NO_BULK_INSERT 20
 /* Maximum number of trips */
-#define MAX_TRIPS 100000
+#define MAX_TRIPS 5614
 /* Maximum number of ships */
-#define MAX_SHIPS 100000
+#define MAX_SHIPS 10000000
 /* Maximum number of ports */
 #define MAX_PORTS 3
 
@@ -123,7 +123,6 @@ main(int argc, char **argv)
   Port_record portRead;
   int no_records = 0;
   int no_nulls = 0;
-  int no_ports = 0;
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
@@ -181,6 +180,8 @@ main(int argc, char **argv)
    * 
    ***************************************************************************/
 
+  printf("Accumulating %d instants before sending them to the logfile\n"
+    "(one marker every logfile update)\n", NO_INSTANTS_BATCH);
   /* Read the first line of the file with the headers */
   fscanf(fileIn, "%1023s\n", text_buffer);
 
@@ -239,6 +240,8 @@ main(int argc, char **argv)
     char *t_out = pg_timestamp_out(rec.T);
     sprintf(point_buffer, "SRID=4326;Point(%lf %lf)@%s+00", rec.Longitude,
       rec.Latitude, t_out);
+
+    windowManager(NO_INSTANTS_BATCH,trips, ship,fileOut);
 
     /* Append the last observation */
     TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer);
