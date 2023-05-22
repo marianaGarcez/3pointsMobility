@@ -48,7 +48,7 @@
 #include <meos.h>
 #include <meos_internal.h>
 #include <time.h>
-
+#define GEODETIC true
 
 /* Number of instants to send in batch to the file  */
 #define NO_INSTANTS_BATCH 500
@@ -270,7 +270,6 @@ main(int argc, char **argv)
    ****************************************************************************/
     char *polygon_wkt_BoundingBox = "SRID=4326;Polygon((54.5009 11.2240, 54.6577 11.3571, 54.6577 11.3571, 54.5009 11.2240, 54.5009 11.2240))";
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, 0);
-
 
     printf("\n Created Bounding box\n");
 
