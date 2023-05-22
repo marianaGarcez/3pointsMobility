@@ -279,6 +279,10 @@ main(int argc, char **argv)
       {
         printf("\n Ship is in the bounding box\n");
       }
+      else
+      {
+        printf("\n Ship is not in the bounding box\n");
+      }
     }
 
 
