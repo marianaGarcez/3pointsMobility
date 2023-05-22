@@ -273,13 +273,13 @@ main(int argc, char **argv)
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
     printf("\n Created Bounding box\n");
 
-    /* separate allships that are near the bounding box */
+    STBox *trip_extent = stbox_instbox_in("SRID=4326;STBOX X(((11.2240,54.5009),(11.3571,54.6577)))");
+       /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
     {
-      if (eintersects_tpoint_geo((const Temporal *)allships[i].trip, ports[2].geom))
+      if (eintersects_tpoint_geo((const Temporal *) allships[i].trip, trip_extent))
       {
-        ships[i].MMSI = allships[i].MMSI;
-        ships[i].trip = allships[i].trip;
+        printf("\n Ship is in the bounding box\n");
       }
     }
 
