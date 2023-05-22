@@ -48,7 +48,6 @@
 #include <meos.h>
 #include <meos_internal.h>
 #include <time.h>
-#include <geos_c.h>
 
 
 
@@ -274,11 +273,8 @@ main(int argc, char **argv)
    ****************************************************************************/
     char *polygon_wkt_BoundingBox = "Polygon((644339 6042108, 651422 6058548, 651422 6058548, 644339 6042108, 644339 6042108))";
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
-     printf("\n Created Bounding box\n");
-    
-    int shipssrid = getSRID(allships[0].trip);
-    int portnum = getSRID(ports[2].geom);
-    printf("\nSRID %d  \n",portnum);
+    printf("\n Created Bounding box\n");
+    int sidPort =  gserialized_get_srid(ports[2].geom);
 
     /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
