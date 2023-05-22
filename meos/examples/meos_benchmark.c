@@ -269,7 +269,7 @@ main(int argc, char **argv)
    * Section 5: Create bounding box that incorates both ports
    ****************************************************************************/
     char *polygon_wkt_BoundingBox = "SRID=4326;Polygon((54.5009 11.2240, 54.6577 11.3571, 54.6577 11.3571, 54.5009 11.2240, 54.5009 11.2240))";
-    ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
+    ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, 1);
 
 
     printf("\n Created Bounding box\n");
