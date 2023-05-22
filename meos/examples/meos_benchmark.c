@@ -273,7 +273,7 @@ main(int argc, char **argv)
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
     printf("\n Created Bounding box\n");
 
-    STBox *trip_extent = stbox_instbox_in("SRID=4326;STBOX X(((11.2240,54.5009),(11.3571,54.6577)))");
+    STBox *trip_extent = stbox_in("SRID=4326;STBOX X(((11.2240,54.5009),(11.3571,54.6577)))");
        /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
     {
