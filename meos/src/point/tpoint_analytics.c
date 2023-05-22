@@ -65,26 +65,6 @@
  * - either given in the second parameter
  * - or encode the timestamps of the temporal point in Unix epoch
  *****************************************************************************/
-Datum
-datum_transform(Datum value, Datum srid)
-{
-  return CallerFInfoFunctionCall2(transform, (fetch_fcinfo())->flinfo,
-    InvalidOid, value, srid);
-}
-
-
-/**
- * @brief Transform a temporal point into another spatial reference system
- */
-TInstant *
-tpointinst_transform(const TInstant *inst, int srid)
-{
-  Datum geo = datum_transform(tinstant_value(inst), Int32GetDatum(srid));
-  TInstant *result = tinstant_make(geo, inst->temptype, inst->t);
-  pfree(DatumGetPointer(geo));
-  return result;
-}
-
 /**
  * @brief Convert the geometry/geography point and the measure into a PostGIS
  * point with an M coordinate

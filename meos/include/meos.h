@@ -1371,8 +1371,6 @@ extern double temporal_hausdorff_distance(const Temporal *temp1, const Temporal 
 
 /* Analytics functions for temporal types */
 
-Datum datum_transform(Datum value, Datum srid);
-TInstant *tpointinst_transform(const TInstant *inst, int srid);
 Temporal *geo_to_tpoint(const GSERIALIZED *geo);
 Temporal *temporal_simplify_min_dist(const Temporal *temp, double dist);
 Temporal *temporal_simplify_min_tdelta(const Temporal *temp, const Interval *mint);

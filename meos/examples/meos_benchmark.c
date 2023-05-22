@@ -252,23 +252,15 @@ main(int argc, char **argv)
   printf("\n%d records read.\n%d incomplete records ignored. %d writes to the logfile\n",
     no_records, no_nulls,count);
 
-  /* transform SRID from ships from 4326 to 25832*/
-  for (i = 0; i < numships; i++)
-  {
-    if (allships[i].trip)
-    {
-      TInstant *inst = tpointinst_transform(TSEQUENCE_INST_N(allships[i].trip, 0),25832);
-    }
-  }
     /***************************************************************************
    * Section 4: Create ports geometry
    ***************************************************************************/
 
-    char *polygon_wkt_Rodby = "SRID=25832;Polygon((651135 6058230,651422 6058230,651422 6058517,651135 6058517,651135 6058230))";
+    char *polygon_wkt_Rodby = "SRID=4326;Polygon((54.6484 11.3425,54.6577 11.3571,54.6577 11.3571,54.6484 11.3425,54.6484 11.3425))";
     ports[0].geom = gserialized_in(polygon_wkt_Rodby, -1);
     printf("\n Created Rodby\n");
     
-    char *polygon_wkt_Puttgarden = "SRID=25832;Polygon((644339 6042108,644896 6042487,644896 6042487,644339 6042108,644339 6042108))";
+    char *polygon_wkt_Puttgarden = "SRID=4326;Polygon((54.5009 11.2240, 54.5093 11.2377, 54.5093 11.2377, 54.5009 11.2240, 54.5009 11.2240))";
     ports[1].geom = gserialized_in(polygon_wkt_Puttgarden, -1);
     printf("\n Created Rodby\n");
 
@@ -276,7 +268,8 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 5: Create bounding box that incorates both ports
    ****************************************************************************/
-    char *polygon_wkt_BoundingBox = "SRID=25832;Polygon((644339 6042108, 651422 6058548, 651422 6058548, 644339 6042108, 644339 6042108))";
+    char *polygon_wkt_BoundingBox = "SRID=4326;Polygon((54.5009 11.2240, 54.6577 11.3571, 54.6577 11.3571, 54.5009 11.2240, 54.5009 11.2240))";
+
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
     printf("\n Created Bounding box\n");
 
