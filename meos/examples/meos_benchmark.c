@@ -102,6 +102,7 @@ int windowManager(int size, trip_record *trips, int ship ,FILE *fileOut)
 
     char *temp_out = tsequence_out(trips[ship].trip, 15);
     fprintf(fileOut, "%ld, %s\n",trips[ship].MMSI, temp_out);
+    printf("write in file\n");
     /* Free memory */
     free(temp_out);
     count++;
@@ -188,7 +189,7 @@ main(int argc, char **argv)
   /* Continue reading the file */
   do
   {
-    printf("Reading record %d\n", no_records);
+    //printf("Reading record %d\n", no_records);
     int read = fscanf(fileIn, "%32[^,],%ld,%lf,%lf,%lf\n",
       text_buffer, &rec.MMSI, &rec.Latitude, &rec.Longitude, &rec.SOG);
     /* Transform the string representing the timestamp into a timestamp value */
