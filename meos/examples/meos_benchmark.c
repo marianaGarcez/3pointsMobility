@@ -269,15 +269,14 @@ main(int argc, char **argv)
    * Section 5: Create bounding box that incorates both ports
    ****************************************************************************/
     char *polygon_wkt_BoundingBox = "SRID=4326;Polygon((54.5009 11.2240, 54.6577 11.3571, 54.6577 11.3571, 54.5009 11.2240, 54.5009 11.2240))";
-
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
-    printf("\n Created Bounding box\n");
 
-    STBox *trip_extent = stbox_in("SRID=4326;STBOX X(((11.2240,54.5009),(11.3571,54.6577)))");
+
+    printf("\n Created Bounding box\n");
        /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
     {
-      if (etouches_tpoint_geo((const Temporal *) allships[0].trip, ports[2].geom))
+      if (eintersects_tpoint_geo((const Temporal *) allships[0].trip, ports[2].geom))
       {
         printf("\n Ship is in the bounding box\n");
       }
