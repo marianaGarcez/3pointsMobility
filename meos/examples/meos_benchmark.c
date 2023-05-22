@@ -241,7 +241,7 @@ main(int argc, char **argv)
     sprintf(point_buffer, "SRID=4326;Point(%lf %lf)@%s+00", rec.Longitude,
       rec.Latitude, t_out);
 
-    windowManager(NO_INSTANTS_BATCH,trips, ship,fileOut);
+    windowManager(NO_INSTANTS_BATCH,ships, ship,fileOut);
 
     /* Append the last observation */
     TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer);
