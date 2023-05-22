@@ -257,7 +257,7 @@ main(int argc, char **argv)
   {
     if (allships[i].trip)
     {
-      TInstant *inst = tpointinst_transform(TSEQUENCE_INST_N(allships[i].trip, 0),Int32GetDatum(25832));
+      TInstant *inst = tpointinst_transform(TSEQUENCE_INST_N(allships[i].trip, 0),25832);
     }
   }
     /***************************************************************************
