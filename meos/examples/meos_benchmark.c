@@ -143,7 +143,7 @@ main(int argc, char **argv)
 
   /* Open/create the output file */
   /* You may substitute the full file path in the first argument of fopen */
-  FILE *fileOut = fopen("aisoutput.csv", "w+");
+  FILE *fileOut = fopen("ais2-reduced.csv", "w+");
   printf("file out opened\n");
 
   if (! fileOut)
