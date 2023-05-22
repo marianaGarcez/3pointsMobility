@@ -65,6 +65,13 @@
  * - either given in the second parameter
  * - or encode the timestamps of the temporal point in Unix epoch
  *****************************************************************************/
+Datum
+datum_transform(Datum value, Datum srid)
+{
+  return CallerFInfoFunctionCall2(transform, (fetch_fcinfo())->flinfo,
+    InvalidOid, value, srid);
+}
+
 
 /**
  * @brief Transform a temporal point into another spatial reference system
