@@ -197,7 +197,7 @@ datum_transform(Datum value, Datum srid)
 TInstant *
 tpointinst_transform(const TInstant *inst, int srid)
 {
-  Datum geo = datum_transform(tinstant_value(inst), Int32GetDatum(srid));
+  Datum geo = datum_transform(tinstant_value(inst),srid);
   TInstant *result = tinstant_make(geo, inst->temptype, inst->t);
   pfree(DatumGetPointer(geo));
   return result;
