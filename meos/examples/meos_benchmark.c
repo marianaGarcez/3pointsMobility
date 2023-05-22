@@ -276,13 +276,13 @@ main(int argc, char **argv)
     /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
     {
-      if (eintersects_tpoint_geo((const Temporal *) allships[0].trip, ports[2].geom))
+      if (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[2].geom))
       {
         printf("\n Ship is in the bounding box\n");
       }
       else
       {
-        printf("\n Ship %d is not in the bounding box %d\n", allships[0].MMSI, allships[0].trip->count);
+        printf("\n Ship %d is not in the bounding box %d\n", allships[i].MMSI, allships[i].trip->count);
       }
     }
 
