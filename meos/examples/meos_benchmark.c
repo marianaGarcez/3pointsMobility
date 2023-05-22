@@ -277,7 +277,7 @@ main(int argc, char **argv)
        /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
     {
-      if (edwithin_tpoint_geo((const Temporal *) allships[0].trip, ports[2].geom, 10))
+      if (etouches_tpoint_geo((const Temporal *) allships[0].trip, ports[2].geom))
       {
         printf("\n Ship is in the bounding box\n");
       }
