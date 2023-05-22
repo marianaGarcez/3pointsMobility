@@ -1384,15 +1384,6 @@ Temporal * temporal_maxSpeed(Temporal *temp);
 double tsequence_max_speed(const TSequence* seq);
 
 /*****************************************************************************/
-/* Functions for spatial reference systems */
-
-extern TInstant *tpointinst_transform(const TInstant *inst, int srid);
-extern TSequence *tpointdiscseq_transform(const TSequence *is, int srid);
-extern TSequence *tpointcontseq_transform(const TSequence *seq, int srid);
-extern TSequenceSet *tpointseqset_transform(const TSequenceSet *ss, int srid);
-extern Temporal *tpoint_transform(const Temporal *temp, int srid);
-
-
 
 
 #endif
