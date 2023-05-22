@@ -52,7 +52,7 @@
 
 
 /* Number of instants to send in batch to the file  */
-#define NO_INSTANTS_BATCH 500
+#define NO_INSTANTS_BATCH 5000
 /* Number of instants to keep when restarting a sequence */
 #define NO_INSTANTS_KEEP 2
 /* Maximum length in characters of a header record in the input CSV file */
@@ -64,9 +64,9 @@
 /* Number of inserts that are sent in bulk */
 #define NO_BULK_INSERT 20
 /* Maximum number of trips */
-#define MAX_TRIPS 100000
+#define MAX_TRIPS 1000000
 /* Maximum number of ships */
-#define MAX_SHIPS 100000
+#define MAX_SHIPS 1000000
 /* Maximum number of ports */
 #define MAX_PORTS 3
 
