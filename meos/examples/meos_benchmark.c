@@ -275,7 +275,7 @@ main(int argc, char **argv)
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
      printf("\n Created Bounding box\n");
     
-    int ships srid = getSRID(allships[0].trip);
+    int shipssrid = getSRID(allships[0].trip);
     int portnum = getSRID(ports[2].geom);
     printf("\nSRID %d  \n",portnum);
 
