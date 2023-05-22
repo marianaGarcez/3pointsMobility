@@ -254,6 +254,16 @@ main(int argc, char **argv)
   printf("\n%d records read.\n%d incomplete records ignored. %d writes to the logfile\n",
     no_records, no_nulls,count);
 
+  /* transform SRID from ships from 4326 to 25832*/
+  for (i = 0; i < numships; i++)
+  {
+    if (allships[i].trip)
+    {
+      TSequence *seq = tpointseq_transform(allships[i].trip, 25832);
+      pfree(allships[i].trip);
+      allships[i].trip = seq;
+    }
+  }
 
     /***************************************************************************
    * Section 4: Create ports geometry
