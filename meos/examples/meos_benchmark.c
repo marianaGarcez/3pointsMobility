@@ -66,7 +66,7 @@
 /* Maximum number of trips */
 #define MAX_TRIPS 5614
 /* Maximum number of ships */
-#define MAX_SHIPS 10000000
+#define MAX_SHIPS 100000
 /* Maximum number of ports */
 #define MAX_PORTS 3
 
