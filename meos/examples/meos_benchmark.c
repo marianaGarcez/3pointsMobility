@@ -48,7 +48,7 @@
 #include <meos.h>
 #include <meos_internal.h>
 #include <time.h>
-
+#include "../include/point/tpoint_spatialfuncs.h"
 
 
 /* Number of instants to send in batch to the file  */
