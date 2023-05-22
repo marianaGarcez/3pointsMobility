@@ -282,7 +282,7 @@ main(int argc, char **argv)
       }
       else
       {
-        printf("\n Ship %d is not in the bounding box %s\n", allships[0].MMSI, allships[0].trip);
+        printf("\n Ship %d is not in the bounding box %d\n", allships[0].MMSI, allships[0].trip->count);
       }
     }
 
