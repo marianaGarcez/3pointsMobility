@@ -262,18 +262,19 @@ main(int argc, char **argv)
     
     char *polygon_wkt_Puttgarden = "SRID=4326;Polygon((54.5009 11.2240, 54.5093 11.2377, 54.5093 11.2377, 54.5009 11.2240, 54.5009 11.2240))";
     ports[1].geom = gserialized_in(polygon_wkt_Puttgarden, -1);
-    printf("\n Created Rodby\n");
+    printf("\n Created Puttgarden\n");
 
 
    /***************************************************************************
    * Section 5: Create bounding box that incorates both ports
    ****************************************************************************/
     char *polygon_wkt_BoundingBox = "SRID=4326;Polygon((54.5009 11.2240, 54.6577 11.3571, 54.6577 11.3571, 54.5009 11.2240, 54.5009 11.2240))";
-    ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, 1);
+    ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, 0);
 
 
     printf("\n Created Bounding box\n");
-       /* separate allships that are near the bounding box */
+
+    /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
     {
       if (eintersects_tpoint_geo((const Temporal *) allships[0].trip, ports[2].geom))
