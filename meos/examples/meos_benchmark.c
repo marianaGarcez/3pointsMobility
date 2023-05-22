@@ -75,7 +75,6 @@ int count=0;
 
 typedef struct
 {
-  char name[15];
   const GSERIALIZED *geom;
 } Port_record;
 
@@ -256,11 +255,9 @@ main(int argc, char **argv)
    ***************************************************************************/
 
     char *polygon_wkt_Rodby = "Polygon((651135 6058230,651422 6058230,651422 6058517,651135 6058517,651135 6058230))";
-    ports[0].name = "Rodby";
     ports[0].geom = gserialized_in(polygon_wkt_Rodby, -1);
     
     char *polygon_wkt_Puttgarden = "Polygon((644339 6042108,644896 6042487,644896 6042487,644339 6042108,644339 6042108))";
-    ports[1].name = "Puttgarden";
     ports[1].geom = gserialized_in(polygon_wkt_Puttgarden, -1);
     
 
@@ -269,16 +266,15 @@ main(int argc, char **argv)
    * Section 5: Create bounding box that incorates both ports
    ****************************************************************************/
     char *polygon_wkt_BoundingBox = "Polygon((644339 6042108, 651422 6058548, 651422 6058548, 644339 6042108, 644339 6042108))";
-    ports[2].name = "BoundingBox";
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
 
     /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
     {
-      if (eintersects_tpoint_geo(allships[i].trip, ports[2].geom))
+      if (eintersects_tpoint_geo((const Temporal *)allships[i].trip, ports[2].geom))
       {
-        ships[numships].MMSI = allships[ship].MMSI;
-        ships[numships].trip = allships[ship].trip;
+        ships[i].MMSI = allships[i].MMSI;
+        ships[i].trip = allships[i].trip;
       }
     }
 
@@ -303,7 +299,7 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 8 : Trips Functions
    ****************************************************************************/
-    /* clean trips that are too short or too long */
+    /* clean trips that are too short or too long 
     for (i = 0; i < numships; i++)
     {
       if (trips[i].trip->count == 0 || trips[i].trip->count > 1500000)
@@ -311,9 +307,9 @@ main(int argc, char **argv)
         trips[i].trip = NULL;
         numships--;
       }
-    }
+    }*/
 
-    /* Separate trips that are near the ports atSTbox */
+    /* Separate trips that are near the ports atSTbox 
     for (i = 0; i < numships; i++)
     {
       for (j = 0; j < no_ports; j++)
@@ -323,10 +319,10 @@ main(int argc, char **argv)
       
         }
       }
-    }
+    }*/
 
 
-    /* Query one - List the ships that have trajectories with more than 300 points. */
+    /* Query one - List the ships that have trajectories with more than 300 points. 
     printf("Query 1 - List the ships that have trajectories with more than 300 points.\n");
     clock_t t;
     t = clock();
@@ -339,18 +335,17 @@ main(int argc, char **argv)
         //char *temp_out = tpoint_as_ewkt((Temporal *) trips[i].trip, 3);
         //fprintf(fileOut, "%ld, %s\n",trips[i].MMSI);
         printf("%ld\n",trips[i].MMSI);
-        /* Free memory */
         //free(temp_out);
       }
-    }
+    }*/
 
-    /* Calculate the elapsed time */
+    /* Calculate the elapsed time 
     t = clock() - t;
     double time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query one took %f seconds to execute\n", time_taken);
+    printf("Query one took %f seconds to execute\n", time_taken);*/
     
     /***************************************************************************
-     * Query five - List the highest speed for each ship. */
+     * Query five - List the highest speed for each ship. 
     printf("Query 5 - List the highest speed for each ship.\n");
     t = clock();
     double speed_value = 0;
@@ -363,7 +358,7 @@ main(int argc, char **argv)
 
     t = clock() - t;
     time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query five took %f seconds to execute\n", time_taken);
+    printf("Query five took %f seconds to execute\n", time_taken);*/
 
 
 
