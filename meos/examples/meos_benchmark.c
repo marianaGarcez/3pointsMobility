@@ -248,7 +248,7 @@ main(int argc, char **argv)
       allships[ship].trip = tsequence_make_exp((const TInstant **) &inst, 1,
         NO_INSTANTS_BATCH, true, true, LINEAR, false);
     else
-      tsequence_append_tinstant(allships[ship].trip, inst, 1000, maxt,true);
+      tsequence_append_tinstant(allships[ship].trip , inst, 1000, maxt,true);
   } while (!feof(fileIn));
 
   printf("\n%d records read.\n%d incomplete records ignored. %d writes to the logfile\n",
@@ -274,6 +274,10 @@ main(int argc, char **argv)
     char *polygon_wkt_BoundingBox = "Polygon((644339 6042108, 651422 6058548, 651422 6058548, 644339 6042108, 644339 6042108))";
     ports[2].geom = gserialized_in(polygon_wkt_BoundingBox, -1);
      printf("\n Created Bounding box\n");
+    
+    int ships srid = getSRID(allships[0].trip);
+    int portnum = getSRID(ports[2].geom);
+    printf("\nSRID %d  \n",portnum);
 
     /* separate allships that are near the bounding box */
     for (size_t i = 0; i < numships; i++)
