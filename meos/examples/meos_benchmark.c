@@ -48,7 +48,6 @@
 #include <meos.h>
 #include <meos_internal.h>
 #include <time.h>
-#define GEODETIC true
 
 /* Number of instants to send in batch to the file  */
 #define NO_INSTANTS_BATCH 500
@@ -241,7 +240,7 @@ main(int argc, char **argv)
     //windowManager(NO_INSTANTS_BATCH,ships, ship,fileOut);
 
     /* Append the last observation */
-    TInstant *inst = (TInstant *) tgeogpoint_in(point_buffer);
+    TInstant *inst = (TInstant *) tgeompoint_in(point_buffer);
     if (! allships[ship].trip)
       allships[ship].trip = tsequence_make_exp((const TInstant **) &inst, 1,
         NO_INSTANTS_BATCH, true, true, LINEAR, false);
