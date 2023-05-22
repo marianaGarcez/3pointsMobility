@@ -48,6 +48,7 @@
 #include <meos.h>
 #include <meos_internal.h>
 #include <time.h>
+#include <geos_c.h>
 
 
 
