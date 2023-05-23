@@ -316,7 +316,7 @@ main(int argc, char **argv)
     {
       for (j = 0; j < no_ports; j++)
       {
-        if (tsequence_at_geometry(trips[i].trip, ports[j].trip, 0))
+        if (tsequence_at_geometry(allships[i].trip, ports[j].trip, 0))
         {
           §printf("\n Ship %d is in port %d\n", allships[i].MMSI, j);
         }
