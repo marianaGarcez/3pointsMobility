@@ -320,6 +320,10 @@ main(int argc, char **argv)
         {
           printf("\n Ship %d is in port %d\n", allships[i].MMSI, j);
         }
+        else
+        {
+          printf("\n Ship %d is not in port %d\n", allships[i].MMSI, j);
+        }
       }
     }
 
