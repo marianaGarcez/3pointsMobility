@@ -288,8 +288,19 @@ main(int argc, char **argv)
 
 
   /***************************************************************************
-   * Section 6: Separate Ferries from all ships - extern int eintersects_tpoint_geo(const Temporal *temp, const GSERIALIZED *gs);
+   * Section 6: Separate Ferries from all ships 
    ****************************************************************************/
+    /* separate allships that are near the ports */
+    for (size_t i = 0; i < numships; i++)
+    {
+      if (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[0].geom) 
+      and (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[1].geom)))
+      {    
+        printf("\n Ship %d is in Rodby and Puttergarten\n", allships[i].MMSI);
+      }
+    } 
+
+
 
 
    /***************************************************************************
