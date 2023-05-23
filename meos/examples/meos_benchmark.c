@@ -298,6 +298,10 @@ main(int argc, char **argv)
       {    
         printf("\n Ship %d is in Rodby and Puttergarten\n", allships[i].MMSI);
       }
+      else 
+      {
+        printf("\n Ship %d is not in Rodby and Puttergarten\n", allships[i].MMSI);
+      }
     } 
 
 
