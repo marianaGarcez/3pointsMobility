@@ -163,7 +163,7 @@ main(int argc, char **argv)
   meos_initialize(NULL);
 
   /* You may substitute the full file path in the first argument of fopen */
-  FILE *fileIn = fopen("query.csv", "r");
+  FILE *fileIn = fopen("query2.csv", "r");
   printf("file in opened\n");
 
   if (! fileIn)
