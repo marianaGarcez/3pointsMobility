@@ -312,9 +312,9 @@ main(int argc, char **argv)
 
 
     /* Separate trips that are near the ports atSTbox */
-    for (i = 0; i < numships; i++)
+    for (int i = 0; i < numships; i++)
     {
-      for (j = 0; j < no_ports; j++)
+      for (int j = 0; j < no_ports; j++)
       {
         if (tsequence_at_geometry(allships[i].trip, ports[j].trip, 0))
         {
