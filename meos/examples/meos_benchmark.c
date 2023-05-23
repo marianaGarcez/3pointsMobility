@@ -310,13 +310,13 @@ main(int argc, char **argv)
    * Section 6: Split Ferries trips into trips between ports - AtGeometry
    ****************************************************************************/
 
-
     /* Separate trips that are near the ports atSTbox */
     for (int i = 0; i < numships; i++)
     {
       for (int j = 0; j < no_ports; j++)
       {
-        if (tsequence_at_geometry(allships[i].trip, ports[j].trip, 0))
+        Temporal *atgeom = tpoint_at_geometry((const Temporal *)trips[i].trip, ports[j].geom);
+        if (atgeom)
         {
           printf("\n Ship %d is in port %d\n", allships[i].MMSI, j);
         }
