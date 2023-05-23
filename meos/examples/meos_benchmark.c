@@ -318,7 +318,7 @@ main(int argc, char **argv)
       {
         if (tsequence_at_geometry(allships[i].trip, ports[j].trip, 0))
         {
-          §printf("\n Ship %d is in port %d\n", allships[i].MMSI, j);
+          printf("\n Ship %d is in port %d\n", allships[i].MMSI, j);
         }
       }
     }
@@ -334,16 +334,7 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 8 : Trips Functions
    ****************************************************************************/
-    /* clean trips that are too short or too long */
-    for (i = 0; i < numships; i++)
-    {
-      if (trips[i].trip->count == 0 || trips[i].trip->count > 1500000)
-      {
-        trips[i].trip = NULL;
-        numships--;
-      }
-    }
-
+    
 
     /* Query one - List the ships that have trajectories with more than 300 points. 
     printf("Query 1 - List the ships that have trajectories with more than 300 points.\n");
