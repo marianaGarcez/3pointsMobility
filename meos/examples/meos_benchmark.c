@@ -121,6 +121,7 @@ main(int argc, char **argv)
   Port_record portRead;
   int no_records = 0;
   int no_nulls = 0;
+  int no_ports = 2;
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
@@ -185,7 +186,6 @@ main(int argc, char **argv)
   /* Continue reading the file */
   do
   {
-    printf("read %d\n",no_records);
     int read = fscanf(fileIn, "%32[^,],%ld,%lf,%lf,%lf\n",
       text_buffer, &rec.MMSI, &rec.Latitude, &rec.Longitude, &rec.SOG);
     /* Transform the string representing the timestamp into a timestamp value */
@@ -306,10 +306,22 @@ main(int argc, char **argv)
 
 
 
-
    /***************************************************************************
    * Section 6: Split Ferries trips into trips between ports - AtGeometry
    ****************************************************************************/
+
+
+    /* Separate trips that are near the ports atSTbox */
+    for (i = 0; i < numships; i++)
+    {
+      for (j = 0; j < no_ports; j++)
+      {
+        if (tsequence_at_geometry(trips[i].trip, ports[j].trip, 0))
+        {
+          §printf("\n Ship %d is in port %d\n", allships[i].MMSI, j);
+        }
+      }
+    }
 
 
 
@@ -322,7 +334,7 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 8 : Trips Functions
    ****************************************************************************/
-    /* clean trips that are too short or too long 
+    /* clean trips that are too short or too long */
     for (i = 0; i < numships; i++)
     {
       if (trips[i].trip->count == 0 || trips[i].trip->count > 1500000)
@@ -330,19 +342,7 @@ main(int argc, char **argv)
         trips[i].trip = NULL;
         numships--;
       }
-    }*/
-
-    /* Separate trips that are near the ports atSTbox 
-    for (i = 0; i < numships; i++)
-    {
-      for (j = 0; j < no_ports; j++)
-      {
-        if (tsequence_at_geometry(trips[i].trip, ports[j].trip, 0))
-        {
-      
-        }
-      }
-    }*/
+    }
 
 
     /* Query one - List the ships that have trajectories with more than 300 points. 
