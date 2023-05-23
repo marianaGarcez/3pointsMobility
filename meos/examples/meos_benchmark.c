@@ -315,7 +315,7 @@ main(int argc, char **argv)
     {
       for (int j = 0; j < no_ports; j++)
       {
-        Temporal *atgeom = tpoint_at_geometry((const Temporal *)trips[i].trip, ports[j].geom);
+        Temporal *atgeom = tpoint_at_geometry((const Temporal *)allships[i].trip, ports[j].geom);
         if (atgeom)
         {
           printf("\n Ship %d is in port %d\n", allships[i].MMSI, j);
