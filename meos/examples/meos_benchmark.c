@@ -294,7 +294,7 @@ main(int argc, char **argv)
     for (size_t i = 0; i < numships; i++)
     {
       if (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[0].geom) 
-      and (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[1].geom)))
+      && (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[1].geom)))
       {    
         printf("\n Ship %d is in Rodby and Puttergarten\n", allships[i].MMSI);
       }
