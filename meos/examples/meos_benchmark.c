@@ -122,12 +122,14 @@ main(int argc, char **argv)
   int no_records = 0;
   int no_nulls = 0;
   int no_ports = 2;
+  int nushipsBB = 0;
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
   /* Allocate space to build the allships */
   trip_record allships[MAX_TRIPS] = {0};
   trip_record ships[MAX_SHIPS] = {0};
+  trip_record ferries[MAX_SHIPS] = {0};
   /* Allocate space to build the ports */
   Port_record ports[MAX_PORTS] = {0};
   double maxspeed[MAX_SHIPS];
@@ -298,6 +300,8 @@ main(int argc, char **argv)
       && (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[1].geom)))
       {    
         printf("\n Ship %d is in Rodby and Puttergarten\n", allships[i].MMSI);
+        ships[nushipsBB++].MMSI = allships[i].MMSI;
+        ships[nushipsBB++].trip = allships[i].trip;
       }
       else 
       {
@@ -312,7 +316,7 @@ main(int argc, char **argv)
    ****************************************************************************/
 
     /* Separate trips that are near the ports atSTbox */
-    for (int i = 0; i < numships; i++)
+    for (int i = 0; i < nushipsBB; i++)
     {
       for (int j = 0; j < no_ports; j++)
       {
@@ -320,6 +324,8 @@ main(int argc, char **argv)
         if (atgeom)
         {
           printf("\n Ship %d is in port %d\n", allships[i].MMSI, j);
+          ferries[nuferries++].MMSI = ships[i].MMSI;
+          ferries[nuferries++].trip = ships[i].trip;
         }
         else
         {
@@ -327,8 +333,6 @@ main(int argc, char **argv)
         }
       }
     }
-
-
 
    /***************************************************************************
    * Section 7: Split Ferries trips into trips between ports - AtStops

@@ -134,6 +134,44 @@ select f.MMSI,
 from tripsIn I, tripsOut O, ferries F
 where I.MMSI = F.MMSI and O.MMSI = I.MMSI;
 
+------- ////////////
+
+CREATE TABLE tripsIn(MMSI, timestamp, next_timestamp) AS
+WITH trip_sequences AS (
+  SELECT 
+    F.MMSI, 
+    startTimestamp(unnest(sequences(atGeometry(F.trip,P.Rodby)))) AS timestamp
+  FROM Ferries F, temp_port_boxes P
+  ORDER BY F.MMSI, startTimestamp(unnest(sequences(atGeometry(F.trip,P.Rodby))))
+)
+SELECT 
+  MMSI, 
+  timestamp, 
+  LEAD(timestamp) OVER (PARTITION BY MMSI ORDER BY timestamp)
+FROM trip_sequences;
+
+CREATE TABLE tripsOut(MMSI, timestamp, next_timestamp) AS
+WITH trip_sequences AS (
+  SELECT 
+    F.MMSI, 
+    startTimestamp(unnest(sequences(atGeometry(F.trip,P.Puttgarden)))) AS timestamp
+  FROM Ferries F, temp_port_boxes P
+  ORDER BY F.MMSI, startTimestamp(unnest(sequences(atGeometry(F.trip,P.Puttgarden))))
+)
+SELECT 
+  MMSI, 
+  timestamp, 
+  LEAD(timestamp) OVER (PARTITION BY MMSI ORDER BY timestamp)
+FROM trip_sequences;
+
+CREATE TABLE tripsSplitFerries(MMSI, trip) AS
+SELECT F.MMSI, 
+  attime(F.trip, span(I.timestamp, COALESCE(I.next_timestamp, O.timestamp))) as trip
+FROM tripsIn I
+INNER JOIN tripsOut O ON I.MMSI = O.MMSI AND O.timestamp >= I.timestamp
+INNER JOIN ferries F ON I.MMSI = F.MMSI
+ORDER BY F.MMSI, I.timestamp;
+
 
 
 --///////////////////////////////////////////////////////////////////////////////////////////////////////////
