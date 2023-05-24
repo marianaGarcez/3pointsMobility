@@ -122,7 +122,9 @@ main(int argc, char **argv)
   int no_records = 0;
   int no_nulls = 0;
   int no_ports = 2;
-  int nushipsBB = 0;
+  int no_shipsBB = 0;
+  int no_ferries = 0;
+  int no_trips = 0;
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
@@ -130,6 +132,7 @@ main(int argc, char **argv)
   trip_record allships[MAX_TRIPS] = {0};
   trip_record ships[MAX_SHIPS] = {0};
   trip_record ferries[MAX_SHIPS] = {0};
+  trip_record ferriesTrips[MAX_SHIPS] = {0};
   /* Allocate space to build the ports */
   Port_record ports[MAX_PORTS] = {0};
   double maxspeed[MAX_SHIPS];
@@ -282,6 +285,8 @@ main(int argc, char **argv)
       if (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[2].geom))
       {
         printf("\n Ship is in the bounding box\n");
+        ships[no_shipsBB++].MMSI = allships[i].MMSI;
+        ships[no_shipsBB++].trip = allships[i].trip;
       }
       else
       {
@@ -294,18 +299,18 @@ main(int argc, char **argv)
    * Section 6: Separate Ferries from all ships 
    ****************************************************************************/
     /* separate allships that are near the ports */
-    for (size_t i = 0; i < numships; i++)
+    for (size_t i = 0; i < no_shipsBB; i++)
     {
-      if (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[0].geom) 
-      && (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[1].geom)))
+      if (eintersects_tpoint_geo((const Temporal *) ships[i].trip, ports[0].geom) 
+      && (eintersects_tpoint_geo((const Temporal *) ships[i].trip, ports[1].geom)))
       {    
-        printf("\n Ship %d is in Rodby and Puttergarten\n", allships[i].MMSI);
-        ships[nushipsBB++].MMSI = allships[i].MMSI;
-        ships[nushipsBB++].trip = allships[i].trip;
+        printf("\n Ship %d is in Rodby and Puttergarten\n", ships[i].MMSI);
+        ferries[no_ferries++].MMSI = ships[i].MMSI;
+        ferries[no_ferries++].trip = ships[i].trip;
       }
       else 
       {
-        printf("\n Ship %d is not in Rodby and Puttergarten\n", allships[i].MMSI);
+        printf("\n Ship %d is not in Rodby and Puttergarten\n", ships[i].MMSI);
       }
     } 
 
@@ -316,16 +321,16 @@ main(int argc, char **argv)
    ****************************************************************************/
 
     /* Separate trips that are near the ports atSTbox */
-    for (int i = 0; i < nushipsBB; i++)
+    for (int i = 0; i < no_ferries; i++)
     {
       for (int j = 0; j < no_ports; j++)
       {
-        Temporal *atgeom = tpoint_at_geometry((const Temporal *)allships[i].trip, ports[j].geom);
+        Temporal *atgeom = tpoint_at_geometry((const Temporal *)ferries[i].trip, ports[j].geom);
         if (atgeom)
         {
-          printf("\n Ship %d is in port %d\n", allships[i].MMSI, j);
-          ferries[nuferries++].MMSI = ships[i].MMSI;
-          ferries[nuferries++].trip = ships[i].trip;
+          printf("\n Ship %d is in port %d\n", ferries[i].MMSI, j);
+          ferriesTrips[no_trips++].MMSI = ferries[i].MMSI;
+          ferriesTrips[no_trips++].trip = atgeom;
         }
         else
         {
@@ -337,53 +342,36 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 7: Split Ferries trips into trips between ports - AtStops
    ****************************************************************************/
-
+     /* Separate trips that are near the ports atSTbox */
+    for (int i = 0; i < no_ferries; i++)
+    {
+      for (int j = 0; j < no_ports; j++)
+      {
+        TSequenceSet * atstops =  temporal_stops((const Temporal *)ferries[i].trip, double maxdist,const Interval *minduration)
+        if (atstops)
+        {
+          printf("\n Ship %d is in port %d\n", ferries[i].MMSI, j);
+          ferriesTrips[no_trips++].MMSI = ferries[i].MMSI;
+          ferriesTrips[no_trips++].trip = atstops;
+        }
+        else
+        {
+          printf("\n Ship %d is not in port %d\n", allships[i].MMSI, j);
+        }
+      }
+    }
   
 
    /***************************************************************************
    * Section 8 : Trips Functions
    ****************************************************************************/
-    
-
-    /* Query one - List the ships that have trajectories with more than 300 points. 
-    printf("Query 1 - List the ships that have trajectories with more than 300 points.\n");
-    clock_t t;
-    t = clock();
-
-    for (i = 0; i < numships; i++)
+    doube totalDistance = 0;
+    for (int i = 0; i < no_trips; i++)
     {
-      if (trips[i].trip->count > 300)
-      {
-        //char *temp_out = tsequence_out(trips[i].trip, 15);
-        //char *temp_out = tpoint_as_ewkt((Temporal *) trips[i].trip, 3);
-        //fprintf(fileOut, "%ld, %s\n",trips[i].MMSI);
-        printf("%ld\n",trips[i].MMSI);
-        //free(temp_out);
-      }
-    }*/
-
-    /* Calculate the elapsed time 
-    t = clock() - t;
-    double time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query one took %f seconds to execute\n", time_taken);*/
-    
-    /***************************************************************************
-     * Query five - List the highest speed for each ship. 
-    printf("Query 5 - List the highest speed for each ship.\n");
-    t = clock();
-    double speed_value = 0;
-
-    for (i = 0; i < numships; i++)
-    {
-      speed_value = tsequence_max_speed(trips[i].trip);
-      printf("Ship %ld, max speed %lf\n",trips[i].MMSI,speed_value);
+      double distance = tpoint_cumulative_length((const Temporal *)ferriesTrips[i].trip);
+      printf("\n Ship %d has a distance of %lf\n", ferriesTrips[i].MMSI, distance);
+      totalDistance += distance;
     }
-
-    t = clock() - t;
-    time_taken = ((double) t) / CLOCKS_PER_SEC;
-    printf("Query five took %f seconds to execute\n", time_taken);*/
-
-
 
    /***************************************************************************
    * Section 9: ships that get close to ferries
