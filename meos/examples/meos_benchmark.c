@@ -125,6 +125,7 @@ main(int argc, char **argv)
   int no_shipsBB = 0;
   int no_ferries = 0;
   int no_trips = 0;
+  int no_beltships = 0;
   const Interval *maxt = pg_interval_in("1 day", -1);
   char point_buffer[MAX_LENGTH_POINT];
   char text_buffer[MAX_LENGTH_HEADER];
@@ -133,6 +134,7 @@ main(int argc, char **argv)
   trip_record ships[MAX_SHIPS] = {0};
   trip_record ferries[MAX_SHIPS] = {0};
   trip_record ferriesTrips[MAX_SHIPS] = {0};
+  trip_record beltships[MAX_SHIPS] = {0};
   /* Allocate space to build the ports */
   Port_record ports[MAX_PORTS] = {0};
   /* Number of ships */
@@ -389,7 +391,21 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 9: ships that get close to ferries
    ****************************************************************************/
-
+     /* separate allships that are near the ports */
+    for (size_t i = 0; i < numships; i++)
+    {
+      if (eintersects_tpoint_geo((const Temporal *) ships[i].trip, ports[0].geom) 
+      && (eintersects_tpoint_geo((const Temporal *) ships[i].trip, ports[1].geom)))
+      {    
+        printf("\n Ship %d is in Rodby and Puttergarten\n", ships[i].MMSI);
+      }
+      else 
+      {
+        printf("\n Ship %d is not in Rodby and Puttergarten\n", ships[i].MMSI);
+        beltships[no_beltships++].MMSI = ships[i].MMSI;
+        beltships[no_beltships++].trip = ships[i].trip;
+      }
+    } 
 
   
     /***************************************************************************/
