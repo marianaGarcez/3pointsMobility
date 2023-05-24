@@ -411,12 +411,12 @@ main(int argc, char **argv)
     /* Find ships that are near ferries within 300 meters */
     for (size_t i = 0; i < numships; i++)
     {
-      for (size_t i = 0; i < numships; i++)
+      for (size_t j = 0; j < numships; j++)
       {
-        if (allships[i].MMSI != allships[i].MMSI)
+        if (allships[i].MMSI != allships[j].MMSI)
         {
           printf("\n Ship is not the same\n");
-          temporal * aux = tdwithin_tpoint_tpoint((const Temporal *)allships[i].trip, (const Temporal *)allships[j].trip,5.5,true,false);
+          Temporal * aux = tdwithin_tpoint_tpoint((const Temporal *)allships[i].trip, (const Temporal *)allships[j].trip,5.5,true,false);
           if (aux)
           {
             free(aux);
