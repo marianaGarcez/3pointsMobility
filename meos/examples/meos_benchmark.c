@@ -337,6 +337,7 @@ main(int argc, char **argv)
         {
           printf("\n Ship %d is not in port %d\n", allships[i].MMSI, j);
         }
+        free(atgeom);
       }
     }
 
@@ -372,7 +373,7 @@ main(int argc, char **argv)
     double dist;
     for (int i = 0; i < numships; i++)
     {
-      dist = cumulative_distance(allships[i].trip);
+      dist = tpoint_length(allships[i].trip) / 1000;
       printf("\n Ship %d has a distance of %lf\n", allships[i].MMSI, dist);
       totalDistance += dist;
     }
@@ -391,13 +392,13 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 9: ships that get close to ferries
    ****************************************************************************/
-     /* separate allships that are near the ports */
+     /* separate allships that are not ferries */
     for (size_t i = 0; i < numships; i++)
     {
       if (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[0].geom) 
       && (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[1].geom)))
       {    
-        printf("\n Ship %d is in Rodby and Puttergarten\n", allships[i].MMSI);
+        printf("\n Ship %d is a ferry\n", allships[i].MMSI);
       }
       else 
       {
@@ -406,6 +407,19 @@ main(int argc, char **argv)
         beltships[no_beltships++].trip = allships[i].trip;
       }
     } 
+
+    /* Find ships that are near ferries within 300 meters */
+    for (size_t i = 0; i < numships; i++)
+    {
+      for (size_t i = 0; i < numships; i++)
+      {
+        if (allships[i].MMSI != allships[i].MMSI)
+        {
+          printf("\n Ship is not the same\n");
+        }
+      }
+    }
+
 
   
     /***************************************************************************/
