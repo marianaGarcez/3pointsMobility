@@ -370,7 +370,7 @@ main(int argc, char **argv)
     double dist;
     for (int i = 0; i < numships; i++)
     {
-      dist = cumulative_distance(ferriesTrips[i].trip);
+      dist = cumulative_distance(allships[i].trip);
       printf("\n Ship %d has a distance of %lf\n", allships[i].MMSI, dist);
       totalDistance += dist;
     }
