@@ -394,16 +394,16 @@ main(int argc, char **argv)
      /* separate allships that are near the ports */
     for (size_t i = 0; i < numships; i++)
     {
-      if (eintersects_tpoint_geo((const Temporal *) ships[i].trip, ports[0].geom) 
-      && (eintersects_tpoint_geo((const Temporal *) ships[i].trip, ports[1].geom)))
+      if (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[0].geom) 
+      && (eintersects_tpoint_geo((const Temporal *) allships[i].trip, ports[1].geom)))
       {    
-        printf("\n Ship %d is in Rodby and Puttergarten\n", ships[i].MMSI);
+        printf("\n Ship %d is in Rodby and Puttergarten\n", allships[i].MMSI);
       }
       else 
       {
-        printf("\n Ship %d is not in Rodby and Puttergarten\n", ships[i].MMSI);
-        beltships[no_beltships++].MMSI = ships[i].MMSI;
-        beltships[no_beltships++].trip = ships[i].trip;
+        printf("\n Ship %d is not in Rodby and Puttergarten\n", allships[i].MMSI);
+        beltships[no_beltships++].MMSI = allships[i].MMSI;
+        beltships[no_beltships++].trip = allships[i].trip;
       }
     } 
 
