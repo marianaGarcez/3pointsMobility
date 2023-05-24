@@ -373,7 +373,7 @@ main(int argc, char **argv)
     double dist;
     for (int i = 0; i < numships; i++)
     {
-      dist = tpoint_length(allships[i].trip) / 1000;
+      dist = tpoint_length((const Temporal *)allships[i].trip) / 1000;
       printf("\n Ship %d has a distance of %lf\n", allships[i].MMSI, dist);
       totalDistance += dist;
     }
