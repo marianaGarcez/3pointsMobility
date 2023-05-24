@@ -365,13 +365,23 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 8 : Trips Functions
    ****************************************************************************/
-    doube totalDistance = 0;
+    /* Total distance */
+    double totalDistance = 0;
     for (int i = 0; i < no_trips; i++)
     {
       double distance = tpoint_cumulative_length((const Temporal *)ferriesTrips[i].trip);
       printf("\n Ship %d has a distance of %lf\n", ferriesTrips[i].MMSI, distance);
       totalDistance += distance;
     }
+    /* Average Speed */
+    double totalSpeed = 0;
+    for (int i = 0; i < no_trips; i++)
+    {
+      double speed = tpoint_speed((const Temporal *)ferriesTrips[i].trip);
+      printf("\n Ship %d has a speed of %lf\n", ferriesTrips[i].MMSI, sppeed);
+      totalSpeed += speed;
+    }
+    printf("\n Average Speed is %lf\n", totalSpeed/no_trips);
 
    /***************************************************************************
    * Section 9: ships that get close to ferries
