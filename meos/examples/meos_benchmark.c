@@ -415,10 +415,10 @@ main(int argc, char **argv)
       {
         if (allships[i].MMSI != allships[j].MMSI)
         {
-          printf("\n Ship is not the same\n");
           Temporal * aux = tdwithin_tpoint_tpoint((const Temporal *)allships[i].trip, (const Temporal *)allships[j].trip,5.5,true,false);
           if (aux)
           {
+            printf("aux\n");
             free(aux);
           }
         }
