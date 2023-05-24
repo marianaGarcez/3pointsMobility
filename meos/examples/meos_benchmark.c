@@ -135,7 +135,6 @@ main(int argc, char **argv)
   trip_record ferriesTrips[MAX_SHIPS] = {0};
   /* Allocate space to build the ports */
   Port_record ports[MAX_PORTS] = {0};
-  double maxspeed[MAX_SHIPS];
   /* Number of ships */
   int numships = 0;
   /* Iterator variable */
@@ -365,22 +364,22 @@ main(int argc, char **argv)
    /***************************************************************************
    * Section 8 : Trips Functions
    ****************************************************************************/
+
     /* Total distance */
     double totalDistance = 0;
-    double distance = 0;
+    double dist = 0;
     for (int i = 0; i < no_trips; i++)
     {
-      Temporal * length= tpoint_cumulative_length((const Temporal *)ferriesTrips[i].trip);
-      distance =0;
+      
       printf("\n Ship %d has a distance of %lf\n", ferriesTrips[i].MMSI, distance);
-      totalDistance += distance;
+      totalDistance += dist;
     }
     /* Average Speed */
     double totalSpeed = 0;
     for (int i = 0; i < no_trips; i++)
     {
-      Temporal *speedd= tpoint_speed((const Temporal *)ferriesTrips[i].trip);
-      double speed = 0;
+      double speed = average_speed(ferriesTrips[i].trip)
+
       printf("\n Ship %d has a speed of %lf\n", ferriesTrips[i].MMSI, speed);
       totalSpeed += speed;
     }

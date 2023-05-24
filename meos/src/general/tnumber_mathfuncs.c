@@ -575,6 +575,28 @@ double tsequence_max_speed(const TSequence* seq)
   return maxSpeed;
 }
 
+double average_speed(const TSequence* seq)
+{
+
+  /* Do not try to detect speed on really short things */
+  if (seq->count < 2)
+    return 0;
+
+  bool hasz = MOBDB_FLAGS_GET_Z(seq->flags);
+  
+  const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
+  double cumulativeSpeed = 0;
+
+  for (int i=1; i < seq->count; i++)
+  {
+    const TInstant *inst2 = TSEQUENCE_INST_N(seq, i);
+    double speedNow = speed(inst1, inst2, hasz);
+    cumulativeSpeed += speedNow;
+    inst1 = inst2;
+  }
+  return cumulativeSpeed/seq->count;
+}
+
 
 double * tsequenceset_max_speed(TSequenceSet *ss)
 {

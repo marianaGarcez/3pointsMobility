@@ -1382,6 +1382,7 @@ bool tpoint_to_geo_measure(const Temporal *tpoint, const Temporal *measure, bool
 Temporal * temporal_(Temporal *temp, double max_speed, double min_speed);
 Temporal * temporal_maxSpeed(Temporal *temp);
 double tsequence_max_speed(const TSequence* seq);
+double average_speed(const TSequence* seq);
 
 /*****************************************************************************/
 
