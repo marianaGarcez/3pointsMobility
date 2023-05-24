@@ -416,6 +416,11 @@ main(int argc, char **argv)
         if (allships[i].MMSI != allships[i].MMSI)
         {
           printf("\n Ship is not the same\n");
+          temporal * aux = tdwithin_tpoint_tpoint((const Temporal *)allships[i].trip, (const Temporal *)allships[j].trip,5.5,true,false);
+          if (aux)
+          {
+            free(aux);
+          }
         }
       }
     }
