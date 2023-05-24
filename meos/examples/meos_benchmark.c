@@ -371,16 +371,15 @@ main(int argc, char **argv)
     for (int i = 0; i < no_trips; i++)
     {
       
-      printf("\n Ship %d has a distance of %lf\n", ferriesTrips[i].MMSI, dist);
+      printf("\n Ship %d has a distance of %lf\n", allships[i].MMSI, dist);
       totalDistance += dist;
     }
     /* Average Speed */
     double totalSpeed = 0;
-    for (int i = 0; i < no_trips; i++)
+    for (int i = 0; i < numships; i++)
     {
-      double speed = average_speed(ferriesTrips[i].trip);
-
-      printf("\n Ship %d has a speed of %lf\n", ferriesTrips[i].MMSI, speed);
+      double speed = average_speed(allships[i].trip);
+      printf("\n Ship %d has a speed of %lf\n", allships[i].MMSI, speed);
       totalSpeed += speed;
     }
     printf("\n Average Speed is %lf\n", totalSpeed/no_trips);
