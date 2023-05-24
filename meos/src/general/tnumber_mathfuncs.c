@@ -539,7 +539,7 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
     distance = distance2d_pt_pt(&valueinst12D, &valueinst22D);  
   }
 
-  double totaltime = (double) end->t - (double) start->t;
+  double totaltime = ((double) end->t - (double) start->t)/10000;
 
   double speedNow = distance /totaltime;
   /* a = Δv/Δt. */
