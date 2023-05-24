@@ -371,7 +371,7 @@ main(int argc, char **argv)
     for (int i = 0; i < no_trips; i++)
     {
       
-      printf("\n Ship %d has a distance of %lf\n", ferriesTrips[i].MMSI, distance);
+      printf("\n Ship %d has a distance of %lf\n", ferriesTrips[i].MMSI, dist);
       totalDistance += dist;
     }
     /* Average Speed */
