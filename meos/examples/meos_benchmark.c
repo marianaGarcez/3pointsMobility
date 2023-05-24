@@ -347,7 +347,7 @@ main(int argc, char **argv)
     {
       for (int j = 0; j < no_ports; j++)
       {
-        TSequenceSet * atstops =  temporal_stops((const Temporal *)ferries[i].trip,25, '0 minutes');
+        TSequenceSet * atstops =  temporal_stops((const Temporal *)ferries[i].trip,25, 0);
         if (atstops)
         {
           printf("\n Ship %d is in port %d\n", ferries[i].MMSI, j);
@@ -367,6 +367,7 @@ main(int argc, char **argv)
    ****************************************************************************/
     /* Total distance */
     double totalDistance = 0;
+    double distance = 0;
     for (int i = 0; i < no_trips; i++)
     {
       Temporal * length= tpoint_cumulative_length((const Temporal *)ferriesTrips[i].trip);
@@ -378,7 +379,8 @@ main(int argc, char **argv)
     double totalSpeed = 0;
     for (int i = 0; i < no_trips; i++)
     {
-      double speed = tpoint_speed((const Temporal *)ferriesTrips[i].trip);
+      Temporal *speedd= tpoint_speed((const Temporal *)ferriesTrips[i].trip);
+      double speed = 0;
       printf("\n Ship %d has a speed of %lf\n", ferriesTrips[i].MMSI, speed);
       totalSpeed += speed;
     }
