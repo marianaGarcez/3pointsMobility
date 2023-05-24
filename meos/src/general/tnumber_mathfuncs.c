@@ -546,6 +546,51 @@ double speed(const TInstant *start, const TInstant *end, bool hasz)
   return speedNow;
 }
 
+
+double distance(const TInstant *start, const TInstant *end, bool hasz)
+{
+  double distance = 0;
+
+  if (hasz)
+  {
+    POINT3DZ valueinst1, valueinst2;
+    valueinst1  = datum_point3dz(tinstant_value(start));
+    valueinst2  = datum_point3dz(tinstant_value(start));
+    distance = distance3d_pt_pt(&valueinst1, &valueinst2);
+  }
+  else 
+  {
+    POINT2D valueinst12D, valueinst22D;
+    valueinst12D = datum_point2d(tinstant_value(start));
+    valueinst22D = datum_point2d(tinstant_value(end));
+    distance = distance2d_pt_pt(&valueinst12D, &valueinst22D);  
+  }
+  /* a = Δv/Δt. */
+  return distance;
+}
+
+double cumulative_distance(const TSequence* seq)
+{
+
+  /* Do not try to detect speed on really short things */
+  if (seq->count < 2)
+    return 0;
+
+  bool hasz = MOBDB_FLAGS_GET_Z(seq->flags);
+  
+  const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
+  double cumulativeDistance = 0;
+
+  for (int i=1; i < seq->count; i++)
+  {
+    const TInstant *inst2 = TSEQUENCE_INST_N(seq, i);
+    cumulativeDistance += distance(inst1, inst2, hasz);
+    inst1 = inst2;
+  }
+  return cumulativeDistance;
+}
+
+
 double tsequence_max_speed(const TSequence* seq)
 {
 

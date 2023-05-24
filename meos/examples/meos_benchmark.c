@@ -367,13 +367,15 @@ main(int argc, char **argv)
 
     /* Total distance */
     double totalDistance = 0;
-    double dist = 0;
-    for (int i = 0; i < no_trips; i++)
+    double dist;
+    for (int i = 0; i < numships; i++)
     {
-      
+      dist = cumulative_distance(ferriesTrips[i].trip);
       printf("\n Ship %d has a distance of %lf\n", allships[i].MMSI, dist);
       totalDistance += dist;
     }
+    printf("\n Total Distance is %lf\n", totalDistance);
+
     /* Average Speed */
     double totalSpeed = 0;
     for (int i = 0; i < numships; i++)
