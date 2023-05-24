@@ -378,7 +378,7 @@ main(int argc, char **argv)
     double totalSpeed = 0;
     for (int i = 0; i < no_trips; i++)
     {
-      double speed = average_speed(ferriesTrips[i].trip)
+      double speed = average_speed(ferriesTrips[i].trip);
 
       printf("\n Ship %d has a speed of %lf\n", ferriesTrips[i].MMSI, speed);
       totalSpeed += speed;
