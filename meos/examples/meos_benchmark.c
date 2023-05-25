@@ -390,7 +390,7 @@ main(int argc, char **argv)
       printf("\n Ship %d has a speed of %s\n", allships[i].MMSI, speed);
       totalSpeed += speed;
     }
-    printf("\n Average Speed is %lf\n", totalSpeed/no_trips);
+    printf("\n Average Speed is %lf\n", totalSpeed/numships);
 
    /***************************************************************************
    * Section 9: ships that get close to ferries

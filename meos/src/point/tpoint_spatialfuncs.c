@@ -2345,42 +2345,6 @@ tpointseq_speed(const TSequence *seq)
   return result;
 }
 
-/**
- * @ingroup libmeos_internal_temporal_spatial_accessor
- * @brief Return the speed of a temporal point.
- * @pre The temporal point has linear interpolation
- * @sqlfunc speed()
- */
-double
-tpointseq_speed1(const TSequence *seq)
-{
-  /* Instantaneous sequence */
-  if (seq->count == 1)
-    return 0;
-
-  /* General case */
-  const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
-  Datum value1 = tinstant_value(inst1);
-  double speed = 0.0; /* make compiler quiet */
-
-  for (int i = 0; i < seq->count - 1; i++)
-  {
-    const TInstant *inst2 = TSEQUENCE_INST_N(seq, i + 1);
-    Datum value2 = tinstant_value(inst2);
-
-    speed += datum_point_eq(value1, value2) ? 0.0 :
-      DatumGetFloat8(func(value1, value2)) /
-        ((double)(inst2->t - inst1->t) / 1000000.0);
-
-    inst1 = inst2;
-    value1 = value2;
-  }
-
-  return speed/(seq->count);
-}
-
-
-
 
 
 /**
