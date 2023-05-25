@@ -1265,6 +1265,7 @@ extern Temporal *tpoint_get_coord(const Temporal *temp, int coord);
 extern bool tpoint_is_simple(const Temporal *temp);
 extern double tpoint_length(const Temporal *temp);
 extern Temporal *tpoint_speed(const Temporal *temp);
+extern double tpointseq_speed1(const TSequence *seq);
 extern int tpoint_srid(const Temporal *temp);
 extern STBox *tpoint_stboxes(const Temporal *temp, int *count);
 extern GSERIALIZED *tpoint_trajectory(const Temporal *temp);
