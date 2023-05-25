@@ -370,23 +370,24 @@ main(int argc, char **argv)
 
     /* Total distance */
     double totalDistance = 0;
-    double dist[numships];
+    double dist;
 
     for (int i = 0; i < numships; i++)
     {
-      dist[i] = tpoint_length((const Temporal *)allships[i].trip) / 1000;
-      printf("\n Ship %d has a distance of %lf\n", allships[i].MMSI, dist[i]);
-      totalDistance += dist[i];
+      dist = tpoint_length((const Temporal *)allships[i].trip) / 1000;
+      printf("\n Ship %d has a distance of %lf\n", allships[i].MMSI, dist);
+      totalDistance += dist;
     }
     printf("\n Total Distance is %lf\n", totalDistance);
 
     /* Average Speed */
     double totalSpeed = 0;
-    double speed;
+    double speed= 0 ;
     for (int i = 0; i < numships; i++)
     {
-      speed = dist[i] / (allships[i].trip->duration/3600);
-      printf("\n Ship %d has a speed of %lf\n", allships[i].MMSI, speed);
+      //double speed = tpointseq_speed1(allships[i].trip);
+      Temporal *speed2 = tpointseq_speed(allships[i].trip); 
+      printf("\n Ship %d has a speed of %s\n", allships[i].MMSI, speed2);
       totalSpeed += speed;
     }
     printf("\n Average Speed is %lf\n", totalSpeed/no_trips);

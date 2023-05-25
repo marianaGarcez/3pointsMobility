@@ -858,6 +858,7 @@ extern TSequence *tpointseq_cumulative_length(const TSequence *seq, double prevl
 extern bool tpointseq_is_simple(const TSequence *seq);
 extern double tpointseq_length(const TSequence *seq);
 extern TSequence *tpointseq_speed(const TSequence *seq);
+extern double tpointseq_speed1(const TSequence *seq);
 extern int tpointseq_srid(const TSequence *seq);
 extern STBox *tpointseq_stboxes(const TSequence *seq, int *count);
 extern TSequenceSet *tpointseqset_azimuth(const TSequenceSet *ss);
