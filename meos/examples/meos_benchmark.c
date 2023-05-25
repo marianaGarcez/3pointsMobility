@@ -385,7 +385,8 @@ main(int argc, char **argv)
     double speed= 0 ;
     for (int i = 0; i < numships; i++)
     {
-      double speed = tpointseq_speed1(allships[i].trip);
+      double speed = 0;
+      //tpointseq_speed1(allships[i].trip);
       printf("\n Ship %d has a speed of %s\n", allships[i].MMSI, speed);
       totalSpeed += speed;
     }
