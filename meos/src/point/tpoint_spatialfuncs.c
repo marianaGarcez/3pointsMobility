@@ -2354,36 +2354,29 @@ tpointseq_speed(const TSequence *seq)
 double
 tpointseq_speed1(const TSequence *seq)
 {
-  assert(MOBDB_FLAGS_GET_LINEAR(seq->flags));
-
   /* Instantaneous sequence */
   if (seq->count == 1)
-    return NULL;
+    return 0;
 
   /* General case */
-  TInstant **instants = palloc(sizeof(TInstant *) * seq->count);
-  datum_func2 func = pt_distance_fn(seq->flags);
   const TInstant *inst1 = TSEQUENCE_INST_N(seq, 0);
   Datum value1 = tinstant_value(inst1);
   double speed = 0.0; /* make compiler quiet */
+
   for (int i = 0; i < seq->count - 1; i++)
   {
     const TInstant *inst2 = TSEQUENCE_INST_N(seq, i + 1);
     Datum value2 = tinstant_value(inst2);
-    speed = datum_point_eq(value1, value2) ? 0.0 :
+
+    speed += datum_point_eq(value1, value2) ? 0.0 :
       DatumGetFloat8(func(value1, value2)) /
         ((double)(inst2->t - inst1->t) / 1000000.0);
-    instants[i] = tinstant_make(Float8GetDatum(speed), T_TFLOAT, inst1->t);
+
     inst1 = inst2;
     value1 = value2;
   }
-  instants[seq->count - 1] = tinstant_make(Float8GetDatum(speed), T_TFLOAT,
-    seq->period.upper);
-  /* The resulting sequence has step interpolation */
-  TSequence *result = tsequence_make((const TInstant **) instants, seq->count,
-    seq->period.lower_inc, seq->period.upper_inc, STEP, NORMALIZE);
-  pfree_array((void **) instants, seq->count - 1);
-  return result;
+
+  return speed/(seq->count);
 }
 
 

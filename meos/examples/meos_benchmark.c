@@ -385,9 +385,8 @@ main(int argc, char **argv)
     double speed= 0 ;
     for (int i = 0; i < numships; i++)
     {
-      //double speed = tpointseq_speed1(allships[i].trip);
-      TSequence *speed2 = tpointseq_speed((const TSequence *)allships[i].trip); 
-      printf("\n Ship %d has a speed of %s\n", allships[i].MMSI, speed2);
+      double speed = tpointseq_speed1(allships[i].trip);
+      printf("\n Ship %d has a speed of %s\n", allships[i].MMSI, speed);
       totalSpeed += speed;
     }
     printf("\n Average Speed is %lf\n", totalSpeed/no_trips);
