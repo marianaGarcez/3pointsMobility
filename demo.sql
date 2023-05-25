@@ -196,6 +196,7 @@ order by timestamp;
 -- total distance
 SELECT SUM( length( Trip ) ) FROM Ships;
 
+
 -- average speed
 SELECT ABS(twavg(SOG) * 1.852 - twavg(speed(Trip))* 3.6 ) SpeedDifference
 FROM Ships
